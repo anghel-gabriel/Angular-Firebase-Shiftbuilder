@@ -1,8 +1,23 @@
-<p-menubar [model]="items">
-  <ng-template pTemplate="end">
-    <img
-      src="https://primefaces.org/cdn/primeng/images/primeng.svg"
-      height="40"
-    />
-  </ng-template>
-</p-menubar>
+<div class="header">
+  <p-menubar
+    [model]="items"
+    class="menu-bar"
+    [style]="{ background: 'transparent', border: 'none' }"
+  >
+    <ng-template pTemplate="item" let-item>
+      <a
+        pRipple
+        [routerLink]="item.url"
+        routerLinkActive="nav-link-active"
+        class="p-menuitem-link nav-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <div>
+          <span [class]="item.icon"></span>
+          <span> {{ item.label }}</span>
+        </div>
+      </a>
+    </ng-template>
+  </p-menubar>
+  <p>salut</p>
+</div>

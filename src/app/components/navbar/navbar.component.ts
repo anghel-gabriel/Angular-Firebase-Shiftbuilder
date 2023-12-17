@@ -14,28 +14,33 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'File',
-        icon: 'pi pi-fw pi-file',
+        label: 'Homepage',
+        icon: 'pi pi-fw pi-calendar',
+        url: '',
       },
-      {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
-        command: (event: MenuItemCommandEvent) => console.log(123),
-        // routerLink: '/salut',
-        pRipple: true,
-      },
+      // {
+      //   label: 'Edit',
+      //   icon: 'pi pi-fw pi-pencil',
+      //   // url: 'edit-user',
+      //   // command: (event: MenuItemCommandEvent) => console.log(123),
+      // },
       {
         label: 'Profile',
-        icon: 'pi pi-fw pi-user',
-        pRipple: true,
+        icon: 'pi pi-fw pi-pencil',
+        url: 'profile',
       },
-      {
-        label: 'Shifts',
-        icon: 'pi pi-fw pi-calendar',
-      },
+
       {
         label: 'Sign Out',
         icon: 'pi pi-fw pi-power-off',
+      },
+      {
+        label: 'Register',
+        icon: 'pi pi-fw pi-user-plus',
+      },
+      {
+        label: 'Sign In',
+        icon: 'pi pi-fw pi-arrow-circle-right',
       },
     ];
   }
