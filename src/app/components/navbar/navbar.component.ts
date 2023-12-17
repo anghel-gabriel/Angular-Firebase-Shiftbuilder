@@ -11,16 +11,6 @@ import { MenuItem } from 'primeng/api';
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
 
-  constructor(private messageService: MessageService) {}
-
-  show() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
-    });
-  }
-
   ngOnInit() {
     this.items = [
       {
@@ -31,10 +21,13 @@ export class NavbarComponent implements OnInit {
         label: 'Edit',
         icon: 'pi pi-fw pi-pencil',
         command: (event: MenuItemCommandEvent) => console.log(123),
+        // routerLink: '/salut',
+        pRipple: true,
       },
       {
-        label: 'Users',
+        label: 'Profile',
         icon: 'pi pi-fw pi-user',
+        pRipple: true,
       },
       {
         label: 'Shifts',
