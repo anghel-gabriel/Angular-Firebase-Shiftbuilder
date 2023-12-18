@@ -1,0 +1,75 @@
+<p-steps
+  [style]="{ maxWidth: '900px', margin: 'auto' }"
+  [model]="items"
+  [readonly]="false"
+  [activeIndex]="activeIndex"
+  (activeIndexChange)="onActiveIndexChange($event)"
+></p-steps>
+
+<!-- 2. personal info -->
+<p-card
+  *ngIf="activeIndex === 1"
+  [style]="{
+    maxWidth: '900px',
+    margin: '60px auto',
+  }"
+>
+  <div class="form">
+    <div class="form-subcontainer">
+      <div class="input-container">
+        <span class="p-float-label">
+          <input pInputText id="firstName" [(ngModel)]="value" />
+          <label for="firstName">First name</label>
+        </span>
+        <small id="username-help"
+          >First name should be at least 6 characters long.</small
+        >
+      </div>
+
+      <div class="input-container">
+        <span class="p-float-label">
+          <input pInputText id="lastName" [(ngModel)]="inputone" />
+          <label for="lastName">Last name</label>
+        </span>
+        <small id="username-help"
+          >Enter your username to reset your password.</small
+        >
+      </div>
+    </div>
+
+    <!-- age -->
+    <div class="form-subcontainer">
+      <div class="input-container">
+        <span [style]="{ width: '100%' }" class="p-float-label">
+          <span class="p-float-label">
+            <input
+              type="number"
+              pInputText
+              id="firstName"
+              [(ngModel)]="value"
+            />
+            <label for="firstName">First name</label>
+          </span>
+        </span>
+        <small id="age-help">Age should be at least 18.</small>
+      </div>
+
+      <!-- gender -->
+      <div class="input-container">
+        <span class="p-float-label">
+          <p-dropdown
+            [style]="{ width: '100%' }"
+            [options]="options"
+            [(ngModel)]="sex"
+            optionLabel="name"
+            inputId="float-label"
+          ></p-dropdown>
+          <label for="float-label">Gender</label>
+        </span>
+        <small id="username-help"
+          >Enter your username to reset your password.</small
+        >
+      </div>
+    </div>
+  </div>
+</p-card>

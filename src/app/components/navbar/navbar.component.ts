@@ -33,10 +33,14 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Sign Out',
         icon: 'pi pi-fw pi-power-off',
+        command: (event: MenuItemCommandEvent) => {
+          console.log(123);
+        },
       },
       {
         label: 'Register',
         icon: 'pi pi-fw pi-user-plus',
+        url: 'register',
       },
       {
         label: 'Sign In',

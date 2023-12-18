@@ -2,7 +2,11 @@
   <p-menubar
     [model]="items"
     class="menu-bar"
-    [style]="{ background: 'transparent', border: 'none' }"
+    [style]="{
+      background: 'transparent',
+      border: 'none',
+      flex: '1'
+    }"
   >
     <ng-template pTemplate="item" let-item>
       <a
@@ -19,5 +23,5 @@
       </a>
     </ng-template>
   </p-menubar>
-  <p>salut</p>
+  <p class="logo">ShiftEase</p>
 </div>

@@ -16,11 +16,15 @@
 
 .header {
   display: flex;
-  flex-direction: row-reverse;
   width: 100vw;
   justify-content: space-between;
   align-items: center;
-  padding-left: 20px;
+  padding-right: 20px;
   border: 1px solid #4b556318;
   background-color: #f9fafb;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
 }

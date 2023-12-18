@@ -7,4 +7,12 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media (max-width: 960px) {
+  .p-menubar-root-list {
+    padding-top: 0px;
+    width: 100vw;
+  }
 }
