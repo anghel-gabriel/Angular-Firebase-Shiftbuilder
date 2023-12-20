@@ -26,6 +26,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { FieldsetModule } from 'primeng/fieldset';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { DropdownModule } from 'primeng/dropdown';
     NavbarComponent,
     ProfileComponent,
     RegisterComponent,
+    SignInComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +56,8 @@ import { DropdownModule } from 'primeng/dropdown';
     InputTextModule,
     InputNumberModule,
     DropdownModule,
+    FieldsetModule,
+    SelectButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

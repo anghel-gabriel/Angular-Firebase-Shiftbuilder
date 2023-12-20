@@ -45,6 +45,7 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Sign In',
         icon: 'pi pi-fw pi-arrow-circle-right',
+        url: 'sign-in',
       },
     ];
   }

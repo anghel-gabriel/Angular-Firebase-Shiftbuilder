@@ -1,0 +1,43 @@
+<!-- 2. personal info -->
+<p-card
+  [style]="{
+    maxWidth: '900px',
+    margin: '60px auto',
+  }"
+>
+  <div class="form">
+    <!-- login option -->
+    <div class="form-subcontainer">
+      <p-selectButton
+        [options]="stateOptions"
+        [(ngModel)]="loginWay"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="onSelectChange()"
+      ></p-selectButton>
+    </div>
+    <!-- email -->
+    <div class="form-subcontainer">
+      <div class="input-container">
+        <span [style]="{ width: '100%' }" class="p-float-label">
+          <span class="p-float-label">
+            <input type="text" pInputText id="username" />
+            <label for="email">{{ loginWay }}</label>
+          </span>
+        </span>
+      </div>
+    </div>
+    <!-- password -->
+    <div class="form-subcontainer">
+      <div class="input-container">
+        <span [style]="{ width: '100%' }" class="p-float-label">
+          <span class="p-float-label">
+            <input type="text" pInputText id="password" />
+            <label for="email">Password</label>
+          </span>
+        </span>
+      </div>
+    </div>
+    <p-button label="Sign in" icon="pi pi-arrow-circle-right"></p-button>
+  </div>
+</p-card>
