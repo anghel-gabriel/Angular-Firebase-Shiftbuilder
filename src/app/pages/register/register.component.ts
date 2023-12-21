@@ -1,30 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  providers: [MessageService],
 })
 export class RegisterComponent {
   items: MenuItem[] | undefined = [
     {
-      label: 'Credentials',
+      label: 'Login credentials',
     },
     {
-      label: 'Personal',
+      label: 'Personal information',
     },
 
     {
-      label: 'Confirmation',
+      label: 'Agreement',
     },
   ];
-  inputone: string = '';
-  inputtwo: number | null = null;
-  inputthree: string = '';
-  value = '';
-  activeIndex: number = 0;
-  sex = '';
+
+  constructor(private messageService: MessageService) {}
+
+  show() {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Message Content',
+    });
+  }
+  email = '';
+  username = '';
+  password = '';
+  confirmPassword = '';
+  firstName = '';
+  lastName = '';
+  birthDate = '';
+  gender = '';
+  activeIndex = 0;
+  checked = false;
+  isLoading = true;
+
+  handleNext() {
+    if (this.activeIndex !== 2) this.activeIndex++;
+  }
+
+  handlePrevious() {
+    if (this.activeIndex !== 0) this.activeIndex--;
+  }
 
   options = [
     { name: 'Unknown', value: 'unknown' },

@@ -24,11 +24,11 @@ import { StepsModule } from 'primeng/steps';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -54,10 +54,10 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     FormsModule,
     CheckboxModule,
     InputTextModule,
-    InputNumberModule,
     DropdownModule,
     FieldsetModule,
     SelectButtonModule,
+    CalendarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

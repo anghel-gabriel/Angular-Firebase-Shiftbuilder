@@ -9,10 +9,10 @@
   max-width: 330px;
 }
 
-.form-subcontainer {
+.form-row {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 input {
@@ -27,8 +27,50 @@ small {
   margin-top: 4px;
 }
 
-.form {
+.form-body {
   display: flex;
   flex-direction: column;
   gap: 60px;
+  padding: 0 3%;
+}
+
+.agreement-body {
+  @extend .form-body;
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+p {
+  margin: 0;
+}
+
+h3,
+ul {
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.confirm-container {
+  margin-top: 40px;
+  color: var(--blue-700);
+}
+
+.align-center {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-btn {
+  margin-right: 20px;
 }
