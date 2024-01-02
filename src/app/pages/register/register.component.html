@@ -4,6 +4,7 @@
   [readonly]="false"
   [activeIndex]="activeIndex"
   (activeIndexChange)="onActiveIndexChange($event)"
+  [readonly]="true"
 ></p-steps>
 
 <!-- 1. credentials -->
@@ -13,7 +14,14 @@
       <!-- email -->
       <div class="flex flex-col flex-1 max-w-[330px]">
         <span class="p-float-label">
-          <input class="w-full" pInputText id="email" [(ngModel)]="email" />
+          <input
+            class="w-full"
+            pInputText
+            name="email"
+            id="email"
+            [(ngModel)]="email"
+            type="email"
+          />
           <label for="email">Email address*</label>
         </span>
         <small class="mt-1">Use a valid email address</small>
@@ -25,6 +33,7 @@
             class="w-full"
             pInputText
             id="username"
+            name="username"
             [(ngModel)]="username"
           />
           <label for="username">Username*</label>
@@ -38,10 +47,12 @@
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
+              type="password"
               class="w-full"
               pInputText
               id="password"
               [(ngModel)]="password"
+              name="password"
             />
             <label for="password">Password*</label>
           </span>
@@ -56,12 +67,14 @@
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
+              type="password"
               class="w-full"
               pInputText
-              id="password"
+              id="confirmPassword"
               [(ngModel)]="confirmPassword"
+              name="confirmPassword"
             />
-            <label for="password">Confirm password*</label>
+            <label for="confirmPassword">Confirm password*</label>
           </span>
         </span>
         <small class="mt-1" id="age-help">Passwords must match</small>
@@ -143,9 +156,10 @@
         <span class="p-float-label">
           <p-dropdown
             styleClass="w-full"
-            [options]="options"
+            [options]="genderOptions"
             [(ngModel)]="gender"
             inputId="float-label"
+            optionLabel="name"
           ></p-dropdown>
           <label for="float-label">Gender</label>
         </span>
@@ -188,7 +202,7 @@
       <p class="m-0"><b>User Information:</b></p>
       <ul>
         <li><b>Name:</b> {{ firstName }} {{ lastName }}</li>
-        <li><b>Date of Birth:</b> {{ lastName }}</li>
+        <li><b>Date of Birth:</b> {{ birthDate | date }}</li>
         <li><b>Gender:</b> {{ gender }}</li>
       </ul>
     </div>
@@ -276,6 +290,7 @@
         [label]="isLoading ? 'Please wait...' : 'Sign up'"
         [loading]="isLoading"
         [text]="true"
+        [disabled]="!checked"
         size="large"
       ></p-button>
     </div>
@@ -283,4 +298,4 @@
 </p-card>
 
 <p-toast></p-toast>
-<button (click)="show()">salut</button>
+<button (click)="showError('salut')">salut</button>
