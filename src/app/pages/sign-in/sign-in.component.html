@@ -1,13 +1,8 @@
 <!-- 2. personal info -->
-<p-card
-  [style]="{
-    maxWidth: '900px',
-    margin: '60px auto',
-  }"
->
-  <div class="form">
+<p-card styleClass="max-w-[900px] my-[60px] mx-auto">
+  <div class="flex flex-col my-0 mx-auto gap-10 max-w-[400px] items-end">
     <!-- login option -->
-    <div class="form-subcontainer">
+    <div class="flex w-full justify-around">
       <p-selectButton
         [options]="stateOptions"
         [(ngModel)]="loginWay"
@@ -17,22 +12,22 @@
       ></p-selectButton>
     </div>
     <!-- email -->
-    <div class="form-subcontainer">
-      <div class="input-container">
-        <span [style]="{ width: '100%' }" class="p-float-label">
-          <span class="p-float-label">
-            <input type="text" pInputText id="username" />
+    <div class="flex w-full justify-around">
+      <div class="flex flex-col flex-1 max-w-[400px]">
+        <span class="p-float-label w-full">
+          <span class="p-float-label w-full">
+            <input class="min-w-full" type="text" pInputText id="username" />
             <label for="email">{{ loginWay }}</label>
           </span>
         </span>
       </div>
     </div>
     <!-- password -->
-    <div class="form-subcontainer">
-      <div class="input-container">
-        <span [style]="{ width: '100%' }" class="p-float-label">
-          <span class="p-float-label">
-            <input type="text" pInputText id="password" />
+    <div class="flex w-full justify-around">
+      <div class="flex flex-col flex-1 max-w-[400px] w-full">
+        <span class="p-float-label w-full">
+          <span class="p-float-label w-full">
+            <input class="w-full" type="text" pInputText id="password" />
             <label for="email">Password</label>
           </span>
         </span>
