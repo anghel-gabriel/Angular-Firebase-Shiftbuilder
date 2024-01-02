@@ -11,15 +11,45 @@ import { MenuItem } from 'primeng/api';
 export class HomepageComponent implements OnInit {
   items: MenuItem[] | undefined;
 
-  constructor(private messageService: MessageService) {}
+  products1 = [
+    {
+      code: 'zz21cz3c1',
+      name: 'Blue Band',
+      category: 'Fitness',
+      quantity: 2,
+      price: '79',
+    },
+    {
+      code: 'nvklal433',
+      name: 'Black Watch',
+      category: 'Accessories',
+      quantity: 61,
+      price: '72',
+    },
+    {
+      code: 'h456wer53',
+      name: 'Bracelet',
+      category: 'Accessories',
+      quantity: 73,
+      price: '15',
+    },
+    {
+      code: 'f230fh0g3',
+      name: 'Bamboo Watch',
+      category: 'Accessories',
+      quantity: 24,
+      price: '65',
+    },
+    {
+      code: '244wgerg2',
+      name: 'Blue T-Shirt',
+      category: 'Clothing',
+      quantity: 25,
+      price: '29',
+    },
+  ];
 
-  show() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
-    });
-  }
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
     this.items = [

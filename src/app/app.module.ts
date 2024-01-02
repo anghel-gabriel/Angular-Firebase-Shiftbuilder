@@ -29,6 +29,7 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
+import { Table, TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { CalendarModule } from 'primeng/calendar';
     FieldsetModule,
     SelectButtonModule,
     CalendarModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
