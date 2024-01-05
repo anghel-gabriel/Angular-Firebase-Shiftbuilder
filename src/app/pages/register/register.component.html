@@ -9,10 +9,10 @@
 
 <!-- 1. credentials -->
 <p-card *ngIf="activeIndex === 0" styleClass="max-w-[920px] my-[60px] mx-auto">
-  <div class="flex flex-col gap-[60px] px-[3%]">
-    <div class="flex w-full justify-between">
+  <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
+    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
       <!-- email -->
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
             class="w-full"
@@ -27,7 +27,7 @@
         <small class="mt-1">Use a valid email address</small>
       </div>
       <!-- username -->
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
             class="w-full"
@@ -41,9 +41,9 @@
         <small class="mt-1">Username must be alphanumeric</small>
       </div>
     </div>
-    <div class="flex w-full justify-between">
+    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
       <!-- password -->
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
@@ -63,7 +63,7 @@
         >
       </div>
       <!-- confirm password -->
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
@@ -82,6 +82,7 @@
     </div>
     <div class="flex items-center justify-between">
       <p-button
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         [disabled]="activeIndex === 0"
         (click)="handlePrevious()"
         label="Previous"
@@ -89,6 +90,8 @@
         [text]="true"
       ></p-button>
       <p-button
+        styleClass="hidden"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handleNext()"
         label="Next"
         icon="pi pi-arrow-right"
@@ -100,9 +103,9 @@
 
 <!-- 2. personal info -->
 <p-card *ngIf="activeIndex === 1" styleClass="max-w-[920px] my-[60px] mx-auto">
-  <div class="flex flex-col gap-[60px] px-[3%]">
-    <div class="flex w-full justify-between">
-      <div class="flex flex-col flex-1 max-w-[330px]">
+  <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
+    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
             class="w-full"
@@ -117,7 +120,7 @@
         >
       </div>
 
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
             class="w-full"
@@ -134,8 +137,8 @@
     </div>
 
     <!-- age -->
-    <div class="flex w-full justify-between">
-      <div class="flex flex-col flex-1 max-w-[330px]">
+    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <span class="p-float-label">
             <p-calendar
@@ -152,7 +155,7 @@
       </div>
 
       <!-- gender -->
-      <div class="flex flex-col flex-1 max-w-[330px]">
+      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <p-dropdown
             styleClass="w-full"
@@ -172,8 +175,10 @@
         label="Previous"
         icon="pi pi-arrow-left"
         [text]="true"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
       ></p-button>
       <p-button
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handleNext()"
         label="Next"
         icon="pi pi-arrow-right"
@@ -264,20 +269,24 @@
       </p>
     </div>
 
-    <div class="mt-10 text-[--blue-700]">
+    <div class="flex gap-2 mt-10 text-[--blue-700]">
       <p-checkbox
         styleClass="block"
         [disabled]="isLoading"
         [(ngModel)]="checked"
-        label=" By registering, I confirm that I
-      have read, understood, and agree to the User Agreement."
         [binary]="true"
-        inputId="binary"
+        inputId="agreementCheckbox"
+        name="agreementCheckbox"
       ></p-checkbox>
+      <label for="agreementCheckbox"
+        >By registering, I confirm that I have read, understood, and agree to
+        the User Agreement.</label
+      >
     </div>
     <div class="mt-[10px] flex items-center justify-center"></div>
     <div class="flex items-center justify-between">
       <p-button
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handlePrevious()"
         label="Previous"
         icon="pi pi-arrow-left"
@@ -285,13 +294,13 @@
         [disabled]="isLoading"
       ></p-button>
       <p-button
-        class="mr-5"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+        class="sm:mr-5"
         icon="pi pi-check"
         [label]="isLoading ? 'Please wait...' : 'Sign up'"
         [loading]="isLoading"
         [text]="true"
         [disabled]="!checked"
-        size="large"
       ></p-button>
     </div>
   </div>
