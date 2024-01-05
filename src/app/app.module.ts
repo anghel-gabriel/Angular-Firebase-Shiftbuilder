@@ -32,6 +32,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,9 @@ import { DialogModule } from 'primeng/dialog';
     CalendarModule,
     TableModule,
     DialogModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextareaModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
