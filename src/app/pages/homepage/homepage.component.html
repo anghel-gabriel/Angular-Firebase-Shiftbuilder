@@ -1,3 +1,17 @@
+<p-button
+  (click)="showDialog()"
+  icon="pi pi-external-link"
+  label="Show"
+></p-button>
+<p-dialog
+  [modal]="true"
+  header="Add a new shift"
+  [(visible)]="visible"
+  styleClass="w-[90vw] max-w-[800px]"
+>
+  <app-add-form></app-add-form>
+</p-dialog>
+
 <div class="card">
   <p-table
     [value]="products1"

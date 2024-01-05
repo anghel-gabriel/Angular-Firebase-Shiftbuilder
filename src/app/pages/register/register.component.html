@@ -38,7 +38,9 @@
           />
           <label for="username">Username*</label>
         </span>
-        <small class="mt-1">Username must be alphanumeric</small>
+        <small class="mt-1"
+          >Username must be alphanumeric and at least 6 characters long</small
+        >
       </div>
     </div>
     <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
@@ -85,7 +87,7 @@
         [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         [disabled]="activeIndex === 0"
         (click)="handlePrevious()"
-        label="Previous"
+        label="Back"
         icon="pi pi-arrow-left"
         [text]="true"
       ></p-button>
@@ -146,7 +148,7 @@
               [(ngModel)]="birthDate"
               inputId="birth_date"
             ></p-calendar>
-            <label for="birth_date">Birth Date</label>
+            <label for="birth_date">Birth Date*</label>
           </span>
         </span>
         <small class="mt-1" id="age-help"
@@ -166,13 +168,13 @@
           ></p-dropdown>
           <label for="float-label">Gender</label>
         </span>
-        <small class="mt-1">Enter your username to reset your password.</small>
+        <small class="mt-1">This is optional</small>
       </div>
     </div>
     <div class="flex items-center justify-between">
       <p-button
         (click)="handlePrevious()"
-        label="Previous"
+        label="Back"
         icon="pi pi-arrow-left"
         [text]="true"
         [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
@@ -269,7 +271,7 @@
       </p>
     </div>
 
-    <div class="flex gap-2 mt-10 text-[--blue-700]">
+    <div class="flex items-center gap-2 mt-10 text-[--blue-700]">
       <p-checkbox
         styleClass="block"
         [disabled]="isLoading"
@@ -278,7 +280,7 @@
         inputId="agreementCheckbox"
         name="agreementCheckbox"
       ></p-checkbox>
-      <label for="agreementCheckbox"
+      <label class="cursor-pointer" for="agreementCheckbox"
         >By registering, I confirm that I have read, understood, and agree to
         the User Agreement.</label
       >
@@ -288,7 +290,7 @@
       <p-button
         [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handlePrevious()"
-        label="Previous"
+        label="Back"
         icon="pi pi-arrow-left"
         [text]="true"
         [disabled]="isLoading"
@@ -301,6 +303,7 @@
         [loading]="isLoading"
         [text]="true"
         [disabled]="!checked"
+        (onClick)="onSubmit()"
       ></p-button>
     </div>
   </div>

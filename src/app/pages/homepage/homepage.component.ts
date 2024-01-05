@@ -9,6 +9,12 @@ import { MenuItem } from 'primeng/api';
   providers: [MessageService],
 })
 export class HomepageComponent implements OnInit {
+  visible: boolean = false;
+
+  showDialog() {
+    this.visible = true;
+  }
+
   items: MenuItem[] | undefined;
 
   products1 = [

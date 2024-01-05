@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { AddFormComponent } from './components/add-form/add-form.component';
 
 // angular components
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -29,7 +30,8 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
-import { Table, TableModule } from 'primeng/table';
+import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { Table, TableModule } from 'primeng/table';
     ProfileComponent,
     RegisterComponent,
     SignInComponent,
+    AddFormComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +63,7 @@ import { Table, TableModule } from 'primeng/table';
     SelectButtonModule,
     CalendarModule,
     TableModule,
+    DialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -2,22 +2,36 @@
 <p-card styleClass="max-w-[900px] my-[60px] mx-auto">
   <div class="flex flex-col my-0 mx-auto gap-10 max-w-[400px] items-end">
     <!-- login option -->
-    <div class="flex w-full justify-around">
+    <div class="flex flex-col w-full justify-around">
+      <!-- desktop version of login way select -->
       <p-selectButton
-        [options]="stateOptions"
+        styleClass="hidden sm:block w-full"
+        [options]="desktopSelectOptions"
         [(ngModel)]="loginWay"
         optionLabel="label"
         optionValue="value"
-        (onChange)="onSelectChange()"
+        (onChange)="onDesktopSelectChange()"
       ></p-selectButton>
+      <!-- mobile version of login way select -->
+      <p-dropdown
+        class="sm:hidden"
+        styleClass="w-full"
+        [options]="mobileSelectOptions"
+        [(ngModel)]="loginWay"
+        optionLabel="label"
+        placeholder="Select a sign in method"
+        optionValue="value"
+      ></p-dropdown>
     </div>
     <!-- email -->
     <div class="flex w-full justify-around">
       <div class="flex flex-col flex-1 max-w-[400px]">
         <span class="p-float-label w-full">
           <span class="p-float-label w-full">
-            <input class="min-w-full" type="text" pInputText id="username" />
-            <label for="email">{{ loginWay }}</label>
+            <input class="w-full" type="text" pInputText id="username" />
+            <label for="email">{{
+              loginWay === "username" ? "Username" : "Email address"
+            }}</label>
           </span>
         </span>
       </div>
@@ -27,12 +41,22 @@
       <div class="flex flex-col flex-1 max-w-[400px] w-full">
         <span class="p-float-label w-full">
           <span class="p-float-label w-full">
-            <input class="w-full" type="text" pInputText id="password" />
+            <input
+              class="w-full"
+              type="text"
+              pInputText
+              id="password"
+              [(ngModel)]="loginEmailOrUsername"
+            />
             <label for="email">Password</label>
           </span>
         </span>
       </div>
     </div>
-    <p-button label="Sign in" icon="pi pi-arrow-circle-right"></p-button>
+    <p-button
+      (onClick)="onSubmit()"
+      label="Sign in"
+      icon="pi pi-arrow-circle-right"
+    ></p-button>
   </div>
 </p-card>

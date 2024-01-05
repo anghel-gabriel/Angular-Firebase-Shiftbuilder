@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @Component({
   selector: 'app-sign-in',
@@ -6,27 +7,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
-  stateOptions: any[] = [
-    { label: 'Sign in with email', value: 'Email address', disabled: true },
-    { label: 'Sign in with username', value: 'Username', disabled: false },
+  loginEmailOrUsername = '';
+  loginWay: string = 'email';
+
+  desktopSelectOptions: any[] = [
+    {
+      label: 'Sign in with email',
+      value: 'email',
+      disabled: true,
+    },
+    {
+      label: 'Sign in with username',
+      value: 'username',
+      disabled: false,
+    },
   ];
 
-  loginWay: string = 'Email address';
+  mobileSelectOptions = [
+    { label: 'Sign in with email', value: 'email' },
+    { label: 'Sign in with username', value: 'username' },
+  ];
 
-  onSelectChange(): void {
-    // Prevent unselecting if the option is already disabled
-    if (
-      this.stateOptions.find(
-        (option) => option.value === this.loginWay && option.disabled
-      )
-    ) {
-      return;
-    }
-
-    // Update the options to disable the selected one
-    this.stateOptions = this.stateOptions.map((option) => ({
+  onDesktopSelectChange(): void {
+    // prevent unselecting both login ways
+    const isAlreadySelected = this.desktopSelectOptions.find(
+      (option) => option.value === this.loginWay && option.disabled
+    );
+    if (isAlreadySelected) return;
+    // update the options to disable the selected one
+    this.desktopSelectOptions = this.desktopSelectOptions.map((option) => ({
       ...option,
       disabled: option.value === this.loginWay,
     }));
   }
+
+  onSubmit() {
+    console.log(this.loginWay);
+  }
+  // ? The user will be asked to put user information that will be saved via the server for 60 minutes
 }
