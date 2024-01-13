@@ -134,6 +134,4 @@ export class RegisterComponent {
   }
   // ! #TODO: after registration, user will go to homepage
   // ! #TODO: user can reset its password
-  // ! #TODO: add 'already have an account?'
-  // ? ASK: why does resetting password must include delete all user data
 }
