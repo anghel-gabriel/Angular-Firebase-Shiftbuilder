@@ -38,6 +38,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { AvatarModule } from 'primeng/avatar';
+import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { AvatarModule } from 'primeng/avatar';
     InputTextareaModule,
     FileUploadModule,
     AvatarModule,
+    SliderModule,
+    MultiSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

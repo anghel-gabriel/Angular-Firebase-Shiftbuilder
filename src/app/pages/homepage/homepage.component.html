@@ -1,68 +1,154 @@
-<p-button
-  (click)="showDialog()"
-  icon="pi pi-external-link"
-  label="Show"
-></p-button>
-<p-dialog
-  [modal]="true"
-  header="Add a new shift"
-  [(visible)]="visible"
-  styleClass="w-[90vw] max-w-[500px]"
->
-  <app-add-form></app-add-form>
-</p-dialog>
-
-<div class="card">
+<div class="card max-w-[1500px] mx-auto">
   <p-table
-    [value]="products1"
-    styleClass="p-datatable-striped"
-    sortMode="multiple"
-    responsiveLayout="stack"
-    [breakpoint]="'1300px'"
+    #dt
+    [value]="shifts"
+    dataKey="id"
+    [rowHover]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
     [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [rows]="3"
-    [rowsPerPageOptions]="[1, 10, 20]"
+    [filterDelay]="0"
+    [globalFilterFields]="['workplace.name']"
   >
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-file"
+          (click)="dt.exportCSV()"
+          class="mr-2"
+          pTooltip="CSV"
+          tooltipPosition="bottom"
+        ></button>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="applyFilterGlobal($event, 'contains')"
+            placeholder="Search by workplace"
+          />
+        </span>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="code" style="width: 20%">
-          Code <p-sortIcon field="code"></p-sortIcon>
+        <th pSortableColumn="workplace" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            <div class="mt-1 flex">
+              Workplace <p-sortIcon field="workplace"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              ngClass="ml-2 mt-0.5"
+              type="text"
+              field="workplace"
+              display="menu"
+              class="ml-auto"
+            ></p-columnFilter>
+          </div>
         </th>
-        <th pSortableColumn="name" style="width: 20%">
-          Name <p-sortIcon field="name"></p-sortIcon>
+        <th pSortableColumn="startTime" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            <div class="mt-1 flex">
+              Start time
+              <p-sortIcon field="startTime"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              ngClass="ml-2 mt-0.5"
+              type="date"
+              field="startTime"
+              display="menu"
+              class="ml-auto"
+            ></p-columnFilter>
+          </div>
         </th>
-        <th pSortableColumn="category" style="width: 20%">
-          Category <p-sortIcon field="category"></p-sortIcon>
+        <th pSortableColumn="endTime" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            <div class="mt-1 flex">
+              End time
+              <p-sortIcon field="endTime"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              ngClass="ml-2 mt-0.5"
+              type="date"
+              field="endTime"
+              display="menu"
+              class="ml-auto"
+            >
+            </p-columnFilter>
+          </div>
         </th>
-        <th pSortableColumn="quantity" style="width: 20%">
-          Quantity <p-sortIcon field="quantity"></p-sortIcon>
+        <th pSortableColumn="hourlyWage" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            <div class="mt-1 flex">
+              Hourly wage
+              <p-sortIcon field="hourlyWage"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              ngClass="ml-2 mt-0.5"
+              type="numeric"
+              field="hourlyWage"
+              display="menu"
+              currency="USD"
+              class="ml-auto"
+            ></p-columnFilter>
+          </div>
         </th>
-        <th pSortableColumn="price" style="width: 20%">
-          Price <p-sortIcon field="price"></p-sortIcon>
+        <th pSortableColumn="profit" style="min-width: 14rem">
+          <div class="flex justify-content-between align-items-center">
+            <div class="mt-1 flex">
+              Profit
+              <p-sortIcon field="profit"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              ngClass="ml-2 mt-0.5"
+              type="numeric"
+              field="profit"
+              display="menu"
+              currency="USD"
+              class="ml-auto"
+            ></p-columnFilter>
+          </div>
         </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-shift>
+      <tr class="p-selectable-row">
+        <td>
+          <span class="p-column-title">Workplace</span>
+          <div class="flex items-center gap-1">
+            <img [src]="shift.workplace.imgUrl" style="width: 20px" />
+            <span class="ml-1 vertical-align-middle">{{
+              shift.workplace.name
+            }}</span>
+          </div>
+        </td>
+        <td>
+          <span class="p-column-title">Start time</span>
+          {{ shift.startTime | date : "MMM, d, y, hh:mm" }}
+        </td>
+        <td>
+          <span class="p-column-title">End time</span>
+          {{ shift.endTime | date : "MMM, d, y, hh:mm" }}
+        </td>
+        <td>
+          <span class="p-column-title">Hourly wage</span>
+          {{ shift.hourlyWage | currency : "USD" : "symbol" }}
+        </td>
+        <td>
+          <span class="p-column-title">Profit</span>
+          {{ shift.profit | currency : "USD" : "symbol" }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
       <tr>
-        <td>
-          <span class="p-column-title font-bold">Name</span> {{ product.name }}
-        </td>
-        <td>
-          <span class="p-column-title font-bold">Code</span> {{ product.code }}
-        </td>
-        <td>
-          <span class="p-column-title font-bold">Category</span>
-          {{ product.category }}
-        </td>
-        <td>
-          <span class="p-column-title font-bold">Quantity</span>
-          {{ product.quantity }}
-        </td>
-        <td>
-          <span class="p-column-title font-bold">Price</span>
-          {{ product.price | currency : "USD" }}
-        </td>
+        <td colspan="8">No shifts found.</td>
       </tr>
     </ng-template>
   </p-table>
