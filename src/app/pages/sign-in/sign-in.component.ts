@@ -44,5 +44,6 @@ export class SignInComponent {
   onSubmit() {
     console.log(this.loginWay);
   }
-  // ? The user will be asked to put user information that will be saved via the server for 60 minutes
 }
+// ! #TODO: add 'not having an account?'
+// ? ASK: The user will be asked to put user information that will be saved via the server for 60 minutes

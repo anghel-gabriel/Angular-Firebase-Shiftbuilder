@@ -1,1 +1,141 @@
-<p>profile works!</p>
+<!-- 1. credentials -->
+<p-card styleClass="max-w-[920px] my-[60px] mx-auto">
+  <div class="flex flex-col gap-8 min-[785px]:gap-[60px] min- px-[3%]">
+    <div
+      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-between"
+    >
+      <div class="flex flex-col flex-1 w-full max-w-[330px]">
+        <span class="p-float-label">
+          <input
+            class="w-full"
+            pInputText
+            id="firstName"
+            [(ngModel)]="firstName"
+          />
+          <label for="firstName">First name*</label>
+        </span>
+        <small class="mt-1"
+          >First name should be at least 6 characters long</small
+        >
+      </div>
+
+      <div class="flex flex-col flex-1 w-full max-w-[330px]">
+        <span class="p-float-label">
+          <input
+            class="w-full"
+            pInputText
+            id="lastName"
+            [(ngModel)]="lastName"
+          />
+          <label for="lastName">Last name*</label>
+        </span>
+        <small class="mt-1"
+          >Last name should be at least 6 characters long</small
+        >
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center min-[785px]:items-start justify-between"
+    >
+      <!-- email -->
+      <div class="flex flex-col flex-1 w-full max-w-[330px]">
+        <span class="p-float-label">
+          <input
+            class="w-full"
+            pInputText
+            id="username"
+            name="username"
+            [(ngModel)]="username"
+          />
+          <label for="username">Username*</label>
+        </span>
+        <small class="mt-1"
+          >Username must be alphanumeric and at least 6 characters long</small
+        >
+      </div>
+      <!-- username -->
+      <div class="flex flex-col flex-1 w-full max-w-[330px]">
+        <span class="p-float-label">
+          <span class="p-float-label">
+            <p-calendar
+              styleClass="w-full"
+              [(ngModel)]="birthDate"
+              inputId="birth_date"
+            ></p-calendar>
+            <label for="birth_date">Birth Date*</label>
+          </span>
+        </span>
+        <small class="mt-1" id="age-help"
+          >You must be at least 18 years-old</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. personal info -->
+  <div
+    class="flex flex-col gap-8 sm:gap-8 min-[785px]:gap-[60px] px-[3%] mt-8 min-[785px]:mt-[60px]"
+  >
+    <div
+      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-between"
+    >
+      <!-- gender -->
+      <div class="flex flex-col flex-1 w-full max-w-[330px]">
+        <span class="p-float-label">
+          <p-dropdown
+            styleClass="w-full"
+            [options]="genderOptions"
+            [(ngModel)]="gender"
+            inputId="float-label"
+            optionLabel="name"
+          ></p-dropdown>
+          <label for="float-label">Gender</label>
+        </span>
+        <small class="mt-1">This is optional</small>
+      </div>
+      <div
+        class="flex sm:justify-between gap-x-1 items-center w-full max-w-[330px] pb-3"
+      >
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          styleClass="mr-2"
+          size="large"
+          shape="circle"
+        ></p-avatar>
+        <div class="flex flex-wrap gap-y-2 mb-1">
+          <p-fileUpload
+            class="mr-1"
+            mode="basic"
+            chooseLabel="Choose"
+            name="demo[]"
+            url="https://www.primefaces.org/cdn/api/upload.php"
+            accept="image/*"
+            [maxFileSize]="1000000"
+            (onUpload)="onUpload($event)"
+          ></p-fileUpload>
+          <p-button label="Remove" icon="pi pi-trash"></p-button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex flex-col min-[785px]:flex-row max-[785px]:mx-auto gap-y-2 gap-x-8 items-center justify-between w-full"
+    >
+      <p-button
+        class="w-full max-w-[330px]"
+        styleClass="w-full"
+        (click)="handlePrevious()"
+        label="Change password"
+      ></p-button>
+      <p-button
+        class="w-full max-w-[330px]"
+        styleClass="w-full"
+        (click)="handlePrevious()"
+        label="Change email address"
+      ></p-button>
+    </div>
+  </div>
+</p-card>
+
+<p-toast></p-toast>
+<button (click)="showError('salut')">salut</button>

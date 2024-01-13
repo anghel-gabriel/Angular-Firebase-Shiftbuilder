@@ -5,7 +5,7 @@ import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
-  isUserEighteenYearsAgo,
+  isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
 
 @Component({
@@ -99,9 +99,12 @@ export class RegisterComponent {
         );
         return;
       }
-      if (!this.birthDate || !isUserEighteenYearsAgo(this.birthDate)) {
+      if (
+        !this.birthDate ||
+        !isUserAgeBetweenEighteenAndNinety(this.birthDate)
+      ) {
         this.showError(
-          'You must be at least 18 years old in order to register'
+          'You must be between 18 and 90 years old in order to register'
         );
         return;
       }
@@ -129,7 +132,8 @@ export class RegisterComponent {
       gender: this.gender,
     };
   }
-  // TODO: after registration, user will go to homepage
-  // TODO: user can reset its password
-  // ? why does resetting password must include delete all user data
+  // ! #TODO: after registration, user will go to homepage
+  // ! #TODO: user can reset its password
+  // ! #TODO: add 'already have an account?'
+  // ? ASK: why does resetting password must include delete all user data
 }

@@ -35,6 +35,9 @@ import { DialogModule } from 'primeng/dialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { AvatarModule } from 'primeng/avatar';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RegisterComponent,
     SignInComponent,
     AddFormComponent,
+    ErrorPageComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +74,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     InputGroupModule,
     InputGroupAddonModule,
     InputTextareaModule,
+    FileUploadModule,
+    AvatarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

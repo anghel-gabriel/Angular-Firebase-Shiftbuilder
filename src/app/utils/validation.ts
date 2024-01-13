@@ -13,13 +13,20 @@ export function isUsernameValid(username: string) {
   return username.match(regex);
 }
 
-export function isUserEighteenYearsAgo(date: string) {
+export function isUserAgeBetweenEighteenAndNinety(date: string) {
   const givenDate = new Date(date);
   const currentDate = new Date();
+
   const eighteenYearsAgo = new Date(
     currentDate.getFullYear() - 18,
     currentDate.getMonth(),
     currentDate.getDate()
   );
-  return givenDate <= eighteenYearsAgo;
+
+  const ninetyYearsAgo = new Date(
+    currentDate.getFullYear() - 90,
+    currentDate.getMonth(),
+    currentDate.getDate()
+  );
+  return givenDate <= eighteenYearsAgo && givenDate >= ninetyYearsAgo;
 }
