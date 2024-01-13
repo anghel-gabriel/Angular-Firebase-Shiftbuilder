@@ -14,17 +14,7 @@
     [globalFilterFields]="['workplace.name']"
   >
     <ng-template pTemplate="caption">
-      <div class="table-header">
-        <button
-          type="button"
-          pButton
-          pRipple
-          icon="pi pi-file"
-          (click)="dt.exportCSV()"
-          class="mr-2"
-          pTooltip="CSV"
-          tooltipPosition="bottom"
-        ></button>
+      <div class="table-header flex gap-1">
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
           <input
@@ -34,6 +24,16 @@
             placeholder="Search by workplace"
           />
         </span>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-file-excel"
+          (click)="exportExcel()"
+          class="p-button-success mr-2"
+          pTooltip="Export to Excel"
+          tooltipPosition="bottom"
+        ></button>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
