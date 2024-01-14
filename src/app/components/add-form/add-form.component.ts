@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-add-form',
@@ -11,6 +12,8 @@ export class AddFormComponent {
   workplace: any;
   comments: any;
 
+  constructor(public dataService: DataService) {}
+
   workplaces = [
     { label: 'Sign in with email', value: 'email' },
     { label: 'Sign in with username', value: 'username' },
@@ -19,7 +22,12 @@ export class AddFormComponent {
   onSubmit() {
     // ! all fields -comments are mandatory
     // ! startTime should be before endTime
-    const [startTime, endTime] = this.workTime;
-    console.log(this.workTime);
+    // const [startTime, endTime] = this.workTime;
+    this.dataService.createRobot(
+      this.hourlyWage,
+      this.workplace,
+      this.comments
+    );
+    console.log('da');
   }
 }

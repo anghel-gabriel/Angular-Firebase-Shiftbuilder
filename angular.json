@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ShiftEase": {
+    "shiftease": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -58,10 +58,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ShiftEase:build:production"
+              "buildTarget": "shiftease:build:production"
             },
             "development": {
-              "browserTarget": "ShiftEase:build:development"
+              "buildTarget": "shiftease:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -69,7 +69,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ShiftEase:build"
+            "buildTarget": "shiftease:build"
           }
         },
         "test": {
