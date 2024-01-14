@@ -40,6 +40,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { AvatarModule } from 'primeng/avatar';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     AvatarModule,
     SliderModule,
     MultiSelectModule,
+    OverlayPanelModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

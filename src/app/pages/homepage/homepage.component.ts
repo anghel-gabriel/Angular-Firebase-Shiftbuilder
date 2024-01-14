@@ -1,19 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import * as FileSaver from 'file-saver';
+import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
-  providers: [MessageService],
 })
 export class HomepageComponent {
   loading: boolean = false;
   activityValues: number[] = [0, 100];
   selectedShifts = [];
   @ViewChild('dt') dt: Table | undefined;
+  @ViewChild('op') overlayPanel!: OverlayPanel;
+  addModalVisible = false;
+  commentsModalVisible = false;
+  currentComments: string = '';
 
   constructor() {
     console.log(new Date());
@@ -34,40 +37,77 @@ export class HomepageComponent {
       endTime: Date.now(),
       hourlyWage: 20,
       profit: 160,
+      comments: '1',
+    },
+    {
+      workplace: {
+        name: 'NewTech Frontend',
+        imgUrl:
+          'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
+      },
+      comments: '',
+      startTime: new Date(),
+      endTime: Date.now(),
+      hourlyWage: 20,
+      profit: 160,
     },
   ];
 
-  representatives = [
-    { name: 'Amy Elsner', image: 'amyelsner.png' },
-    { name: 'Anna Fali', image: 'annafali.png' },
-    { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-    { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-    { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-    { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-    { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-    { name: 'Onyama Limba', image: 'onyamalimba.png' },
-    { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-    { name: 'Xuxue Feng', image: 'xuxuefeng.png' },
+  workplaces = [
+    {
+      name: 'NewTech Fullstack',
+      imgUrl:
+        'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
+    },
+    {
+      name: 'NewTech Frontend',
+      imgUrl:
+        'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
+    },
   ];
 
-  statuses = [
-    { label: 'Unqualified', value: 'unqualified' },
-    { label: 'Qualified', value: 'qualified' },
-    { label: 'New', value: 'new' },
-    { label: 'Negotiation', value: 'negotiation' },
-    { label: 'Renewal', value: 'renewal' },
-    { label: 'Proposal', value: 'proposal' },
-  ];
+  clg(event: any) {
+    console.log(event);
+  }
+
+  toggleOverlayPanel(event: any, comments: string): void {
+    if (comments) {
+      this.currentComments = comments;
+      this.overlayPanel.toggle(event);
+    } else this.overlayPanel.hide();
+  }
+
+  showDialog() {
+    this.addModalVisible = true;
+  }
 
   exportExcel() {
     import('xlsx').then((xlsx) => {
       FileSaver.saveAs(
-        new Blob([xlsx.write({ Sheets: { data: xlsx.utils.json_to_sheet(this.shifts) }, SheetNames: ['data'] }, {
-            bookType: 'xlsx',
-            type: 'array',
-          })], {
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
-        }),
+        new Blob(
+          [
+            xlsx.write(
+              {
+                Sheets: {
+                  Shifts: xlsx.utils.json_to_sheet(
+                    this.shifts.map((shift) => ({
+                      ...shift,
+                      workplace: shift.workplace.name,
+                    }))
+                  ),
+                },
+                SheetNames: ['Shifts'],
+              },
+              {
+                bookType: 'xlsx',
+                type: 'array',
+              }
+            ),
+          ],
+          {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+          }
+        ),
         'ShiftEase' + new Date().getTime() + '.xlsx'
       );
     });
