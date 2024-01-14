@@ -9,12 +9,12 @@ import {
 } from '../../utils/validation';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+  selector: 'app-register-page',
+  templateUrl: './register-page.component.html',
+  styleUrls: ['./register-page.component.scss'],
   providers: [MessageService],
 })
-export class ProfileComponent {
+export class RegisterPageComponent {
   email = '';
   username = '';
   password = '';
@@ -121,10 +121,6 @@ export class ProfileComponent {
     this.activeIndex = event;
   }
 
-  onUpload(event: any) {
-    console.log(event);
-  }
-
   onSubmit() {
     const obj = {
       email: this.email,
@@ -138,6 +134,4 @@ export class ProfileComponent {
   }
   // ! #TODO: after registration, user will go to homepage
   // ! #TODO: user can reset its password
-  // ! #TODO: add 'already have an account?'
-  // ? ASK: why does resetting password must include delete all user data
 }

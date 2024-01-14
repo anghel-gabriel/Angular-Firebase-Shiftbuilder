@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './pages/homepage/homepage.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { ShiftsPageComponent } from './pages/shifts-page/shifts-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'sign-in', component: SignInComponent },
+  { path: 'shifts', component: ShiftsPageComponent },
+  { path: 'profile', component: ProfilePageComponent },
+  { path: 'register', component: RegisterPageComponent },
+  { path: 'sign-in', component: LoginPageComponent },
   { path: '**', component: ErrorPageComponent },
 ];
 

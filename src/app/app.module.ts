@@ -7,9 +7,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // angular pages
-import { HomepageComponent } from './pages/homepage/homepage.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { RegisterComponent } from './pages/register/register.component';
+import { ShiftsPageComponent } from './pages/shifts-page/shifts-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { AddFormComponent } from './components/add-form/add-form.component';
 
 // angular components
@@ -26,7 +26,7 @@ import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CalendarModule } from 'primeng/calendar';
@@ -41,17 +41,20 @@ import { AvatarModule } from 'primeng/avatar';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { HomepageComponent } from './pages/homepage/homepage.component';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomepageComponent,
+    ShiftsPageComponent,
     NavbarComponent,
-    ProfileComponent,
-    RegisterComponent,
-    SignInComponent,
+    ProfilePageComponent,
+    RegisterPageComponent,
+    LoginPageComponent,
     AddFormComponent,
     ErrorPageComponent,
+    HomepageComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +85,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     SliderModule,
     MultiSelectModule,
     OverlayPanelModule,
+    ConfirmPopupModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

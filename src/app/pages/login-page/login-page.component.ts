@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @Component({
-  selector: 'app-sign-in',
-  templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss'],
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
+  styleUrls: ['./login-page.component.scss'],
 })
-export class SignInComponent {
+export class LoginPageComponent {
   loginEmailOrUsername = '';
   loginWay: string = 'email';
 
