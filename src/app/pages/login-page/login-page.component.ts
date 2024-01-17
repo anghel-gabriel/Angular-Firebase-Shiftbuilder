@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ToggleButtonModule } from 'primeng/togglebutton';
+import {Component} from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login-page',
@@ -8,8 +8,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 })
 export class LoginPageComponent {
   loginEmailOrUsername = '';
+  password = '';
   loginWay: string = 'email';
-
   desktopSelectOptions: any[] = [
     {
       label: 'Sign in with email',
@@ -22,11 +22,13 @@ export class LoginPageComponent {
       disabled: false,
     },
   ];
-
   mobileSelectOptions = [
-    { label: 'Sign in with email', value: 'email' },
-    { label: 'Sign in with username', value: 'username' },
+    {label: 'Sign in with email', value: 'email'},
+    {label: 'Sign in with username', value: 'username'},
   ];
+
+  constructor(private auth: AuthenticationService) {
+  }
 
   onDesktopSelectChange(): void {
     // prevent unselecting both login ways
@@ -41,8 +43,13 @@ export class LoginPageComponent {
     }));
   }
 
-  onSubmit() {
-    console.log(this.loginWay);
+  async onSubmit() {
+    try {
+      await this.auth.signIn(this.loginEmailOrUsername, this.password);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
-// ? ASK: The user will be asked to put user information that will be saved via the server for 60 minutes
+
+// TODO: ask: The user will be asked to put user information that will be saved via the server for 60 minutes

@@ -30,3 +30,7 @@ export function isUserAgeBetweenEighteenAndNinety(date: string) {
   );
   return givenDate <= eighteenYearsAgo && givenDate >= ninetyYearsAgo;
 }
+
+export function isDateBefore(firstDate: Date, secondDate: Date) {
+  return firstDate < secondDate;
+}

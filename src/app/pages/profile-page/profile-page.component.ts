@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
+import {Component, HostListener} from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {
   isEmailValid,
   isPasswordValid,
@@ -29,10 +29,10 @@ export class ProfilePageComponent {
   isViewPortAtLeastMedium: boolean = false;
   // gender select element options
   genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
+    {name: 'Unknown', value: 'unknown'},
+    {name: 'Male', value: 'male'},
+    {name: 'Female', value: 'female'},
+    {name: 'Other', value: 'other'},
   ];
   // steps component
   items: MenuItem[] | undefined = [
@@ -48,13 +48,13 @@ export class ProfilePageComponent {
     },
   ];
 
-  // adjust previous&next buttons depending on viewport width
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  constructor(private messageService: MessageService) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
-  constructor(private messageService: MessageService) {
+  // adjust previous&next buttons depending on viewport width
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
@@ -62,7 +62,6 @@ export class ProfilePageComponent {
   showError(message: string) {
     this.messageService.add({
       severity: 'error',
-      summary: 'Error',
       detail: message,
     });
   }
@@ -136,6 +135,7 @@ export class ProfilePageComponent {
       gender: this.gender,
     };
   }
+
   // ! #TODO: after registration, user will go to homepage
   // ! #TODO: user can reset its password
   // ! #TODO: add 'already have an account?'

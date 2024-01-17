@@ -1,12 +1,13 @@
-import { Component, HostListener } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
+import {Component, HostListener} from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register-page',
@@ -27,13 +28,15 @@ export class RegisterPageComponent {
   checked = false;
   isLoading = false;
   isViewPortAtLeastMedium: boolean = false;
+
   // gender select element options
   genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
+    {name: 'Unknown', value: 'unknown'},
+    {name: 'Male', value: 'male'},
+    {name: 'Female', value: 'female'},
+    {name: 'Other', value: 'other'},
   ];
+
   // steps component
   items: MenuItem[] | undefined = [
     {
@@ -48,13 +51,13 @@ export class RegisterPageComponent {
     },
   ];
 
-  // adjust previous&next buttons depending on viewport width
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  constructor(private messageService: MessageService, public auth: AuthenticationService) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
-  constructor(private messageService: MessageService) {
+  // adjust previous&next buttons depending on viewport width
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
@@ -62,7 +65,6 @@ export class RegisterPageComponent {
   showError(message: string) {
     this.messageService.add({
       severity: 'error',
-      summary: 'Error',
       detail: message,
     });
   }
@@ -121,8 +123,8 @@ export class RegisterPageComponent {
     this.activeIndex = event;
   }
 
-  onSubmit() {
-    const obj = {
+  async onSubmit() {
+    const newUserData = {
       email: this.email,
       username: this.username,
       password: this.password,
@@ -131,7 +133,23 @@ export class RegisterPageComponent {
       birthDate: this.birthDate,
       gender: this.gender,
     };
+    try {
+      await this.auth.register(newUserData);
+      this.messageService.add({
+        severity: 'success',
+        detail: 'You have successfully registered.',
+      });
+    } catch (error: any) {
+      if (error.message.includes('auth/email-already-in-use')) {
+        this.showError('This email address is already in use. Please choose another one.');
+      } else {
+        // TODO: handle disabled/deleted user or other errors
+        this.showError('Registration failed. Please contact an admin.');
+      }
+    }
   }
-  // ! #TODO: after registration, user will go to homepage
-  // ! #TODO: user can reset its password
+
+
+  // TODO: after registration, user will go to homepage
+  // TODO: user can reset its password
 }

@@ -5,22 +5,22 @@
     <div class="flex flex-col w-full justify-around">
       <!-- desktop version of login way select -->
       <p-selectButton
-        styleClass="hidden sm:block w-full"
-        [options]="desktopSelectOptions"
+        (onChange)="onDesktopSelectChange()"
         [(ngModel)]="loginWay"
+        [options]="desktopSelectOptions"
         optionLabel="label"
         optionValue="value"
-        (onChange)="onDesktopSelectChange()"
+        styleClass="hidden sm:block w-full"
       ></p-selectButton>
       <!-- mobile version of login way select -->
       <p-dropdown
-        class="sm:hidden"
-        styleClass="w-full"
-        [options]="mobileSelectOptions"
         [(ngModel)]="loginWay"
+        [options]="mobileSelectOptions"
+        class="sm:hidden"
         optionLabel="label"
-        placeholder="Select a sign in method"
         optionValue="value"
+        placeholder="Select a sign in method"
+        styleClass="w-full"
       ></p-dropdown>
     </div>
     <!-- email -->
@@ -28,10 +28,10 @@
       <div class="flex flex-col flex-1 max-w-[400px]">
         <span class="p-float-label w-full">
           <span class="p-float-label w-full">
-            <input class="w-full" type="text" pInputText id="username" />
+            <input [(ngModel)]="loginEmailOrUsername" class="w-full" id="username" pInputText type="text"/>
             <label for="email">{{
-              loginWay === "username" ? "Username" : "Email address"
-            }}</label>
+                loginWay === "username" ? "Username" : "Email address"
+              }}</label>
           </span>
         </span>
       </div>
@@ -42,11 +42,11 @@
         <span class="p-float-label w-full">
           <span class="p-float-label w-full">
             <input
+              [(ngModel)]="password"
               class="w-full"
-              type="text"
-              pInputText
               id="password"
-              [(ngModel)]="loginEmailOrUsername"
+              pInputText
+              type="text"
             />
             <label for="email">Password</label>
           </span>
@@ -55,8 +55,8 @@
     </div>
     <p-button
       (onClick)="onSubmit()"
-      label="Sign in"
       icon="pi pi-arrow-circle-right"
+      label="Sign in"
     ></p-button>
   </div>
 </p-card>
