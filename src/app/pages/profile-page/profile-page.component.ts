@@ -7,6 +7,8 @@ import {
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
+import {AuthenticationService} from '../../services/authentication.service';
+import {UserInterface} from '../../utils/interfaces';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,6 +16,7 @@ import {
   styleUrls: ['./profile-page.component.scss'],
   providers: [MessageService],
 })
+
 export class ProfilePageComponent {
   email = '';
   username = '';
@@ -42,20 +45,32 @@ export class ProfilePageComponent {
     {
       label: 'Personal',
     },
-
     {
       label: 'Agreement',
     },
   ];
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private auth: AuthenticationService) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
+    this.auth.getLoggedUser().subscribe((data: any) => this.fillProfileFields(data));
   }
 
   // adjust previous&next buttons depending on viewport width
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
+  }
+
+  fillProfileFields(data: UserInterface) {
+    if (data) {
+      console.log(data);
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+      this.username = data.username;
+      this.birthDate = data.birthDate;
+      this.gender = data.gender || 'unknown';
+    }
+
   }
 
   // show error toast function

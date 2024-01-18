@@ -1,13 +1,13 @@
-import {Component, HostListener} from '@angular/core';
-import {MenuItem} from 'primeng/api';
-import {MessageService} from 'primeng/api';
+import { Component, HostListener } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
-import {AuthenticationService} from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register-page',
@@ -22,8 +22,8 @@ export class RegisterPageComponent {
   confirmPassword = '';
   firstName = '';
   lastName = '';
-  birthDate = '';
-  gender = '';
+  birthDate: string = '';
+  gender: any = '';
   activeIndex = 0;
   checked = false;
   isLoading = false;
@@ -31,10 +31,10 @@ export class RegisterPageComponent {
 
   // gender select element options
   genderOptions = [
-    {name: 'Unknown', value: 'unknown'},
-    {name: 'Male', value: 'male'},
-    {name: 'Female', value: 'female'},
-    {name: 'Other', value: 'other'},
+    { name: 'Unknown', value: 'unknown' },
+    { name: 'Male', value: 'male' },
+    { name: 'Female', value: 'female' },
+    { name: 'Other', value: 'other' },
   ];
 
   // steps component
@@ -51,7 +51,10 @@ export class RegisterPageComponent {
     },
   ];
 
-  constructor(private messageService: MessageService, public auth: AuthenticationService) {
+  constructor(
+    private messageService: MessageService,
+    public auth: AuthenticationService
+  ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
@@ -66,6 +69,7 @@ export class RegisterPageComponent {
     this.messageService.add({
       severity: 'error',
       detail: message,
+      summary: 'Error',
     });
   }
 
@@ -124,6 +128,11 @@ export class RegisterPageComponent {
   }
 
   async onSubmit() {
+    this.messageService.add({
+      severity: 'warn',
+      detail: 'Registration process in progress. Please wait...',
+    });
+    this.isLoading = true;
     const newUserData = {
       email: this.email,
       username: this.username,
@@ -131,25 +140,30 @@ export class RegisterPageComponent {
       firstName: this.firstName,
       lastName: this.lastName,
       birthDate: this.birthDate,
-      gender: this.gender,
+      gender: this.gender?.value || 'unknown',
     };
     try {
       await this.auth.register(newUserData);
       this.messageService.add({
         severity: 'success',
+        summary: 'Success',
         detail: 'You have successfully registered.',
       });
     } catch (error: any) {
       if (error.message.includes('auth/email-already-in-use')) {
-        this.showError('This email address is already in use. Please choose another one.');
+        this.showError(
+          'This email address is already in use. Please choose another one.'
+        );
       } else {
         // TODO: handle disabled/deleted user or other errors
         this.showError('Registration failed. Please contact an admin.');
       }
+    } finally {
+      this.isLoading = false;
     }
   }
 
-
+  // TODO: fix birthdate
   // TODO: after registration, user will go to homepage
   // TODO: user can reset its password
 }

@@ -13,6 +13,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,21 @@ export class ShiftsService {
   shiftsObs = new BehaviorSubject<any>([]);
   shiftsCol = collection(this.firestore, 'rbtsASDASD');
   shiftsArray: any = [];
+  loggedUserUid = new BehaviorSubject<string>('');
+  private areShiftsLoading = new BehaviorSubject<boolean>(false);
 
-  constructor(public firestore: Firestore) {}
+  getAreShiftsLoading() {
+    return this.areShiftsLoading.asObservable();
+  }
+
+  constructor(
+    public firestore: Firestore,
+    private auth: AuthenticationService
+  ) {
+    this.auth
+      .getLoggedUser()
+      .subscribe((userData) => this.loggedUserUid.next(userData?.uid));
+  }
 
   async getUserFields() {
     try {

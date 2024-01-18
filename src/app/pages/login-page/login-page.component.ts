@@ -1,12 +1,16 @@
-import {Component} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+import { Component } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
+  providers: [MessageService],
 })
 export class LoginPageComponent {
+  isLoading = false;
   loginEmailOrUsername = '';
   password = '';
   loginWay: string = 'email';
@@ -23,12 +27,15 @@ export class LoginPageComponent {
     },
   ];
   mobileSelectOptions = [
-    {label: 'Sign in with email', value: 'email'},
-    {label: 'Sign in with username', value: 'username'},
+    { label: 'Sign in with email', value: 'email' },
+    { label: 'Sign in with username', value: 'username' },
   ];
 
-  constructor(private auth: AuthenticationService) {
-  }
+  constructor(
+    private auth: AuthenticationService,
+    private toast: MessageService,
+    private router: Router
+  ) {}
 
   onDesktopSelectChange(): void {
     // prevent unselecting both login ways
@@ -43,13 +50,50 @@ export class LoginPageComponent {
     }));
   }
 
+  showError(message: string) {
+    this.toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: message,
+    });
+  }
+
   async onSubmit() {
+    if (!this.password || !this.loginEmailOrUsername) {
+      this.showError('Please enter your login credentials.');
+      return;
+    }
+
     try {
+      this.isLoading = true;
       await this.auth.signIn(this.loginEmailOrUsername, this.password);
-    } catch (error) {
-      console.log(error);
+      this.router.navigate(['/shifts']);
+    } catch (error: any) {
+      console.log(error.message);
+      // invalid credentials error
+      switch (error.message) {
+        case 'FirebaseError: Firebase: Error (auth/invalid-email).':
+          this.showError(
+            'Invalid email address. Please check the entered data and try again.'
+          );
+          return;
+          break;
+        case 'FirebaseError: Firebase: Error (auth/invalid-credential).':
+          this.showError(
+            'Invalid credentials. Please check the entered data and try again.'
+          );
+          return;
+          break;
+        default:
+          break;
+      }
+    } finally {
+      this.isLoading = false;
     }
   }
 }
 
+// TODO: forgot password
+// TODO: handle login errors
+// TODO: handle username login
 // TODO: ask: The user will be asked to put user information that will be saved via the server for 60 minutes
