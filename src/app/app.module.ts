@@ -49,6 +49,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { ChangePasswordFormComponent } from './components/change-password-form/change-password-form.component';
+import { ChangeEmailFormComponent } from './components/change-email-form/change-email-form.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     ErrorPageComponent,
     HomepageComponent,
     SpinnerComponent,
+    ChangePasswordFormComponent,
+    ChangeEmailFormComponent,
   ],
   imports: [
     CommonModule,

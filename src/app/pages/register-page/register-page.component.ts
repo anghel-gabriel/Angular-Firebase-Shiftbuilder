@@ -1,13 +1,13 @@
-import { Component, HostListener } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
+import {Component, HostListener} from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
-import { AuthenticationService } from '../../services/authentication.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register-page',
@@ -31,10 +31,10 @@ export class RegisterPageComponent {
 
   // gender select element options
   genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
+    {name: 'Unknown', value: 'unknown'},
+    {name: 'Male', value: 'male'},
+    {name: 'Female', value: 'female'},
+    {name: 'Other', value: 'other'},
   ];
 
   // steps component
@@ -139,8 +139,8 @@ export class RegisterPageComponent {
       password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
-      birthDate: this.birthDate,
-      gender: this.gender?.value || 'unknown',
+      birthDate: new Date(this.birthDate).toISOString(),
+      gender: this.gender || {name: 'Unknown', value: 'unknown'},
     };
     try {
       await this.auth.register(newUserData);

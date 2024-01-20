@@ -7,30 +7,30 @@
       <div class="flex flex-col flex-1 w-full max-w-[330px]">
         <span class="p-float-label">
           <input
-            class="w-full"
-            pInputText
-            id="firstName"
             [(ngModel)]="firstName"
+            class="w-full"
+            id="firstName"
+            pInputText
           />
           <label for="firstName">First name*</label>
         </span>
         <small class="mt-1"
-          >First name should be at least 6 characters long</small
+        >First name should be at least 6 characters long</small
         >
       </div>
       <!-- last name -->
       <div class="flex flex-col flex-1 w-full max-w-[330px]">
         <span class="p-float-label">
           <input
-            class="w-full"
-            pInputText
-            id="lastName"
             [(ngModel)]="lastName"
+            class="w-full"
+            id="lastName"
+            pInputText
           />
           <label for="lastName">Last name*</label>
         </span>
         <small class="mt-1"
-          >Last name should be at least 6 characters long</small
+        >Last name should be at least 6 characters long</small
         >
       </div>
     </div>
@@ -42,16 +42,16 @@
       <div class="flex flex-col flex-1 w-full max-w-[330px]">
         <span class="p-float-label">
           <input
+            [(ngModel)]="username"
             class="w-full"
-            pInputText
             id="username"
             name="username"
-            [(ngModel)]="username"
+            pInputText
           />
           <label for="username">Username*</label>
         </span>
         <small class="mt-1"
-          >Username must be alphanumeric and at least 6 characters long</small
+        >Username must be alphanumeric and at least 6 characters long</small
         >
       </div>
       <!-- birthdate -->
@@ -59,15 +59,16 @@
         <span class="p-float-label">
           <span class="p-float-label">
             <p-calendar
-              styleClass="w-full"
               [(ngModel)]="birthDate"
+              id="birth-date"
               inputId="birth_date"
+              styleClass="w-full"
             ></p-calendar>
-            <label for="birth_date">Birth Date*</label>
+            <label for="birth-date">Birth Date*</label>
           </span>
         </span>
         <small class="mt-1" id="age-help"
-          >You must be at least 18 years-old</small
+        >You must be at least 18 years-old</small
         >
       </div>
     </div>
@@ -82,13 +83,14 @@
       <div class="flex flex-col flex-1 w-full max-w-[330px]">
         <span class="p-float-label">
           <p-dropdown
-            styleClass="w-full"
-            [options]="genderOptions"
             [(ngModel)]="gender"
+            [options]="genderOptions"
+            id="gender"
             inputId="float-label"
             optionLabel="name"
+            styleClass="w-full"
           ></p-dropdown>
-          <label for="float-label">Gender</label>
+          <label for="gender">Gender</label>
         </span>
       </div>
       <!-- profile picture -->
@@ -97,20 +99,20 @@
       >
         <p-avatar
           image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          size="large"
           shape="circle"
+          size="large"
         ></p-avatar>
         <div class="flex flex-wrap justify-between gap-y-2 gap-x-1 mb-1">
           <p-fileUpload
-            mode="basic"
+            (onUpload)="onUpload($event)"
+            [maxFileSize]="1000000"
+            accept="image/*"
             chooseLabel="Choose"
+            mode="basic"
             name="demo[]"
             url="https://www.primefaces.org/cdn/api/upload.php"
-            accept="image/*"
-            [maxFileSize]="1000000"
-            (onUpload)="onUpload($event)"
           ></p-fileUpload>
-          <p-button label="Remove" icon="pi pi-trash"></p-button>
+          <p-button icon="pi pi-trash" label="Remove"></p-button>
         </div>
       </div>
     </div>
@@ -118,35 +120,54 @@
       class="flex flex-col min-[785px]:flex-row max-[785px]:mx-auto gap-y-2 gap-x-8 items-center justify-between w-full"
     >
       <p-button
+        (onClick)="isChangingPasswordModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
-        styleClass="w-full"
-        (click)="handlePrevious()"
         label="Change password"
+        styleClass="w-full"
       ></p-button>
       <p-button
+        (onClick)="isChangingEmailModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
-        styleClass="w-full"
-        (click)="handlePrevious()"
         label="Change email address"
+        styleClass="w-full"
       ></p-button>
     </div>
     <div
       class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-end"
     >
       <p-button
-        severity="success"
+        (click)="handleSaveProfile()"
         class="max-[785px]:w-full max-w-[330px]"
-        styleClass="w-full"
-        (click)="handlePrevious()"
-        label="Save changes"
         icon="pi pi-check"
         iconPos="right"
+        label="Save changes"
+        severity="success"
+        styleClass="w-full"
       ></p-button>
     </div>
   </div>
 </p-card>
 
-<p-toast></p-toast>
-<button (click)="showError('salut')">salut</button>
+
+<p-dialog
+  [(visible)]="isChangingPasswordModalVisible"
+  [modal]="true"
+  header="Change password"
+  styleClass="w-[90vw] max-w-[600px]"
+>
+  <app-change-password-form/>
+</p-dialog>
+
+
+<p-dialog
+  [(visible)]="isChangingEmailModalVisible"
+  [modal]="true"
+  header="Change email"
+  styleClass="w-[90vw] max-w-[600px]"
+>
+  <app-change-email-form/>
+</p-dialog>
+
+<p-toast/>

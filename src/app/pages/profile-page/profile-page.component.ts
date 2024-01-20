@@ -24,13 +24,17 @@ export class ProfilePageComponent {
   confirmPassword = '';
   firstName = '';
   lastName = '';
-  birthDate = '';
-  gender = '';
+  birthDate: any;
+  gender: string | { name: string; value: string } = '';
   activeIndex = 0;
   checked = false;
   isLoading = false;
   isViewPortAtLeastMedium: boolean = false;
   // gender select element options
+
+  isChangingPasswordModalVisible = false;
+  isChangingEmailModalVisible = false;
+
   genderOptions = [
     {name: 'Unknown', value: 'unknown'},
     {name: 'Male', value: 'male'},
@@ -63,12 +67,13 @@ export class ProfilePageComponent {
 
   fillProfileFields(data: UserInterface) {
     if (data) {
-      console.log(data);
+      this.username = data.email;
+      this.email = data.email;
       this.firstName = data.firstName;
       this.lastName = data.lastName;
       this.username = data.username;
-      this.birthDate = data.birthDate;
-      this.gender = data.gender || 'unknown';
+      this.birthDate = new Date(data.birthDate);
+      this.gender = data.gender || {name: 'Unknown', value: 'unknown'};
     }
 
   }
@@ -82,8 +87,7 @@ export class ProfilePageComponent {
   }
 
   // form validation
-  handleNext() {
-    // first step validation
+  handleSaveProfile() {
     if (this.activeIndex === 0) {
       if (!isEmailValid(this.email)) {
         this.showError('Please use a valid email address');
@@ -105,35 +109,24 @@ export class ProfilePageComponent {
         return;
       }
     }
-    // second step validation
-    if (this.activeIndex === 1) {
-      if (this.firstName.length < 2 || this.lastName.length < 2) {
-        this.showError(
-          'First name and last name must be at least 2 characters long'
-        );
-        return;
-      }
-      if (
-        !this.birthDate ||
-        !isUserAgeBetweenEighteenAndNinety(this.birthDate)
-      ) {
-        this.showError(
-          'You must be between 18 and 90 years old in order to register'
-        );
-        return;
-      }
+    if (this.firstName.length < 2 || this.lastName.length < 2) {
+      this.showError(
+        'First name and last name must be at least 2 characters long'
+      );
+      return;
+    }
+    if (
+      !this.birthDate ||
+      !isUserAgeBetweenEighteenAndNinety(new Date(this.birthDate))
+    ) {
+      this.showError(
+        'You must be between 18 and 90 years old in order to register'
+      );
+      return;
     }
 
-    if (this.activeIndex !== 2) this.activeIndex++;
   }
 
-  handlePrevious() {
-    if (this.activeIndex !== 0) this.activeIndex--;
-  }
-
-  onActiveIndexChange(event: number) {
-    this.activeIndex = event;
-  }
 
   onUpload(event: any) {
     console.log(event);

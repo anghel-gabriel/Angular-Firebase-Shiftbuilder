@@ -4,8 +4,8 @@ export interface RegisterInterface {
   password: string;
   firstName: string;
   lastName: string;
-  birthDate: string;
-  gender: string | null | undefined;
+  birthDate: any;
+  gender: any;
 }
 
 export interface UserInterface {
@@ -14,6 +14,6 @@ export interface UserInterface {
   username: string;
   firstName: string;
   lastName: string;
-  birthDate: string;
-  gender: string | null | undefined;
+  birthDate: any;
+  gender: any;
 }

@@ -1,10 +1,10 @@
 <p-steps
-  styleClass="max-w-[920px] mx-auto"
+  (activeIndexChange)="onActiveIndexChange($event)"
+  [activeIndex]="activeIndex"
   [model]="items"
   [readonly]="false"
-  [activeIndex]="activeIndex"
-  (activeIndexChange)="onActiveIndexChange($event)"
   [readonly]="true"
+  styleClass="max-w-[920px] mx-auto"
 ></p-steps>
 
 <!-- 1. credentials -->
@@ -15,11 +15,11 @@
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
-            class="w-full"
-            pInputText
-            name="email"
-            id="email"
             [(ngModel)]="email"
+            class="w-full"
+            id="email"
+            name="email"
+            pInputText
             type="email"
           />
           <label for="email">Email address*</label>
@@ -30,16 +30,16 @@
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
+            [(ngModel)]="username"
             class="w-full"
-            pInputText
             id="username"
             name="username"
-            [(ngModel)]="username"
+            pInputText
           />
           <label for="username">Username*</label>
         </span>
         <small class="mt-1"
-          >Username must be alphanumeric and at least 6 characters long</small
+        >Username must be alphanumeric and at least 6 characters long</small
         >
       </div>
     </div>
@@ -49,18 +49,18 @@
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
-              type="password"
-              class="w-full"
-              pInputText
-              id="password"
               [(ngModel)]="password"
+              class="w-full"
+              id="password"
               name="password"
+              pInputText
+              type="password"
             />
             <label for="password">Password*</label>
           </span>
         </span>
         <small class="mt-1" id="age-help"
-          >Password requires 6+ characters, including uppercase, lowercase, a
+        >Password requires 6+ characters, including uppercase, lowercase, a
           number, and a symbol"</small
         >
       </div>
@@ -69,12 +69,12 @@
         <span class="p-float-label w-full">
           <span class="p-float-label">
             <input
-              type="password"
-              class="w-full"
-              pInputText
-              id="confirmPassword"
               [(ngModel)]="confirmPassword"
+              class="w-full"
+              id="confirmPassword"
               name="confirmPassword"
+              pInputText
+              type="password"
             />
             <label for="confirmPassword">Confirm password*</label>
           </span>
@@ -84,20 +84,20 @@
     </div>
     <div class="flex items-center justify-between">
       <p-button
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [disabled]="activeIndex === 0"
         (click)="handlePrevious()"
-        label="Back"
-        icon="pi pi-arrow-left"
+        [disabled]="activeIndex === 0"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         [text]="true"
+        icon="pi pi-arrow-left"
+        label="Back"
       ></p-button>
       <p-button
-        styleClass="hidden"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handleNext()"
-        label="Next"
-        icon="pi pi-arrow-right"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         [text]="true"
+        icon="pi pi-arrow-right"
+        label="Next"
+        styleClass="hidden"
       ></p-button>
     </div>
   </div>
@@ -110,30 +110,30 @@
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
-            class="w-full"
-            pInputText
-            id="firstName"
             [(ngModel)]="firstName"
+            class="w-full"
+            id="firstName"
+            pInputText
           />
           <label for="firstName">First name*</label>
         </span>
         <small class="mt-1"
-          >First name should be at least 6 characters long</small
+        >First name should be at least 6 characters long</small
         >
       </div>
 
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <input
-            class="w-full"
-            pInputText
-            id="lastName"
             [(ngModel)]="lastName"
+            class="w-full"
+            id="lastName"
+            pInputText
           />
           <label for="lastName">Last name*</label>
         </span>
         <small class="mt-1"
-          >Last name should be at least 6 characters long</small
+        >Last name should be at least 6 characters long</small
         >
       </div>
     </div>
@@ -144,15 +144,15 @@
         <span class="p-float-label">
           <span class="p-float-label">
             <p-calendar
-              styleClass="w-full"
               [(ngModel)]="birthDate"
               inputId="birth_date"
+              styleClass="w-full"
             ></p-calendar>
             <label for="birth_date">Birth Date*</label>
           </span>
         </span>
         <small class="mt-1" id="age-help"
-          >You must be at least 18 years-old</small
+        >You must be at least 18 years-old</small
         >
       </div>
 
@@ -160,11 +160,11 @@
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
         <span class="p-float-label">
           <p-dropdown
-            styleClass="w-full"
-            [options]="genderOptions"
             [(ngModel)]="gender"
+            [options]="genderOptions"
             inputId="float-label"
             optionLabel="name"
+            styleClass="w-full"
           ></p-dropdown>
           <label for="float-label">Gender</label>
         </span>
@@ -174,17 +174,17 @@
     <div class="flex items-center justify-between">
       <p-button
         (click)="handlePrevious()"
-        label="Back"
-        icon="pi pi-arrow-left"
-        [text]="true"
         [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+        [text]="true"
+        icon="pi pi-arrow-left"
+        label="Back"
       ></p-button>
       <p-button
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handleNext()"
-        label="Next"
-        icon="pi pi-arrow-right"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         [text]="true"
+        icon="pi pi-arrow-right"
+        label="Next"
       ></p-button>
     </div>
   </div>
@@ -273,41 +273,42 @@
 
     <div class="flex items-center gap-2 mt-10 text-[--blue-700]">
       <p-checkbox
-        styleClass="block"
-        [disabled]="isLoading"
         [(ngModel)]="checked"
         [binary]="true"
+        [disabled]="isLoading"
         inputId="agreementCheckbox"
         name="agreementCheckbox"
+        styleClass="block"
       ></p-checkbox>
       <label class="cursor-pointer" for="agreementCheckbox"
-        >By registering, I confirm that I have read, understood, and agree to
+      >By registering, I confirm that I have read, understood, and agree to
         the User Agreement.</label
       >
     </div>
     <div class="mt-[10px] flex items-center justify-center"></div>
     <div class="flex items-center justify-between">
       <p-button
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
         (click)="handlePrevious()"
-        label="Back"
-        icon="pi pi-arrow-left"
-        [text]="true"
         [disabled]="isLoading"
+        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+        [text]="true"
+        icon="pi pi-arrow-left"
+        label="Back"
       ></p-button>
       <p-button
+        (onClick)="onSubmit()"
+        [disabled]="!checked"
         [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+        [text]="true"
         class="sm:mr-5"
         icon="pi pi-check"
-        [label]="isLoading ? 'Please wait...' : 'Sign up'"
-        [loading]="isLoading"
-        [text]="true"
-        [disabled]="!checked"
-        (onClick)="onSubmit()"
+        label='Sign up'
       ></p-button>
     </div>
   </div>
 </p-card>
 
 <p-toast></p-toast>
-<button (click)="showError('salut')">salut</button>
+@if (isLoading) {
+  <app-spinner></app-spinner>
+}

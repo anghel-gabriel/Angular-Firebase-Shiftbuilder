@@ -13,7 +13,7 @@ export function isUsernameValid(username: string) {
   return username.match(regex);
 }
 
-export function isUserAgeBetweenEighteenAndNinety(date: string) {
+export function isUserAgeBetweenEighteenAndNinety(date: any) {
   const givenDate = new Date(date);
   const currentDate = new Date();
 
