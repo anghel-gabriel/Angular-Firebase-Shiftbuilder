@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {isDateBefore} from 'src/app/utils/validation';
 import {Message} from 'primeng/api';
+import {ShiftsService} from '../../services/shifts.service';
+import {calculateProfit} from '../../utils/computation';
 
 @Component({
   selector: 'app-add-form',
@@ -13,12 +15,13 @@ export class AddFormComponent {
   workplace: any;
   comments: any;
   messages: Message[] = [];
-
   workplaces = [
     {label: 'Sign in with email', value: 'email'},
     {label: 'Sign in with username', value: 'username'},
   ];
 
+  constructor(private db: ShiftsService) {
+  }
 
   showError(message: string) {
     this.messages = [...this.messages, {
@@ -27,7 +30,7 @@ export class AddFormComponent {
     }];
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.messages = [];
     if (!this.workTime || !Array.isArray(this.workTime) || this.workTime.length < 2) {
       this.showError('Start time and end time are mandatory.');
@@ -52,12 +55,14 @@ export class AddFormComponent {
     }
 
     const shift = {
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
       hourlyWage: parseFloat(this.hourlyWage),
       workplace: this.workplace,
-      comments: this.comments
+      comments: this.comments,
+      profit: calculateProfit(startTime, endTime, this.hourlyWage)
     };
-    console.log(shift);
+
+    await this.db.addShift(shift);
   }
 }

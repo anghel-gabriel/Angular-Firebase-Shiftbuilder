@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as FileSaver from 'file-saver';
-import { OverlayPanel } from 'primeng/overlaypanel';
-import { Table } from 'primeng/table';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {OverlayPanel} from 'primeng/overlaypanel';
+import {Table} from 'primeng/table';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ShiftsService} from '../../services/shifts.service';
 
 @Component({
   selector: 'app-shifts-page',
@@ -10,7 +11,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   styleUrls: ['./shifts-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class ShiftsPageComponent {
+
+export class ShiftsPageComponent implements OnInit {
   loading: boolean = false;
   activityValues: number[] = [0, 100];
   selectedShifts = [];
@@ -19,44 +21,35 @@ export class ShiftsPageComponent {
   addModalVisible = false;
   commentsModalVisible = false;
   currentComments: string = '';
+  shifts: any = [
 
-  constructor(
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {
-    console.log(new Date());
-  }
+    // {
+    //   workplace: {
+    //     name: 'NewTech Fullstack',
+    //     imgUrl:
+    //       'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
+    //   },
+    //   startTime: new Date(),
+    //   endTime: Date.now(),
+    //   hourlyWage: 20,
+    //   profit: 160,
+    //   comments: '1',
+    // },
+    // {
+    //   workplace: {
+    //     name: 'NewTech Frontend',
+    //     imgUrl:
+    //       'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
+    //   },
+    //   comments: '',
+    //   startTime: new Date(),
+    //   endTime: Date.now(),
+    //   hourlyWage: 20,
+    //   profit: 160,
+    // },
 
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
-  }
-
-  shifts = [
-    {
-      workplace: {
-        name: 'NewTech Fullstack',
-        imgUrl:
-          'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-      },
-      startTime: new Date(),
-      endTime: Date.now(),
-      hourlyWage: 20,
-      profit: 160,
-      comments: '1',
-    },
-    {
-      workplace: {
-        name: 'NewTech Frontend',
-        imgUrl:
-          'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-      },
-      comments: '',
-      startTime: new Date(),
-      endTime: Date.now(),
-      hourlyWage: 20,
-      profit: 160,
-    },
   ];
+
 
   workplaces = [
     {
@@ -70,6 +63,24 @@ export class ShiftsPageComponent {
         'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
     },
   ];
+
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private db: ShiftsService
+  ) {
+  }
+
+  ngOnInit() {
+    this.db.getShiftsChanges().subscribe((shifts) => {
+      this.shifts = [...shifts];
+      console.log('shiftspage', [...shifts]);
+    });
+  }
+
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
 
   // view button overlay panel
   toggleOverlayPanel(event: any, comments: string): void {
@@ -92,9 +103,10 @@ export class ShiftsPageComponent {
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass: 'p-button-danger p-button-sm',
       accept: () => {
-        console.log(shift);
+        this.db.deleteShift(shift.id);
       },
-      reject: () => {},
+      reject: () => {
+      },
     });
   }
 
@@ -107,7 +119,7 @@ export class ShiftsPageComponent {
               {
                 Sheets: {
                   Shifts: xlsx.utils.json_to_sheet(
-                    this.shifts.map((shift) => ({
+                    this.shifts.map((shift: any) => ({
                       ...shift,
                       workplace: shift.workplace.name,
                     }))

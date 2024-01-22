@@ -8,8 +8,12 @@ import {
   deleteDoc,
   getDoc,
   updateDoc,
+  collectionChanges,
+  where,
+  orderBy,
+  query
 } from '@angular/fire/firestore';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, switchMap} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
 
 @Injectable({
@@ -17,7 +21,7 @@ import {AuthenticationService} from './authentication.service';
 })
 export class ShiftsService {
   shiftsObs = new BehaviorSubject<any>([]);
-  shiftsCol = collection(this.firestore, 'rbtsASDASD');
+  shiftsCol = collection(this.firestore, 'shifts');
   shiftsArray: any = [];
   loggedUserUid = new BehaviorSubject<string>('');
   private areShiftsLoading = new BehaviorSubject<boolean>(false);
@@ -35,6 +39,15 @@ export class ShiftsService {
     return this.areShiftsLoading.asObservable();
   }
 
+  getShiftsChanges() {
+    return collectionChanges(query(collection(this.firestore, 'shifts'))).pipe(
+      switchMap(async () => {
+        const val = await this.getUserDocsList();
+        return val;
+      })
+    );
+  }
+
   async getUserFields() {
     try {
       const userDocRef = doc(this.firestore, `users/J1ZOqPAlYaBSbT5thkI9`);
@@ -49,25 +62,9 @@ export class ShiftsService {
     }
   }
 
-  async getUserShifts() {
-    try {
-      const shiftsColRef = collection(
-        this.firestore,
-        `users/J1ZOqPAlYaBSbT5thkI9/shifts`
-      );
-      const querySnapshot = await getDocs(shiftsColRef);
-      querySnapshot.forEach((doc) => {
-        this.shiftsArray.push({...doc.data(), id: doc.id});
-      });
-      console.log(this.shiftsArray);
-    } catch (error) {
-      console.error('Problem getting shifts.', error);
-    }
-  }
-
   async addShift(shift: any) {
     try {
-      await addDoc(this.shiftsCol, {shift: shift});
+      await addDoc(this.shiftsCol, {...shift, author: this.auth.getAuthUser()?.uid});
     } catch (error) {
       console.error(error);
     }
@@ -89,5 +86,29 @@ export class ShiftsService {
     } catch (error: any) {
       throw new Error(error);
     }
+  }
+
+  private async getUserDocsList() {
+    const user = this.auth.getAuthUser();
+    const userId = user?.uid || '';
+    if (!userId) throw new Error('User not logged');
+
+    let queryRef = query(
+      collection(this.firestore, 'shifts'),
+      where('author', '==', userId),
+      orderBy('startTime', 'desc')
+    );
+    const docs = await getDocs(queryRef);
+    const shiftsList = [] as any;
+
+    docs.forEach((val: any) => {
+      shiftsList.push({
+        id: val.id,
+        ...val.data(),
+      });
+    });
+
+    console.log('shiftsserv', shiftsList);
+    return shiftsList;
   }
 }
