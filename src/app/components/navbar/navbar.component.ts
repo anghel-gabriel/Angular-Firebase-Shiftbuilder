@@ -20,7 +20,6 @@ export class NavbarComponent {
 
   updateNavbarItems(isUserLogged: boolean) {
     this.navbarItems = [
-      {label: 'Homepage', icon: 'pi pi-fw pi-home', url: ''},
       {
         label: 'Shifts',
         icon: 'pi pi-fw pi-calendar',
@@ -43,15 +42,15 @@ export class NavbarComponent {
         visible: isUserLogged
       },
       {
-        label: 'Register',
-        icon: 'pi pi-fw pi-user-plus',
-        url: 'register',
-        visible: !isUserLogged
-      },
-      {
         label: 'Sign In',
         icon: 'pi pi-fw pi-arrow-circle-right',
         url: 'sign-in',
+        visible: !isUserLogged
+      },
+      {
+        label: 'Register',
+        icon: 'pi pi-fw pi-user-plus',
+        url: 'register',
         visible: !isUserLogged
       },
     ];

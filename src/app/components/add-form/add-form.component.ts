@@ -16,8 +16,20 @@ export class AddFormComponent {
   comments: any;
   messages: Message[] = [];
   workplaces = [
-    {label: 'Sign in with email', value: 'email'},
-    {label: 'Sign in with username', value: 'username'},
+    {
+      label: 'Frontend', value: 'Frontend'
+    }
+
+    // {
+    //   label: 'Backend',
+    //   value: {
+    //     name: 'Backend',
+    //     imgUrl: '../../../assets/backend.png'
+    //   }
+    // },
+    // {label: 'Fullstack', value: {name: 'Fullstack', imgUrl: '../../../assets/fullstack.svg'}},
+    // {label: 'Data Analyst', value: {name: 'Data Analyst', imgUrl: '../../../assets/data-analyst.png'}},
+    // {label: 'SQL', value: {name: 'SQL', imgUrl: '../../../assets/sql.png'}}
   ];
 
   constructor(private db: ShiftsService) {

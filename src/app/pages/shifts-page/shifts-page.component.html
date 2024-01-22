@@ -2,7 +2,7 @@
   <p-table
     #dt
     [filterDelay]="0"
-    [globalFilterFields]="['workplace.name']"
+    [globalFilterFields]="['workplace']"
     [loading]="loading"
     [paginator]="true"
     [rowHover]="true"
@@ -53,11 +53,11 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="workplace.name" style="min-width: 16rem">
+        <th pSortableColumn="workplace" style="min-width: 16rem">
           <div class="flex justify-content-between align-items-center">
             <div class="mt-1 flex">
               Workplace
-              <p-sortIcon field="workplace.name"></p-sortIcon>
+              <p-sortIcon field="workplace"></p-sortIcon>
             </div>
             <p-columnFilter
               [showAddButton]="false"
@@ -174,7 +174,7 @@
           <div class="flex items-center gap-1">
             <img [src]="shift.workplace.imgUrl" style="width: 20px"/>
             <span class="ml-1 vertical-align-middle">{{
-                shift.workplace.name
+                shift.workplace
               }}</span>
           </div>
         </td>

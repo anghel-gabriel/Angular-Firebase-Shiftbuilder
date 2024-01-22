@@ -21,44 +21,18 @@ export class ShiftsPageComponent implements OnInit {
   addModalVisible = false;
   commentsModalVisible = false;
   currentComments: string = '';
-  shifts: any = [
-
-    // {
-    //   workplace: {
-    //     name: 'NewTech Fullstack',
-    //     imgUrl:
-    //       'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-    //   },
-    //   startTime: new Date(),
-    //   endTime: Date.now(),
-    //   hourlyWage: 20,
-    //   profit: 160,
-    //   comments: '1',
-    // },
-    // {
-    //   workplace: {
-    //     name: 'NewTech Frontend',
-    //     imgUrl:
-    //       'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-    //   },
-    //   comments: '',
-    //   startTime: new Date(),
-    //   endTime: Date.now(),
-    //   hourlyWage: 20,
-    //   profit: 160,
-    // },
-
-  ];
-
-
+  shifts: any = [];
   workplaces = [
     {
-      name: 'NewTech Fullstack',
+      name: 'Fullstack',
+      value: 'Fullstack',
       imgUrl:
         'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
     },
     {
-      name: 'NewTech Frontend',
+      name: 'Frontend',
+      label: 'Frontend',
+      value: 'Frontend',
       imgUrl:
         'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
     },
@@ -69,6 +43,10 @@ export class ShiftsPageComponent implements OnInit {
     private messageService: MessageService,
     private db: ShiftsService
   ) {
+  }
+
+  asd(ceva: any) {
+    console.log(ceva);
   }
 
   ngOnInit() {
