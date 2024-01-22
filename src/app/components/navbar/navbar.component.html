@@ -1,20 +1,20 @@
 <div class="header">
   <p-menubar
-    [model]="items"
-    class="menu-bar"
+    [model]="navbarItems"
     [style]="{
       background: 'transparent',
       border: 'none',
       flex: '1'
     }"
+    class="menu-bar"
   >
-    <ng-template pTemplate="item" let-item>
+    <ng-template let-item pTemplate="item">
       <a
-        pRipple
-        [routerLink]="item.url"
-        routerLinkActive="nav-link-active"
-        class="p-menuitem-link nav-link"
         [routerLinkActiveOptions]="{ exact: true }"
+        [routerLink]="item.url"
+        class="p-menuitem-link nav-link"
+        pRipple
+        routerLinkActive="nav-link-active"
       >
         <div>
           <span [class]="item.icon"></span>

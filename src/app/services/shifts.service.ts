@@ -1,19 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {
   Firestore,
   addDoc,
   collection,
   getDocs,
-  query,
   doc,
   deleteDoc,
   getDoc,
   updateDoc,
-  orderBy,
-  where,
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { AuthenticationService } from './authentication.service';
+import {BehaviorSubject} from 'rxjs';
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +22,6 @@ export class ShiftsService {
   loggedUserUid = new BehaviorSubject<string>('');
   private areShiftsLoading = new BehaviorSubject<boolean>(false);
 
-  getAreShiftsLoading() {
-    return this.areShiftsLoading.asObservable();
-  }
-
   constructor(
     public firestore: Firestore,
     private auth: AuthenticationService
@@ -36,6 +29,10 @@ export class ShiftsService {
     this.auth
       .getLoggedUser()
       .subscribe((userData) => this.loggedUserUid.next(userData?.uid));
+  }
+
+  getAreShiftsLoading() {
+    return this.areShiftsLoading.asObservable();
   }
 
   async getUserFields() {
@@ -60,7 +57,7 @@ export class ShiftsService {
       );
       const querySnapshot = await getDocs(shiftsColRef);
       querySnapshot.forEach((doc) => {
-        this.shiftsArray.push({ ...doc.data(), id: doc.id });
+        this.shiftsArray.push({...doc.data(), id: doc.id});
       });
       console.log(this.shiftsArray);
     } catch (error) {
@@ -70,9 +67,27 @@ export class ShiftsService {
 
   async addShift(shift: any) {
     try {
-      await addDoc(this.shiftsCol, { shift: shift });
+      await addDoc(this.shiftsCol, {shift: shift});
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async editShift(shiftId: string, newData: any) {
+    const shiftRef = doc(this.firestore, 'shifts', shiftId);
+    try {
+      await updateDoc(shiftRef, newData);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async deleteShift(shiftId: string) {
+    try {
+      const shiftRef = doc(this.firestore, 'shifts', shiftId);
+      await deleteDoc(shiftRef);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 }

@@ -19,6 +19,10 @@ export class AuthenticationService {
   constructor(public auth: Auth, public firestore: Firestore) {
   }
 
+  getAuthUser() {
+    return this.auth.currentUser;
+  }
+
   getLoggedUser() {
     return this.loggedUser.asObservable();
   }
@@ -38,7 +42,6 @@ export class AuthenticationService {
       const newUserRef = doc(this.firestore, `users/${newUserData.uid}`);
       await setDoc(newUserRef, newUserData);
       this.loggedUser.next(newUserData);
-
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -51,7 +54,6 @@ export class AuthenticationService {
       const loggedUserRef = doc(this.firestore, `users/${loggedUserUid}`);
       const loggedUserDoc = await getDoc(loggedUserRef);
       const loggedUserData = loggedUserDoc.data();
-      console.log(loggedUserData);
       this.loggedUser.next(loggedUserData);
     } catch (error: any) {
       throw new Error(error);
@@ -59,6 +61,15 @@ export class AuthenticationService {
   }
 
   async logOut() {
-    this.loggedUser.next(null);
+    try {
+      await this.auth.signOut();
+      this.loggedUser.next(null);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  onUserStateChanged(fn: any) {
+    return this.auth.onAuthStateChanged(fn);
   }
 }
