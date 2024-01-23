@@ -6,17 +6,17 @@
       [(ngModel)]="workTime"
       [readonlyInput]="true"
       [showTime]="true"
-      id="birth_date"
+      id="birth-date"
       selectionMode="range"
       styleClass="w-full"
     ></p-calendar>
-    <label for="birth_date">Work time*</label>
+    <label for="birth-date">Work time*</label>
   </span>
 
   <div class="w-full">
     <p-inputGroup>
       <span class="p-float-label">
-        <input [(ngModel)]="hourlyWage" id="hourlyWage" pInputText/>
+        <input [(ngModel)]="hourlyWage" id="hourlyWage" type="number"/>
         <label for="hourlyWage">Hourly wage*</label>
       </span>
       <p-inputGroupAddon>$</p-inputGroupAddon>
@@ -27,22 +27,23 @@
     <p-dropdown
       [(ngModel)]="workplace"
       [options]="workplaces"
-      id="workplaces"
+      id="workplace"
       optionLabel="label"
       optionValue="value"
       styleClass="w-full"
     ></p-dropdown>
-    <label for="workplaces">Workplace*</label>
+    <label for="workplace">Workplace*</label>
   </span>
 
   <span class="p-float-label">
     <textarea
       [(ngModel)]="comments"
       class="w-full resize-y"
+      id="comments"
       pInputTextarea
       rows="10"
     ></textarea>
-    <label>Comments</label>
+    <label for="comments">Comments</label>
   </span>
   <p-button
     (onClick)="onSubmit()"

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {
   Auth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword, sendPasswordResetEmail,
+  signInWithEmailAndPassword, updateEmail, updatePassword,
 } from '@angular/fire/auth';
 import {Firestore, doc, setDoc, getDoc} from '@angular/fire/firestore';
 import {RegisterInterface, UserInterface} from '../utils/interfaces';
@@ -64,6 +64,32 @@ export class AuthenticationService {
     try {
       await this.auth.signOut();
       this.loggedUser.next(null);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async changeEmail(newEmail: string) {
+    try {
+      if (this.auth.currentUser)
+        await updateEmail(this.auth.currentUser, newEmail);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async changePassword(newPassword: string) {
+    try {
+      if (this.auth.currentUser)
+        await updatePassword(this.auth.currentUser, newPassword);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
     } catch (error: any) {
       throw new Error(error);
     }
