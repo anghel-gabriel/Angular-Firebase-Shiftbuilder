@@ -8,7 +8,7 @@
 ></p-steps>
 
 <!-- 1. credentials -->
-<p-card *ngIf="activeIndex === 0" styleClass="max-w-[920px] my-[60px] mx-auto">
+<p-card *ngIf="activeIndex === 0" styleClass="max-w-[920px] mt-[60px] mx-auto">
   <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
     <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
       <!-- email -->
@@ -61,7 +61,7 @@
         </span>
         <small class="mt-1" id="age-help"
         >Password requires 6+ characters, including uppercase, lowercase, a
-          number, and a symbol"</small
+         number, and a symbol"</small
         >
       </div>
       <!-- confirm password -->
@@ -282,7 +282,7 @@
       ></p-checkbox>
       <label class="cursor-pointer" for="agreementCheckbox"
       >By registering, I confirm that I have read, understood, and agree to
-        the User Agreement.</label
+       the User Agreement.</label
       >
     </div>
     <div class="mt-[10px] flex items-center justify-center"></div>
@@ -307,6 +307,16 @@
     </div>
   </div>
 </p-card>
+
+
+@if (activeIndex === 0) {
+  <p class="text-indigo-700 text-center p-4 mb-[60px]">
+    <a class="hover:text-black" routerLink="/sign-in">
+      Already have an account? Log in by clicking
+      <span class="font-bold">here</span></a
+    >.
+  </p>
+}
 
 <p-toast></p-toast>
 @if (isLoading) {

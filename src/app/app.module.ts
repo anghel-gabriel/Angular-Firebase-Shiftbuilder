@@ -51,6 +51,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ChangePasswordFormComponent } from './components/change-password-form/change-password-form.component';
 import { ChangeEmailFormComponent } from './components/change-email-form/change-email-form.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { ChangeEmailFormComponent } from './components/change-email-form/change-
     SpinnerComponent,
     ChangePasswordFormComponent,
     ChangeEmailFormComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     CommonModule,

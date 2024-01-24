@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {isEmailValid} from '../../utils/validation';
+import {AuthenticationService} from '../../services/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-email-form',
@@ -7,32 +9,29 @@ import {isEmailValid} from '../../utils/validation';
   styleUrl: './change-email-form.component.scss'
 })
 export class ChangeEmailFormComponent {
-  authCurrentEmail = '';
-  currentEmail = '';
   newEmail = '';
   newEmailConfirm = '';
 
-  showError(message: string) {
-    console.log(message);
+  constructor(private auth: AuthenticationService, private router: Router) {
   }
 
-  onSubmit() {
-    if (!isEmailValid(this.currentEmail) || !isEmailValid(this.newEmail) || !isEmailValid(this.newEmailConfirm)) {
-      this.showError('You must enter valid email addresses.');
-      return;
-    }
-    if (this.currentEmail === this.newEmail) {
-      this.showError('You must set a new email.');
+  async onSubmit() {
+    if (!isEmailValid(this.newEmail)) {
+      console.log('You must enter valid email addresses.');
       return;
     }
     if (this.newEmail !== this.newEmailConfirm) {
-      this.showError('Please confirm your new email.');
+      console.log('Please confirm your new email.');
       return;
     }
-    if (this.authCurrentEmail !== this.currentEmail) {
-      this.showError('You entered a wrong current email.');
-      return;
+    try {
+      await this.auth.changeEmail(this.newEmail);
+      await this.auth.logOut();
+      this.router.navigate(['/sign-in']);
+    } catch (error: any) {
+      console.log(error);
     }
+
     // change email
   }
 }
