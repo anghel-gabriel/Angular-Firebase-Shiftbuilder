@@ -52,6 +52,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ChangePasswordFormComponent } from './components/change-password-form/change-password-form.component';
 import { ChangeEmailFormComponent } from './components/change-email-form/change-email-form.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { EditFormComponent } from './components/edit-form/edit-form.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
     ChangePasswordFormComponent,
     ChangeEmailFormComponent,
     ForgotPasswordComponent,
+    EditFormComponent,
   ],
   imports: [
     CommonModule,

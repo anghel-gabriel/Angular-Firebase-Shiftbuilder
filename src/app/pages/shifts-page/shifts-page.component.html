@@ -34,7 +34,7 @@
           tooltipPosition="bottom"
         ></p-button>
         <p-button
-          (click)="showDialog()"
+          (click)="showAddDialog()"
           [outlined]="true"
           icon="pi pi-plus"
           pRipple
@@ -205,8 +205,10 @@
               tooltipPosition="top"
             ></p-button>
             <p-button
+              (onClick)="onEditClick(shift)"
               [rounded]="true"
               icon="pi pi-pencil"
+              onClick
               pTooltip="Edit"
               severity="help"
               tooltipPosition="top"
@@ -239,6 +241,17 @@
   styleClass="w-[90vw] max-w-[600px]"
 >
   <app-add-form></app-add-form>
+</p-dialog>
+
+<!-- edit shift modal -->
+<p-dialog
+  [(visible)]="editModalVisible"
+  [modal]="true"
+  header="Edit Shift"
+  styleClass="w-[90vw] max-w-[600px]"
+>
+  <!-- The form to edit a shift. Add necessary fields here -->
+  <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift"></app-edit-form>
 </p-dialog>
 
 <!-- overlay panel for -->

@@ -14,14 +14,14 @@ import {ShiftsService} from '../../services/shifts.service';
 
 export class ShiftsPageComponent implements OnInit {
   loading: boolean = false;
-  activityValues: number[] = [0, 100];
-  selectedShifts = [];
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
   addModalVisible = false;
-  commentsModalVisible = false;
+  editModalVisible = false;
   currentComments: string = '';
   shifts: any = [];
+  selectedShift: any = null;
+
   workplaces = [
     {
       name: 'Fullstack',
@@ -45,10 +45,6 @@ export class ShiftsPageComponent implements OnInit {
   ) {
   }
 
-  asd(ceva: any) {
-    console.log(ceva);
-  }
-
   ngOnInit() {
     this.db.getShiftsChanges().subscribe((shifts) => {
       this.shifts = [...shifts];
@@ -69,7 +65,7 @@ export class ShiftsPageComponent implements OnInit {
   }
 
   // add shift modal
-  showDialog() {
+  showAddDialog() {
     this.addModalVisible = true;
   }
 
@@ -86,6 +82,22 @@ export class ShiftsPageComponent implements OnInit {
       reject: () => {
       },
     });
+  }
+
+  onEditClick(shift: any) {
+    this.selectedShift = shift;
+    this.editModalVisible = true;
+  }
+
+  async onEditSubmit(editedShift: any) {
+    this.loading = true;
+    try {
+      await this.db.editShift(this.selectedShift.id, editedShift);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      this.editModalVisible = false;
+    }
   }
 
   exportExcel() {

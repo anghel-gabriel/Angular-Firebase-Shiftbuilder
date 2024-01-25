@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
-import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
+import {MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -27,15 +27,16 @@ export class LoginPageComponent {
     },
   ];
   mobileSelectOptions = [
-    { label: 'Sign in with email', value: 'email' },
-    { label: 'Sign in with username', value: 'username' },
+    {label: 'Sign in with email', value: 'email'},
+    {label: 'Sign in with username', value: 'username'},
   ];
 
   constructor(
     private auth: AuthenticationService,
     private toast: MessageService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   onDesktopSelectChange(): void {
     // prevent unselecting both login ways
@@ -79,12 +80,16 @@ export class LoginPageComponent {
           return;
           break;
         case 'FirebaseError: Firebase: Error (auth/invalid-credential).':
+        case 'FirebaseError: Firebase: Error (auth/user-not-found).':
           this.showError(
             'Invalid credentials. Please check the entered data and try again.'
           );
           return;
           break;
         default:
+          this.showError(
+            'An error has occured. Please try again.'
+          );
           break;
       }
     } finally {
@@ -93,7 +98,5 @@ export class LoginPageComponent {
   }
 }
 
-// TODO: forgot password
-// TODO: handle login errors
 // TODO: handle username login
-// TODO: ask: The user will be asked to put user information that will be saved via the server for 60 minutes
+// TODO: ask: The user will be asked to put user information that will be saved via the server for 60 minutes / token expiration
