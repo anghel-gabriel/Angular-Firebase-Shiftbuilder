@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {Message} from 'primeng/api';
 import {ShiftsService} from '../../services/shifts.service';
 import {isDateBefore} from '../../utils/validation';
@@ -7,11 +14,11 @@ import {calculateProfit} from '../../utils/computation';
 @Component({
   selector: 'app-edit-form',
   templateUrl: './edit-form.component.html',
-  styleUrl: './edit-form.component.scss'
+  styleUrl: './edit-form.component.scss',
 })
 export class EditFormComponent implements OnChanges {
   @Input() editShift: any;
-  @Output() submit = new EventEmitter<any>;
+  @Output() submit = new EventEmitter<any>();
   workTime: any;
   hourlyWage: any;
   workplace: any;
@@ -19,8 +26,9 @@ export class EditFormComponent implements OnChanges {
   messages: Message[] = [];
   workplaces = [
     {
-      label: 'Frontend', value: 'Frontend'
-    }
+      label: 'Frontend',
+      value: 'Frontend',
+    },
 
     // {
     //   label: 'Backend',
@@ -42,6 +50,7 @@ export class EditFormComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['editShift'] && this.editShift) {
+      this.workTime = [new Date(this.editShift.startTime), new Date(this.editShift.endTime)];
       this.hourlyWage = this.editShift.hourlyWage;
       this.workplace = this.editShift.workplace;
       this.comments = this.editShift.comments;
@@ -49,15 +58,22 @@ export class EditFormComponent implements OnChanges {
   }
 
   showError(message: string) {
-    this.messages = [...this.messages, {
-      severity: 'error',
-      detail: message,
-    }];
+    this.messages = [
+      ...this.messages,
+      {
+        severity: 'error',
+        detail: message,
+      },
+    ];
   }
 
   async onSubmit() {
     this.messages = [];
-    if (!this.workTime || !Array.isArray(this.workTime) || this.workTime.length < 2) {
+    if (
+      !this.workTime ||
+      !Array.isArray(this.workTime) ||
+      this.workTime.length < 2
+    ) {
       this.showError('Start time and end time are mandatory.');
       return;
     }
@@ -85,9 +101,9 @@ export class EditFormComponent implements OnChanges {
       hourlyWage: parseFloat(this.hourlyWage),
       workplace: this.workplace,
       comments: this.comments,
-      profit: calculateProfit(startTime, endTime, this.hourlyWage)
+      profit: calculateProfit(startTime, endTime, this.hourlyWage),
     };
 
-    this.submit.emit(this.editShift);
+    this.submit.emit(shift);
   }
 }

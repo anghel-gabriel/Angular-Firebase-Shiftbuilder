@@ -3,7 +3,6 @@
     #dt
     [filterDelay]="0"
     [globalFilterFields]="['workplace']"
-    [loading]="loading"
     [paginator]="true"
     [rowHover]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
@@ -172,10 +171,10 @@
         <td>
           <span class="p-column-title">Workplace</span>
           <div class="flex items-center gap-1">
-            <img [src]="shift.workplace.imgUrl" style="width: 20px"/>
+            <img [src]="shift.workplace.imgUrl" style="width: 20px" />
             <span class="ml-1 vertical-align-middle">{{
-                shift.workplace
-              }}</span>
+              shift.workplace
+            }}</span>
           </div>
         </td>
         <td>
@@ -251,7 +250,10 @@
   styleClass="w-[90vw] max-w-[600px]"
 >
   <!-- The form to edit a shift. Add necessary fields here -->
-  <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift"></app-edit-form>
+  <app-edit-form
+    (submit)="onEditSubmit($event)"
+    [editShift]="selectedShift"
+  ></app-edit-form>
 </p-dialog>
 
 <!-- overlay panel for -->
@@ -261,3 +263,6 @@
 
 <!-- delete confirm popup -->
 <p-confirmPopup></p-confirmPopup>
+
+@if (loading){
+<app-spinner></app-spinner>}

@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as FileSaver from 'file-saver';
-import {OverlayPanel} from 'primeng/overlaypanel';
-import {Table} from 'primeng/table';
-import {ConfirmationService, MessageService} from 'primeng/api';
-import {ShiftsService} from '../../services/shifts.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { Table } from 'primeng/table';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ShiftsService } from '../../services/shifts.service';
 
 @Component({
   selector: 'app-shifts-page',
@@ -11,7 +11,6 @@ import {ShiftsService} from '../../services/shifts.service';
   styleUrls: ['./shifts-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-
 export class ShiftsPageComponent implements OnInit {
   loading: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
@@ -42,14 +41,21 @@ export class ShiftsPageComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private db: ShiftsService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.db.getShiftsChanges().subscribe((shifts) => {
-      this.shifts = [...shifts];
-      console.log('shiftspage', [...shifts]);
-    });
+    // TODO: fix loading spinner when fetching data
+    // this.loading = true;
+    this.db.getShiftsChanges().subscribe(
+      (shifts) => {
+        this.shifts = [...shifts];
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Error fetching shifts:', error);
+        this.loading = false;
+      }
+    );
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -79,8 +85,7 @@ export class ShiftsPageComponent implements OnInit {
       accept: () => {
         this.db.deleteShift(shift.id);
       },
-      reject: () => {
-      },
+      reject: () => {},
     });
   }
 
@@ -90,13 +95,14 @@ export class ShiftsPageComponent implements OnInit {
   }
 
   async onEditSubmit(editedShift: any) {
+    this.editModalVisible = false;
     this.loading = true;
     try {
       await this.db.editShift(this.selectedShift.id, editedShift);
     } catch (error: any) {
       console.log(error);
     } finally {
-      this.editModalVisible = false;
+      this.loading = false;
     }
   }
 

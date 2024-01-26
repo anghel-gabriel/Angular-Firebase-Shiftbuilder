@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {isDateBefore} from 'src/app/utils/validation';
-import {Message} from 'primeng/api';
-import {ShiftsService} from '../../services/shifts.service';
-import {calculateProfit} from '../../utils/computation';
+import { Component } from '@angular/core';
+import { isDateBefore } from 'src/app/utils/validation';
+import { Message } from 'primeng/api';
+import { ShiftsService } from '../../services/shifts.service';
+import { calculateProfit } from '../../utils/computation';
 
 @Component({
   selector: 'app-add-form',
@@ -17,8 +17,9 @@ export class AddFormComponent {
   messages: Message[] = [];
   workplaces = [
     {
-      label: 'Frontend', value: 'Frontend'
-    }
+      label: 'Frontend',
+      value: 'Frontend',
+    },
 
     // {
     //   label: 'Backend',
@@ -32,19 +33,25 @@ export class AddFormComponent {
     // {label: 'SQL', value: {name: 'SQL', imgUrl: '../../../assets/sql.png'}}
   ];
 
-  constructor(private db: ShiftsService) {
-  }
+  constructor(private db: ShiftsService) {}
 
   showError(message: string) {
-    this.messages = [...this.messages, {
-      severity: 'error',
-      detail: message,
-    }];
+    this.messages = [
+      ...this.messages,
+      {
+        severity: 'error',
+        detail: message,
+      },
+    ];
   }
 
   async onSubmit() {
     this.messages = [];
-    if (!this.workTime || !Array.isArray(this.workTime) || this.workTime.length < 2) {
+    if (
+      !this.workTime ||
+      !Array.isArray(this.workTime) ||
+      this.workTime.length < 2
+    ) {
       this.showError('Start time and end time are mandatory.');
       return;
     }
@@ -71,8 +78,8 @@ export class AddFormComponent {
       endTime: endTime.toISOString(),
       hourlyWage: parseFloat(this.hourlyWage),
       workplace: this.workplace,
-      comments: this.comments,
-      profit: calculateProfit(startTime, endTime, this.hourlyWage)
+      comments: this.comments || '',
+      profit: calculateProfit(startTime, endTime, this.hourlyWage),
     };
 
     await this.db.addShift(shift);
