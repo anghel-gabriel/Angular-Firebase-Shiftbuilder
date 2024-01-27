@@ -70,14 +70,30 @@ export class ShiftsPageComponent implements OnInit {
     this.addModalVisible = true;
   }
 
+  onAddModalClose() {
+    this.addModalVisible = false;
+  }
+
+  async onAddSubmit(addedShift: any) {
+    this.loading = true;
+    this.addModalVisible = false;
+    try {
+      await this.db.addShift(addedShift);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   onEditClick(shift: any) {
     this.selectedShift = shift;
     this.editModalVisible = true;
   }
 
   async onEditSubmit(editedShift: any) {
-    this.editModalVisible = false;
     this.loading = true;
+    this.editModalVisible = false;
     try {
       await this.db.editShift(this.selectedShift.id, editedShift);
     } catch (error: any) {

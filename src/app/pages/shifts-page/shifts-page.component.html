@@ -1,3 +1,4 @@
+<!-- shifts table -->
 <div class="card max-w-[1720px] mx-auto">
   <p-table
     #dt
@@ -171,10 +172,10 @@
         <td>
           <span class="p-column-title">Workplace</span>
           <div class="flex items-center gap-1">
-            <img [src]="shift.workplace.imgUrl" style="width: 20px"/>
+            <img [src]="shift.workplace.imgUrl" style="width: 20px" />
             <span class="ml-1 vertical-align-middle">{{
-                shift.workplace
-              }}</span>
+              shift.workplace
+            }}</span>
           </div>
         </td>
         <td>
@@ -238,8 +239,9 @@
   [modal]="true"
   header="Add a new shift"
   styleClass="w-[90vw] max-w-[600px]"
+  (onHide)="onAddModalClose()"
 >
-  <app-add-form></app-add-form>
+  <app-add-form (submit)="onAddSubmit($event)" />
 </p-dialog>
 
 <!-- edit shift modal -->
@@ -251,10 +253,7 @@
   styleClass="w-[90vw] max-w-[600px]"
 >
   <!-- The form to edit a shift. Add necessary fields here -->
-  <app-edit-form
-    (submit)="onEditSubmit($event)"
-    [editShift]="selectedShift"
-  ></app-edit-form>
+  <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift" />
 </p-dialog>
 
 <!-- overlay panel for -->
@@ -266,5 +265,5 @@
 <p-confirmPopup></p-confirmPopup>
 
 @if (loading) {
-  <app-spinner></app-spinner>
+<app-spinner></app-spinner>
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { isDateBefore } from 'src/app/utils/validation';
 import { Message } from 'primeng/api';
 import { ShiftsService } from '../../services/shifts.service';
@@ -10,6 +10,8 @@ import { calculateProfit } from '../../utils/computation';
   styleUrls: ['./add-form.component.scss'],
 })
 export class AddFormComponent {
+  @Output() submit = new EventEmitter<any>();
+  loading = false;
   workTime: any;
   hourlyWage: any;
   workplace: any;
@@ -82,6 +84,6 @@ export class AddFormComponent {
       profit: calculateProfit(startTime, endTime, this.hourlyWage),
     };
 
-    await this.db.addShift(shift);
+    this.submit.emit(shift);
   }
 }
