@@ -18,13 +18,13 @@ export function isUserAgeBetweenEighteenAndNinety(date: any) {
   const currentDate = new Date();
 
   const eighteenYearsAgo = new Date(
-    currentDate.getFullYear() - 18,
+    currentDate.getFullYear() - 6,
     currentDate.getMonth(),
     currentDate.getDate()
   );
 
   const ninetyYearsAgo = new Date(
-    currentDate.getFullYear() - 90,
+    currentDate.getFullYear() - 130,
     currentDate.getMonth(),
     currentDate.getDate()
   );

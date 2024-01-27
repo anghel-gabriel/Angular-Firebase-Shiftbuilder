@@ -8,6 +8,7 @@ import {
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
 import { AuthenticationService } from '../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -53,7 +54,8 @@ export class RegisterPageComponent {
 
   constructor(
     private messageService: MessageService,
-    public auth: AuthenticationService
+    private auth: AuthenticationService,
+    private router: Router
   ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
@@ -73,7 +75,7 @@ export class RegisterPageComponent {
     });
   }
 
-  // form validation
+  // form validation on pressing next
   async handleNext() {
     // first step validation
     if (this.activeIndex === 0) {
@@ -118,20 +120,29 @@ export class RegisterPageComponent {
           this.showError('Your passwords must match');
           return;
         }
-
-        // Check if the username is available
+        // check if the username is available
         this.isLoading = true;
-        const isAvailable = await this.auth.isUsernameAvailable(this.username);
-        this.isLoading = false;
+        const isUsernameAvailable = await this.auth.isUsernameAvailable(
+          this.username
+        );
+        const isEmailAvailable = await this.auth.isEmailAvailable(this.email);
 
-        if (!isAvailable) {
+        this.isLoading = false;
+        if (!isUsernameAvailable) {
           this.showError(
             'This username is already taken. Please choose another one.'
           );
           return;
         }
+        if (!isEmailAvailable) {
+          this.showError(
+            'This email address is already already in use. Please choose another one.'
+          );
+          return;
+        }
       }
     }
+
     // second step validation
     if (this.activeIndex === 1) {
       if (this.firstName.length < 2 || this.lastName.length < 2) {
@@ -165,6 +176,7 @@ export class RegisterPageComponent {
   async onSubmit() {
     this.messageService.add({
       severity: 'warn',
+      summary: 'Loading',
       detail: 'Registration process in progress. Please wait...',
     });
     this.isLoading = true;
@@ -182,8 +194,12 @@ export class RegisterPageComponent {
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
-        detail: 'You have successfully registered.',
+        detail:
+          'You have successfully registered. You will be redirected to Shifts page.',
       });
+      // adding a delay before redirecting user to have enough time to read the notifications
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      this.router.navigate(['/shifts']);
     } catch (error: any) {
       if (error.message.includes('auth/email-already-in-use')) {
         this.showError(
@@ -200,5 +216,4 @@ export class RegisterPageComponent {
 
   // TODO: fix birthdate
   // TODO: after registration, user will go to homepage
-  // TODO: user can reset its password
 }

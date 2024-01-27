@@ -46,6 +46,13 @@ export class AuthenticationService {
     return snapshot.empty;
   }
 
+  async isEmailAvailable(username: string): Promise<boolean> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('email', '==', username));
+    const snapshot = await getDocs(q);
+    return snapshot.empty;
+  }
+
   async register(registerData: RegisterInterface) {
     try {
       // check if the username already exists in the users collection

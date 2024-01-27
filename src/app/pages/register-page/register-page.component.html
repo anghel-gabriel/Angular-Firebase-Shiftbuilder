@@ -8,7 +8,7 @@
 ></p-steps>
 
 <!-- 1. credentials -->
-<p-card *ngIf="activeIndex === 0" styleClass="max-w-[920px] mt-[60px] mx-auto">
+@if (activeIndex ===0){<p-card styleClass="max-w-[920px] mt-[60px] mx-auto">
   <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
     <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
       <!-- email -->
@@ -39,7 +39,7 @@
           <label for="username">Username*</label>
         </span>
         <small class="mt-1"
-        >Username must be alphanumeric and at least 6 characters long</small
+          >Username must be alphanumeric and at least 6 characters long</small
         >
       </div>
     </div>
@@ -60,8 +60,8 @@
           </span>
         </span>
         <small class="mt-1" id="age-help"
-        >Password requires 6+ characters, including uppercase, lowercase, a
-         number, and a symbol"</small
+          >Password requires 6+ characters, including uppercase, lowercase, a
+          number, and a symbol"</small
         >
       </div>
       <!-- confirm password -->
@@ -100,11 +100,14 @@
         styleClass="hidden"
       ></p-button>
     </div>
-  </div>
-</p-card>
+  </div> </p-card
+>}
 
 <!-- 2. personal info -->
-<p-card *ngIf="activeIndex === 1" styleClass="max-w-[920px] my-[60px] mx-auto">
+@if(activeIndex===1) {<p-card
+  *ngIf="activeIndex === 1"
+  styleClass="max-w-[920px] my-[60px] mx-auto"
+>
   <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
     <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
       <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
@@ -118,7 +121,7 @@
           <label for="firstName">First name*</label>
         </span>
         <small class="mt-1"
-        >First name should be at least 6 characters long</small
+          >First name should be at least 6 characters long</small
         >
       </div>
 
@@ -133,7 +136,7 @@
           <label for="lastName">Last name*</label>
         </span>
         <small class="mt-1"
-        >Last name should be at least 6 characters long</small
+          >Last name should be at least 6 characters long</small
         >
       </div>
     </div>
@@ -152,7 +155,7 @@
           </span>
         </span>
         <small class="mt-1" id="age-help"
-        >You must be at least 18 years-old</small
+          >You must be at least 18 years-old</small
         >
       </div>
 
@@ -187,14 +190,17 @@
         label="Next"
       ></p-button>
     </div>
-  </div>
-</p-card>
+  </div> </p-card
+>}
 
 <!-- 3. confirm sign-up data -->
-<p-card *ngIf="activeIndex === 2" styleClass="max-w-[920px] my-[60px] mx-auto">
+@if(activeIndex ===2 ){<p-card
+  *ngIf="activeIndex === 2"
+  styleClass="max-w-[920px] my-[60px] mx-auto"
+>
   <div class="flex flex-col gap-5 px-[3%] pb-[10px]">
     <!-- user agreement -->
-    <h1 class="mt-0">ShiftEase Platform User Agreement</h1>
+    <h1 class="mt-0 text-xl font-bold">ShiftEase Platform User Agreement</h1>
 
     <div>
       <p class="m-0">
@@ -205,17 +211,17 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Parties:</h3>
+      <h3 class="mb-[10px] font-bold">Parties:</h3>
       <p class="m-0"><b>User Information:</b></p>
       <ul>
         <li><b>Name:</b> {{ firstName }} {{ lastName }}</li>
         <li><b>Date of Birth:</b> {{ birthDate | date }}</li>
-        <li><b>Gender:</b> {{ gender }}</li>
+        <li><b>Gender:</b> {{ gender.name }}</li>
       </ul>
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Purpose and Use:</h3>
+      <h3 class="mb-[10px] font-bold">Purpose and Use:</h3>
       <p class="m-0">
         I hereby acknowledge that I will use ShiftEase solely for its intended
         purpose as set forth by the platform. I agree to comply with all terms
@@ -225,7 +231,7 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Prohibited Actions:</h3>
+      <h3 class="mb-[10px] font-bold">Prohibited Actions:</h3>
       <p class="m-0">
         I commit to refrain from any actions that may harm, disrupt, or alter
         the normal functioning of ShiftEase. This includes, but is not limited
@@ -235,7 +241,7 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Liability and Damages:</h3>
+      <h3 class="mb-[10px] font-bold">Liability and Damages:</h3>
       <p class="m-0">
         I understand that any breach of this Agreement may result in immediate
         termination of my access to ShiftEase. In the event of a breach, I agree
@@ -246,7 +252,7 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Data Privacy and Security:</h3>
+      <h3 class="mb-[10px] font-bold">Data Privacy and Security:</h3>
       <p class="m-0">
         I agree to adhere to ShiftEase's data privacy and protection policies. I
         will not disclose, share, or misuse any personal information obtained
@@ -255,7 +261,7 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Amendments and Termination:</h3>
+      <h3 class="mb-[10px] font-bold">Amendments and Termination:</h3>
       <p class="m-0">
         ShiftEase reserves the right to modify this Agreement at any time. I
         will be notified of any changes and continued use of the platform will
@@ -264,7 +270,7 @@
     </div>
 
     <div>
-      <h3 class="mb-[10px]">Governing Law:</h3>
+      <h3 class="mb-[10px] font-bold">Governing Law:</h3>
       <p class="m-0">
         This Agreement shall be governed by the laws of the jurisdiction in
         which ShiftEase operates.
@@ -281,8 +287,8 @@
         styleClass="block"
       ></p-checkbox>
       <label class="cursor-pointer" for="agreementCheckbox"
-      >By registering, I confirm that I have read, understood, and agree to
-       the User Agreement.</label
+        >By registering, I confirm that I have read, understood, and agree to
+        the User Agreement.</label
       >
     </div>
     <div class="mt-[10px] flex items-center justify-center"></div>
@@ -302,23 +308,27 @@
         [text]="true"
         class="sm:mr-5"
         icon="pi pi-check"
-        label='Sign up'
+        label="Sign up"
       ></p-button>
     </div>
   </div>
 </p-card>
+}
 
-
+<!-- already have an account -->
 @if (activeIndex === 0) {
-  <p class="text-indigo-700 text-center p-4 mb-[60px]">
-    <a class="hover:text-black" routerLink="/sign-in">
-      Already have an account? Log in by clicking
-      <span class="font-bold">here</span></a
-    >.
-  </p>
+<p class="text-indigo-700 text-center p-4 mb-[60px]">
+  <a class="hover:text-black" routerLink="/sign-in">
+    Already have an account? Log in by clicking
+    <span class="font-bold">here</span></a
+  >.
+</p>
 }
 
-<p-toast></p-toast>
+<!-- loading spinner -->
 @if (isLoading) {
-  <app-spinner></app-spinner>
+<app-spinner></app-spinner>
 }
+
+<!-- toast notification -->
+<p-toast></p-toast>
