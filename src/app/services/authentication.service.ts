@@ -53,23 +53,20 @@ export class AuthenticationService {
     return snapshot.empty;
   }
 
-  async register(registerData: RegisterInterface) {
-    try {
-      // check if the username already exists in the users collection
-      const usernameQuery = query(
-        collection(this.firestore, 'users'),
-        where('username', '==', registerData.username)
-      );
-      const querySnapshot = await getDocs(usernameQuery);
-      if (!querySnapshot.empty) {
-        // if a user with the same username is found, throw an error
-        throw new Error(
-          'Username already exists. Please choose a different username.'
-        );
-      }
-    } catch (error: any) {
-      throw new Error(error);
+  async getEmailFromUsername(username: any) {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('username', '==', username));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      return null;
+    } else {
+      const userDoc = snapshot.docs[0];
+      const userData = userDoc.data();
+      return userData['email'];
     }
+  }
+
+  async register(registerData: RegisterInterface) {
     // create user in firebase auth
     try {
       const registerResponse = await createUserWithEmailAndPassword(

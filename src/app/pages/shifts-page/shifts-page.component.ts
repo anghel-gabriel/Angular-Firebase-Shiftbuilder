@@ -13,6 +13,7 @@ import { ShiftsService } from '../../services/shifts.service';
 })
 export class ShiftsPageComponent implements OnInit {
   loading: boolean = false;
+  isLoading: boolean = false;
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
   addModalVisible = false;
@@ -45,12 +46,10 @@ export class ShiftsPageComponent implements OnInit {
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
-
-    this.loading = true; // Set loading to true before fetching data
     this.db.getShiftsChanges().subscribe((shifts) => {
       this.shifts = [...shifts];
-      this.loading = false;
-    }); // Set loading to false after data is fetched
+    });
+    this.db.getAreShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -127,6 +126,8 @@ export class ShiftsPageComponent implements OnInit {
       await this.db.deleteShift(shiftId);
     } catch (error: any) {
       console.error('Error deleting shift', error);
+    } finally {
+      this.loading = false;
     }
   }
 

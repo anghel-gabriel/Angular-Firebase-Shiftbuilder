@@ -85,6 +85,7 @@ export class RegisterPageComponent {
       }
       if (this.username.length < 6) {
         this.showError('Your username must be at least 6 characters long');
+        return;
       }
       if (!isUsernameValid(this.username)) {
         this.showError('Your username must be alphanumeric');

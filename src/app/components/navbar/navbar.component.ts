@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {MessageService} from 'primeng/api';
-import {AuthenticationService} from '../../services/authentication.service';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { AuthenticationService } from '../../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +10,14 @@ import {Router} from '@angular/router';
   providers: [MessageService],
 })
 export class NavbarComponent {
-  navbarItems = [{label: 'Homepage', icon: 'pi pi-fw pi-home', url: ''}] as any;
+  navbarItems = [
+    { label: 'Homepage', icon: 'pi pi-fw pi-home', url: '' },
+  ] as any;
+  isLoading: boolean = false;
 
   constructor(private auth: AuthenticationService, private router: Router) {
     this.auth.onUserStateChanged(() => {
-      this.updateNavbarItems((!!this.auth.getAuthUser()));
+      this.updateNavbarItems(!!this.auth.getAuthUser());
     });
   }
 
@@ -24,13 +27,13 @@ export class NavbarComponent {
         label: 'Shifts',
         icon: 'pi pi-fw pi-calendar',
         url: 'shifts',
-        visible: isUserLogged
+        visible: isUserLogged,
       },
       {
         label: 'Profile',
         icon: 'pi pi-fw pi-pencil',
         url: 'profile',
-        visible: isUserLogged
+        visible: isUserLogged,
       },
 
       {
@@ -39,30 +42,32 @@ export class NavbarComponent {
         command: async () => {
           await this.onSignOut();
         },
-        visible: isUserLogged
+        visible: isUserLogged,
       },
       {
         label: 'Sign In',
         icon: 'pi pi-fw pi-arrow-circle-right',
         url: 'sign-in',
-        visible: !isUserLogged
+        visible: !isUserLogged,
       },
       {
         label: 'Register',
         icon: 'pi pi-fw pi-user-plus',
         url: 'register',
-        visible: !isUserLogged
+        visible: !isUserLogged,
       },
     ];
   }
 
-
   async onSignOut() {
+    this.isLoading = true;
     try {
       await this.auth.logOut();
       await this.router.navigate(['/sign-in']);
     } catch (error: any) {
       console.log(error);
+    } finally {
+      this.isLoading = false;
     }
   }
 }

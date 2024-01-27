@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Firestore,
   addDoc,
@@ -11,10 +11,10 @@ import {
   collectionChanges,
   where,
   orderBy,
-  query
+  query,
 } from '@angular/fire/firestore';
-import {BehaviorSubject, switchMap} from 'rxjs';
-import {AuthenticationService} from './authentication.service';
+import { BehaviorSubject, switchMap } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class ShiftsService {
   getShiftsChanges() {
     return collectionChanges(query(collection(this.firestore, 'shifts'))).pipe(
       switchMap(async () => {
-        const val = await this.getUserDocsList();
+        const val = await this.getUserShifts();
         return val;
       })
     );
@@ -64,7 +64,10 @@ export class ShiftsService {
 
   async addShift(shift: any) {
     try {
-      await addDoc(this.shiftsCol, {...shift, author: this.auth.getAuthUser()?.uid});
+      await addDoc(this.shiftsCol, {
+        ...shift,
+        author: this.auth.getAuthUser()?.uid,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -88,27 +91,34 @@ export class ShiftsService {
     }
   }
 
-  private async getUserDocsList() {
-    const user = this.auth.getAuthUser();
-    const userId = user?.uid || '';
-    if (!userId) throw new Error('User not logged');
+  private async getUserShifts() {
+    this.areShiftsLoading.next(true);
+    try {
+      const user = this.auth.getAuthUser();
+      const userId = user?.uid || '';
+      if (!userId) throw new Error('User not logged');
 
-    let queryRef = query(
-      collection(this.firestore, 'shifts'),
-      where('author', '==', userId),
-      orderBy('startTime', 'desc')
-    );
-    const docs = await getDocs(queryRef);
-    const shiftsList = [] as any;
+      let queryRef = query(
+        collection(this.firestore, 'shifts'),
+        where('author', '==', userId),
+        orderBy('startTime', 'desc')
+      );
+      const docs = await getDocs(queryRef);
+      const shiftsList = [] as any;
 
-    docs.forEach((val: any) => {
-      shiftsList.push({
-        id: val.id,
-        ...val.data(),
+      docs.forEach((val: any) => {
+        shiftsList.push({
+          id: val.id,
+          ...val.data(),
+        });
       });
-    });
 
-    console.log('shiftsserv', shiftsList);
-    return shiftsList;
+      console.log('shiftsserv', shiftsList);
+      return shiftsList;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.areShiftsLoading.next(false);
+    }
   }
 }
