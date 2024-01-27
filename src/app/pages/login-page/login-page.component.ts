@@ -14,6 +14,8 @@ export class LoginPageComponent {
   loginEmailOrUsername = '';
   password = '';
   loginWay: string = 'email';
+
+  // login way toggle for desktop
   desktopSelectOptions: any[] = [
     {
       label: 'Sign in with email',
@@ -26,6 +28,7 @@ export class LoginPageComponent {
       disabled: false,
     },
   ];
+  // login way toggle for mobile
   mobileSelectOptions = [
     { label: 'Sign in with email', value: 'email' },
     { label: 'Sign in with username', value: 'username' },

@@ -15,7 +15,7 @@
           <label for="firstName">First name*</label>
         </span>
         <small class="mt-1"
-        >First name should be at least 6 characters long</small
+          >First name should be at least 6 characters long</small
         >
       </div>
       <!-- last name -->
@@ -30,7 +30,7 @@
           <label for="lastName">Last name*</label>
         </span>
         <small class="mt-1"
-        >Last name should be at least 6 characters long</small
+          >Last name should be at least 6 characters long</small
         >
       </div>
     </div>
@@ -51,7 +51,7 @@
           <label for="username">Username*</label>
         </span>
         <small class="mt-1"
-        >Username must be alphanumeric and at least 6 characters long</small
+          >Username must be alphanumeric and at least 6 characters long</small
         >
       </div>
       <!-- birthdate -->
@@ -68,7 +68,7 @@
           </span>
         </span>
         <small class="mt-1" id="age-help"
-        >You must be at least 18 years-old</small
+          >You must be at least 18 years-old</small
         >
       </div>
     </div>
@@ -150,24 +150,28 @@
   </div>
 </p-card>
 
-
+<!-- change password modal -->
 <p-dialog
   [(visible)]="isChangingPasswordModalVisible"
   [modal]="true"
   header="Change password"
   styleClass="w-[90vw] max-w-[600px]"
 >
-  <app-change-password-form/>
+  <app-change-password-form />
 </p-dialog>
 
-
+<!-- change email modal -->
 <p-dialog
   [(visible)]="isChangingEmailModalVisible"
   [modal]="true"
   header="Change email"
   styleClass="w-[90vw] max-w-[600px]"
 >
-  <app-change-email-form/>
+  <app-change-email-form />
 </p-dialog>
 
-<p-toast/>
+<!-- loading spinner -->
+@if(isLoading){
+<app-spinner />}
+
+<p-toast />

@@ -6,7 +6,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
-import {ForgotPasswordComponent} from './pages/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfilePageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'sign-in', component: LoginPageComponent },
-  {path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', component: ErrorPageComponent },
 ];
 

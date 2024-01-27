@@ -29,7 +29,9 @@ export class AuthenticationService {
     UserInterface | DocumentData | null | undefined
   >(null);
 
-  constructor(public auth: Auth, public firestore: Firestore) {}
+  constructor(public auth: Auth, public firestore: Firestore) {
+    this.getUserDataAtRefresh();
+  }
 
   getAuthUser() {
     return this.auth.currentUser;
@@ -110,6 +112,19 @@ export class AuthenticationService {
     }
   }
 
+  async editProfile(newData: UserInterface) {
+    try {
+      const user = this.auth.currentUser;
+      if (!user) throw new Error('No user is currently logged in.');
+
+      const userRef = doc(this.firestore, `users/${user.uid}`);
+      await setDoc(userRef, newData, { merge: true });
+      this.loggedUser.next(newData);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
   async logOut() {
     try {
       await this.auth.signOut();
@@ -147,5 +162,17 @@ export class AuthenticationService {
 
   onUserStateChanged(fn: any) {
     return this.auth.onAuthStateChanged(fn);
+  }
+
+  getUserDataAtRefresh() {
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const loggedUserRef = doc(this.firestore, `users/${user.uid}`);
+        const loggedUserDoc = await getDoc(loggedUserRef);
+        this.loggedUser.next(loggedUserDoc.data());
+      } else {
+        this.loggedUser.next(null);
+      }
+    });
   }
 }

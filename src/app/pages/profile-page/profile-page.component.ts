@@ -1,14 +1,12 @@
-import {Component, HostListener} from '@angular/core';
-import {MenuItem} from 'primeng/api';
-import {MessageService} from 'primeng/api';
+import { Component, HostListener } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import {
-  isEmailValid,
-  isPasswordValid,
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
-import {AuthenticationService} from '../../services/authentication.service';
-import {UserInterface} from '../../utils/interfaces';
+import { AuthenticationService } from '../../services/authentication.service';
+import { UserInterface } from '../../utils/interfaces';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,7 +14,6 @@ import {UserInterface} from '../../utils/interfaces';
   styleUrls: ['./profile-page.component.scss'],
   providers: [MessageService],
 })
-
 export class ProfilePageComponent {
   email = '';
   username = '';
@@ -28,18 +25,17 @@ export class ProfilePageComponent {
   gender: string | { name: string; value: string } = '';
   activeIndex = 0;
   checked = false;
-  isLoading = false;
+  isLoading = true;
   isViewPortAtLeastMedium: boolean = false;
-  // gender select element options
 
   isChangingPasswordModalVisible = false;
   isChangingEmailModalVisible = false;
 
   genderOptions = [
-    {name: 'Unknown', value: 'unknown'},
-    {name: 'Male', value: 'male'},
-    {name: 'Female', value: 'female'},
-    {name: 'Other', value: 'other'},
+    { name: 'Unknown', value: 'unknown' },
+    { name: 'Male', value: 'male' },
+    { name: 'Female', value: 'female' },
+    { name: 'Other', value: 'other' },
   ];
   // steps component
   items: MenuItem[] | undefined = [
@@ -54,9 +50,16 @@ export class ProfilePageComponent {
     },
   ];
 
-  constructor(private messageService: MessageService, private auth: AuthenticationService) {
+  constructor(
+    private messageService: MessageService,
+    private auth: AuthenticationService
+  ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
-    this.auth.getLoggedUser().subscribe((data: any) => this.fillProfileFields(data));
+    this.auth.getLoggedUser().subscribe((data: any) => {
+      console.log(data);
+      this.fillProfileFields(data);
+      if (data) this.isLoading = false;
+    });
   }
 
   // adjust previous&next buttons depending on viewport width
@@ -65,6 +68,7 @@ export class ProfilePageComponent {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
+  // fill profile input fields
   fillProfileFields(data: UserInterface) {
     if (data) {
       this.username = data.email;
@@ -73,9 +77,8 @@ export class ProfilePageComponent {
       this.lastName = data.lastName;
       this.username = data.username;
       this.birthDate = new Date(data.birthDate);
-      this.gender = data.gender || {name: 'Unknown', value: 'unknown'};
+      this.gender = data.gender || { name: 'Unknown', value: 'unknown' };
     }
-
   }
 
   // show error toast function
@@ -83,69 +86,61 @@ export class ProfilePageComponent {
     this.messageService.add({
       severity: 'error',
       detail: message,
+      summary: 'Error',
     });
   }
 
   // form validation
-  handleSaveProfile() {
-    if (this.activeIndex === 0) {
-      if (!isEmailValid(this.email)) {
-        this.showError('Please use a valid email address');
+  async handleSaveProfile() {
+    try {
+      if (this.activeIndex === 0) {
+        if (this.username.length < 6) {
+          this.showError('Your username must be at least 6 characters long');
+        }
+        if (!isUsernameValid(this.username)) {
+          this.showError('Your username must be alphanumeric');
+          return;
+        }
+      }
+      if (this.firstName.length < 2 || this.lastName.length < 2) {
+        this.showError(
+          'First name and last name must be at least 2 characters long'
+        );
         return;
       }
-      if (this.username.length < 6) {
-        this.showError('Your username must be at least 6 characters long');
-      }
-      if (!isUsernameValid(this.username)) {
-        this.showError('Your username must be alphanumeric');
+      if (
+        !this.birthDate ||
+        !isUserAgeBetweenEighteenAndNinety(new Date(this.birthDate))
+      ) {
+        this.showError(
+          'You must be between 18 and 90 years old in order to register'
+        );
         return;
       }
-      if (!isPasswordValid(this.password)) {
-        this.showError('Your password must respect the requested format');
-        return;
-      }
-      if (this.password !== this.confirmPassword) {
-        this.showError('Your passwords must match');
-        return;
-      }
-    }
-    if (this.firstName.length < 2 || this.lastName.length < 2) {
-      this.showError(
-        'First name and last name must be at least 2 characters long'
-      );
-      return;
-    }
-    if (
-      !this.birthDate ||
-      !isUserAgeBetweenEighteenAndNinety(new Date(this.birthDate))
-    ) {
-      this.showError(
-        'You must be between 18 and 90 years old in order to register'
-      );
-      return;
-    }
 
+      this.isLoading = true;
+      const newData = {
+        email: this.email,
+        username: this.username,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        birthDate: this.birthDate.toISOString(),
+        gender: this.gender,
+      };
+      await this.auth.editProfile(newData as any);
+      this.messageService.add({
+        severity: 'success',
+        detail: 'Changes saved succesfully',
+        summary: 'Success',
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
+    }
   }
-
 
   onUpload(event: any) {
     console.log(event);
   }
-
-  onSubmit() {
-    const obj = {
-      email: this.email,
-      username: this.username,
-      password: this.password,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      birthDate: this.birthDate,
-      gender: this.gender,
-    };
-  }
-
-  // ! #TODO: after registration, user will go to homepage
-  // ! #TODO: user can reset its password
-  // ! #TODO: add 'already have an account?'
-  // ? ASK: why does resetting password must include delete all user data
 }
