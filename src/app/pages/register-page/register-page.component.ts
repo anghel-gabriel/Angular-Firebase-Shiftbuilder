@@ -1,13 +1,13 @@
-import {Component, HostListener} from '@angular/core';
-import {MenuItem} from 'primeng/api';
-import {MessageService} from 'primeng/api';
+import { Component, HostListener } from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
-import {AuthenticationService} from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register-page',
@@ -31,10 +31,10 @@ export class RegisterPageComponent {
 
   // gender select element options
   genderOptions = [
-    {name: 'Unknown', value: 'unknown'},
-    {name: 'Male', value: 'male'},
-    {name: 'Female', value: 'female'},
-    {name: 'Other', value: 'other'},
+    { name: 'Unknown', value: 'unknown' },
+    { name: 'Male', value: 'male' },
+    { name: 'Female', value: 'female' },
+    { name: 'Other', value: 'other' },
   ];
 
   // steps component
@@ -74,7 +74,7 @@ export class RegisterPageComponent {
   }
 
   // form validation
-  handleNext() {
+  async handleNext() {
     // first step validation
     if (this.activeIndex === 0) {
       if (!isEmailValid(this.email)) {
@@ -95,6 +95,41 @@ export class RegisterPageComponent {
       if (this.password !== this.confirmPassword) {
         this.showError('Your passwords must match');
         return;
+      }
+
+      if (this.activeIndex === 0) {
+        if (!isEmailValid(this.email)) {
+          this.showError('Please use a valid email address');
+          return;
+        }
+        if (this.username.length < 6) {
+          this.showError('Your username must be at least 6 characters long');
+          return;
+        }
+        if (!isUsernameValid(this.username)) {
+          this.showError('Your username must be alphanumeric');
+          return;
+        }
+        if (!isPasswordValid(this.password)) {
+          this.showError('Your password must respect the requested format');
+          return;
+        }
+        if (this.password !== this.confirmPassword) {
+          this.showError('Your passwords must match');
+          return;
+        }
+
+        // Check if the username is available
+        this.isLoading = true;
+        const isAvailable = await this.auth.isUsernameAvailable(this.username);
+        this.isLoading = false;
+
+        if (!isAvailable) {
+          this.showError(
+            'This username is already taken. Please choose another one.'
+          );
+          return;
+        }
       }
     }
     // second step validation
@@ -140,7 +175,7 @@ export class RegisterPageComponent {
       firstName: this.firstName,
       lastName: this.lastName,
       birthDate: new Date(this.birthDate).toISOString(),
-      gender: this.gender || {name: 'Unknown', value: 'unknown'},
+      gender: this.gender || { name: 'Unknown', value: 'unknown' },
     };
     try {
       await this.auth.register(newUserData);

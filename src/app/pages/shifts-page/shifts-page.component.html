@@ -33,7 +33,7 @@
           tooltipPosition="bottom"
         ></p-button>
         <p-button
-          (click)="showAddDialog()"
+          (click)="onAddClick()"
           [outlined]="true"
           icon="pi pi-plus"
           pRipple
@@ -171,10 +171,10 @@
         <td>
           <span class="p-column-title">Workplace</span>
           <div class="flex items-center gap-1">
-            <img [src]="shift.workplace.imgUrl" style="width: 20px" />
+            <img [src]="shift.workplace.imgUrl" style="width: 20px"/>
             <span class="ml-1 vertical-align-middle">{{
-              shift.workplace
-            }}</span>
+                shift.workplace
+              }}</span>
           </div>
         </td>
         <td>
@@ -244,6 +244,7 @@
 
 <!-- edit shift modal -->
 <p-dialog
+  (onHide)="onEditModalClose()"
   [(visible)]="editModalVisible"
   [modal]="true"
   header="Edit Shift"
@@ -264,5 +265,6 @@
 <!-- delete confirm popup -->
 <p-confirmPopup></p-confirmPopup>
 
-@if (loading){
-<app-spinner></app-spinner>}
+@if (loading) {
+  <app-spinner></app-spinner>
+}

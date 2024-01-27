@@ -45,17 +45,12 @@ export class ShiftsPageComponent implements OnInit {
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
-    // this.loading = true;
-    this.db.getShiftsChanges().subscribe(
-      (shifts) => {
-        this.shifts = [...shifts];
-        this.loading = false;
-      },
-      (error) => {
-        console.error('Error fetching shifts:', error);
-        this.loading = false;
-      }
-    );
+
+    this.loading = true; // Set loading to true before fetching data
+    this.db.getShiftsChanges().subscribe((shifts) => {
+      this.shifts = [...shifts];
+      this.loading = false;
+    }); // Set loading to false after data is fetched
   }
 
   applyFilterGlobal($event: any, stringVal: any) {
@@ -71,22 +66,8 @@ export class ShiftsPageComponent implements OnInit {
   }
 
   // add shift modal
-  showAddDialog() {
+  onAddClick() {
     this.addModalVisible = true;
-  }
-
-  // delete confirmation popup
-  onDeleteClick(event: Event, shift: any) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'Are you sure?',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-sm',
-      accept: () => {
-        this.db.deleteShift(shift.id);
-      },
-      reject: () => {},
-    });
   }
 
   onEditClick(shift: any) {
@@ -103,6 +84,33 @@ export class ShiftsPageComponent implements OnInit {
       console.log(error);
     } finally {
       this.loading = false;
+    }
+  }
+
+  onEditModalClose() {
+    this.selectedShift = null;
+  }
+
+  // delete confirmation popup
+  onDeleteClick(event: Event, shift: any) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure?',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-sm',
+      accept: () => {
+        this.onDeleteConfirm(shift.id);
+      },
+      reject: () => {},
+    });
+  }
+
+  async onDeleteConfirm(shiftId: any) {
+    this.loading = true;
+    try {
+      await this.db.deleteShift(shiftId);
+    } catch (error: any) {
+      console.error('Error deleting shift', error);
     }
   }
 

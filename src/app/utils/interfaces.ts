@@ -16,4 +16,5 @@ export interface UserInterface {
   lastName: string;
   birthDate: any;
   gender: any;
+  role: 'user' | 'admin';
 }

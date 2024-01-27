@@ -1,23 +1,35 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Auth,
-  createUserWithEmailAndPassword, sendPasswordResetEmail,
-  signInWithEmailAndPassword, updateEmail, updatePassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  updateEmail,
+  updatePassword,
 } from '@angular/fire/auth';
-import {Firestore, doc, setDoc, getDoc} from '@angular/fire/firestore';
-import {RegisterInterface, UserInterface} from '../utils/interfaces';
-import {BehaviorSubject} from 'rxjs';
-import {DocumentData} from '@angular/fire/compat/firestore';
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from '@angular/fire/firestore';
+import { RegisterInterface, UserInterface } from '../utils/interfaces';
+import { BehaviorSubject } from 'rxjs';
+import { DocumentData } from '@angular/fire/compat/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class AuthenticationService {
-  private loggedUser = new BehaviorSubject<UserInterface | DocumentData | null | undefined>(null);
+  private loggedUser = new BehaviorSubject<
+    UserInterface | DocumentData | null | undefined
+  >(null);
 
-  constructor(public auth: Auth, public firestore: Firestore) {
-  }
+  constructor(public auth: Auth, public firestore: Firestore) {}
 
   getAuthUser() {
     return this.auth.currentUser;
@@ -27,9 +39,37 @@ export class AuthenticationService {
     return this.loggedUser.asObservable();
   }
 
+  async isUsernameAvailable(username: string): Promise<boolean> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('username', '==', username));
+    const snapshot = await getDocs(q);
+    return snapshot.empty;
+  }
+
   async register(registerData: RegisterInterface) {
     try {
-      const registerResponse = await createUserWithEmailAndPassword(this.auth, registerData.email, registerData.password);
+      // check if the username already exists in the users collection
+      const usernameQuery = query(
+        collection(this.firestore, 'users'),
+        where('username', '==', registerData.username)
+      );
+      const querySnapshot = await getDocs(usernameQuery);
+      if (!querySnapshot.empty) {
+        // if a user with the same username is found, throw an error
+        throw new Error(
+          'Username already exists. Please choose a different username.'
+        );
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+    // create user in firebase auth
+    try {
+      const registerResponse = await createUserWithEmailAndPassword(
+        this.auth,
+        registerData.email,
+        registerData.password
+      );
       const newUserData: UserInterface = {
         uid: registerResponse.user.uid,
         email: registerData.email,
@@ -37,8 +77,10 @@ export class AuthenticationService {
         firstName: registerData.firstName,
         lastName: registerData.lastName,
         birthDate: registerData.birthDate,
-        gender: registerData.gender
+        gender: registerData.gender,
+        role: 'user',
       };
+      // create username in firestore
       const newUserRef = doc(this.firestore, `users/${newUserData.uid}`);
       await setDoc(newUserRef, newUserData);
       this.loggedUser.next(newUserData);
@@ -49,7 +91,11 @@ export class AuthenticationService {
 
   async signIn(email: string, password: string) {
     try {
-      const signInResponse = await signInWithEmailAndPassword(this.auth, email, password);
+      const signInResponse = await signInWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
       const loggedUserUid = signInResponse.user.uid;
       const loggedUserRef = doc(this.firestore, `users/${loggedUserUid}`);
       const loggedUserDoc = await getDoc(loggedUserRef);
