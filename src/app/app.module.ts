@@ -53,6 +53,8 @@ import { ChangePasswordFormComponent } from './components/change-password-form/c
 import { ChangeEmailFormComponent } from './components/change-email-form/change-email-form.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { EditFormComponent } from './components/edit-form/edit-form.component';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
@@ -103,7 +105,15 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
     ProgressSpinnerModule,
     ConfirmPopupModule,
     MessagesModule,
-
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp({
+      projectId: 'shiftease-2155e',
+      appId: '1:779039596001:web:0f41e3f29b4b2bac7486a0',
+      storageBucket: 'shiftease-2155e.appspot.com',
+      apiKey: 'AIzaSyDHm2tBvg7SNWQdLOHWlp_rBfs_wcJBEYM',
+      authDomain: 'shiftease-2155e.firebaseapp.com',
+      messagingSenderId: '779039596001',
+    }),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'shiftease-2155e',

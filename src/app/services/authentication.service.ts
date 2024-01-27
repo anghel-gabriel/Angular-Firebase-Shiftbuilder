@@ -112,6 +112,34 @@ export class AuthenticationService {
     }
   }
 
+  async logOut() {
+    try {
+      await this.auth.signOut();
+      this.loggedUser.next(null);
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async updateUserPhoto(userId: string, photoURL: string) {
+    const userRef = doc(this.firestore, `users/${userId}`);
+    await setDoc(userRef, { photoURL }, { merge: true });
+  }
+
+  async removeUserPhoto(userId: string) {
+    if (!userId) {
+      throw new Error('User ID is required to remove photo.');
+    }
+
+    const userRef = doc(this.firestore, `users/${userId}`);
+    try {
+      await setDoc(userRef, { photoURL: '' }, { merge: true });
+      console.log('User photo URL removed successfully.');
+    } catch (error: any) {
+      throw new Error(`Error removing user photo: ${error.message}`);
+    }
+  }
+
   async editProfile(newData: UserInterface) {
     try {
       const user = this.auth.currentUser;
@@ -122,15 +150,6 @@ export class AuthenticationService {
       this.loggedUser.next(newData);
     } catch (error: any) {
       throw new Error(error.message);
-    }
-  }
-
-  async logOut() {
-    try {
-      await this.auth.signOut();
-      this.loggedUser.next(null);
-    } catch (error: any) {
-      throw new Error(error);
     }
   }
 

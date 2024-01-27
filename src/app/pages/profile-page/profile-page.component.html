@@ -97,22 +97,24 @@
       <div
         class="flex justify-between gap-x-3 items-center w-full max-w-[330px]"
       >
-        <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          shape="circle"
-          size="large"
-        ></p-avatar>
+        <p-avatar [image]="photoURL" shape="circle" size="large"></p-avatar>
         <div class="flex flex-wrap justify-between gap-y-2 gap-x-1 mb-1">
           <p-fileUpload
-            (onUpload)="onUpload($event)"
-            [maxFileSize]="1000000"
-            accept="image/*"
-            chooseLabel="Choose"
             mode="basic"
+            [auto]="true"
+            chooseLabel="Choose"
             name="demo[]"
             url="https://www.primefaces.org/cdn/api/upload.php"
-          ></p-fileUpload>
-          <p-button icon="pi pi-trash" label="Remove"></p-button>
+            accept="image/*"
+            [maxFileSize]="1000000"
+            (onUpload)="onUpload($event)"
+          />
+          <p-button
+            icon="pi pi-trash"
+            label="Remove"
+            (onClick)="removePhoto()"
+            [disabled]="photoURL === defaultPhotoURL"
+          />
         </div>
       </div>
     </div>

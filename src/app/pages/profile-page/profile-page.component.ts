@@ -7,6 +7,11 @@ import {
 } from '../../utils/validation';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserInterface } from '../../utils/interfaces';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { FileUploadEvent } from 'primeng/fileupload';
+import { forkJoin } from 'rxjs';
+import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 
 @Component({
   selector: 'app-profile-page',
@@ -23,11 +28,12 @@ export class ProfilePageComponent {
   lastName = '';
   birthDate: any;
   gender: string | { name: string; value: string } = '';
+  photoURL = '';
   activeIndex = 0;
   checked = false;
   isLoading = true;
   isViewPortAtLeastMedium: boolean = false;
-
+  defaultPhotoURL = defaultPhotoURL;
   isChangingPasswordModalVisible = false;
   isChangingEmailModalVisible = false;
 
@@ -52,7 +58,8 @@ export class ProfilePageComponent {
 
   constructor(
     private messageService: MessageService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private fileUpload: FileUploadService
   ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
     this.auth.getLoggedUser().subscribe((data: any) => {
@@ -69,7 +76,7 @@ export class ProfilePageComponent {
   }
 
   // fill profile input fields
-  fillProfileFields(data: UserInterface) {
+  fillProfileFields(data: any) {
     if (data) {
       this.username = data.email;
       this.email = data.email;
@@ -78,6 +85,7 @@ export class ProfilePageComponent {
       this.username = data.username;
       this.birthDate = new Date(data.birthDate);
       this.gender = data.gender || { name: 'Unknown', value: 'unknown' };
+      this.photoURL = data.photoURL || this.defaultPhotoURL;
     }
   }
 
@@ -140,7 +148,42 @@ export class ProfilePageComponent {
     }
   }
 
-  onUpload(event: any) {
-    console.log(event);
+  async onUpload(event: any) {
+    this.isLoading = true;
+    for (let file of event.files) {
+      try {
+        const photoURL = await this.fileUpload.uploadFile(
+          file,
+          `users/${file.name}`
+        );
+        const userId = this.auth.getAuthUser()?.uid;
+        if (userId) {
+          await this.auth.updateUserPhoto(userId, photoURL);
+          this.photoURL = photoURL; // Update the avatar
+          console.log('Photo uploaded and user profile updated.');
+        }
+      } catch (error) {
+        console.error('Error uploading file: ', error);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  async removePhoto() {
+    this.isLoading = true;
+    try {
+      const userId = this.auth.getAuthUser()?.uid;
+      if (userId) {
+        await this.auth.removeUserPhoto(userId);
+        await this.fileUpload.deleteFile(this.photoURL);
+        this.photoURL = this.defaultPhotoURL;
+        console.log('Photo removed successfully.');
+      }
+    } catch (error) {
+      console.error('Error removing photo: ', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }
