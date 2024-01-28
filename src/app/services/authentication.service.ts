@@ -29,9 +29,34 @@ export class AuthenticationService {
   private loggedUser = new BehaviorSubject<
     UserInterface | DocumentData | null | undefined
   >(null);
+  private authStateChecked = new BehaviorSubject<boolean>(false);
 
   constructor(public auth: Auth, public firestore: Firestore) {
-    this.getUserDataAtRefresh();
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const loggedUserRef = doc(this.firestore, `users/${user.uid}`);
+        const loggedUserDoc = await getDoc(loggedUserRef);
+        this.loggedUser.next(loggedUserDoc.data() as UserInterface);
+      } else {
+        this.loggedUser.next(null);
+      }
+      this.authStateChecked.next(true);
+    });
+  }
+
+  waitForAuthStateChecked(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.authStateChecked.value) {
+        resolve();
+      } else {
+        const subscription = this.authStateChecked.subscribe((checked) => {
+          if (checked) {
+            subscription.unsubscribe();
+            resolve();
+          }
+        });
+      }
+    });
   }
 
   getAuthUser() {
@@ -125,18 +150,28 @@ export class AuthenticationService {
 
   async updateUserPhoto(userId: string, photoURL: string) {
     const userRef = doc(this.firestore, `users/${userId}`);
-    await setDoc(userRef, { photoURL }, { merge: true });
+    try {
+      await setDoc(userRef, { photoURL: photoURL }, { merge: true });
+      const updatedUserDoc = await getDoc(userRef);
+      if (updatedUserDoc.exists()) {
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   }
 
   async removeUserPhoto(userId: string) {
     if (!userId) {
       throw new Error('User ID is required to remove photo.');
     }
-
     const userRef = doc(this.firestore, `users/${userId}`);
     try {
-      await setDoc(userRef, { photoURL: '' }, { merge: true });
-      console.log('User photo URL removed successfully.');
+      await setDoc(userRef, { photoURL: defaultPhotoURL }, { merge: true });
+      const updatedUserDoc = await getDoc(userRef);
+      if (updatedUserDoc.exists()) {
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
+      }
     } catch (error: any) {
       throw new Error(`Error removing user photo: ${error.message}`);
     }

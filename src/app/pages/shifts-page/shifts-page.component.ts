@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ShiftsService } from '../../services/shifts.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
+import { getImageUrl } from 'src/app/utils/workplaces';
 
 @Component({
   selector: 'app-shifts-page',
@@ -14,34 +15,24 @@ import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
   providers: [ConfirmationService, MessageService],
 })
 export class ShiftsPageComponent implements OnInit {
-  loading: boolean = false;
-  isLoading: boolean = false;
-  userPhotoURL: any;
-  userCompleteName: string = '';
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
+  // loading states
+  loading: boolean = false;
+  isLoading: boolean = false;
+  // user data
+  userPhotoURL: any;
+  userCompleteName: string = '';
+  // modals
   addModalVisible = false;
   editModalVisible = false;
   bestMonthModalVisible = false;
+  // comment
   currentComments: string = '';
+  // shifts
   shifts: any = [];
   selectedShift: any = null;
-
-  workplaces = [
-    {
-      name: 'Fullstack',
-      value: 'Fullstack',
-      imgUrl:
-        'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-    },
-    {
-      name: 'Frontend',
-      label: 'Frontend',
-      value: 'Frontend',
-      imgUrl:
-        'https://wawiwa-tech.com/wp-content/uploads/2021/09/Logo-NewTech.png',
-    },
-  ];
+  getWorplaceImage = getImageUrl;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -58,7 +49,13 @@ export class ShiftsPageComponent implements OnInit {
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
     this.db.getShiftsChanges().subscribe((shifts) => {
-      this.shifts = [...shifts];
+      this.shifts = [...shifts].map((shift) => {
+        return {
+          ...shift,
+          startTime: new Date(shift.startTime),
+          endTime: new Date(shift.endTime),
+        };
+      });
     });
     this.db.getAreShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
@@ -139,6 +136,7 @@ export class ShiftsPageComponent implements OnInit {
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
+
   // view comment button overlay panel
   toggleOverlayPanel(event: any, comments: string): void {
     if (comments) {
@@ -146,35 +144,35 @@ export class ShiftsPageComponent implements OnInit {
       this.overlayPanel.toggle(event);
     } else this.overlayPanel.hide();
   }
+
+  // shifts to excel
   exportExcel() {
     import('xlsx').then((xlsx) => {
-      FileSaver.saveAs(
-        new Blob(
-          [
-            xlsx.write(
-              {
-                Sheets: {
-                  Shifts: xlsx.utils.json_to_sheet(
-                    this.shifts.map((shift: any) => ({
-                      ...shift,
-                      workplace: shift.workplace.name,
-                    }))
-                  ),
-                },
-                SheetNames: ['Shifts'],
-              },
-              {
-                bookType: 'xlsx',
-                type: 'array',
-              }
-            ),
-          ],
-          {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
-          }
-        ),
-        'ShiftEase' + new Date().getTime() + '.xlsx'
+      const worksheet = xlsx.utils.json_to_sheet(
+        this.shifts.map((shift: any) => ({
+          Workplace: shift.workplace,
+          'Start Time': shift.startTime.toLocaleString(),
+          'End Time': shift.endTime.toLocaleString(),
+          'Hourly Wage ($)': shift.hourlyWage,
+          'Profit ($)': shift.profit,
+          Comments: shift.comments,
+        }))
       );
+
+      const workbook = {
+        Sheets: { Shifts: worksheet },
+        SheetNames: ['Shifts'],
+      };
+
+      const excelBuffer = xlsx.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
+      const data = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+      });
+
+      FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
     });
   }
 }

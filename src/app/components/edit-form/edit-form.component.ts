@@ -6,10 +6,10 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {Message} from 'primeng/api';
-import {ShiftsService} from '../../services/shifts.service';
-import {isDateBefore} from '../../utils/validation';
-import {calculateProfit} from '../../utils/computation';
+import { Message } from 'primeng/api';
+import { isDateBefore } from '../../utils/validation';
+import { calculateProfit } from '../../utils/computation';
+import { workplaces } from 'src/app/utils/workplaces';
 
 @Component({
   selector: 'app-edit-form',
@@ -24,33 +24,14 @@ export class EditFormComponent implements OnChanges {
   workplace: any;
   comments: any;
   messages: Message[] = [];
-  workplaces = [
-    {
-      label: 'Frontend',
-      value: 'Frontend',
-    },
-
-    // {
-    //   label: 'Backend',
-    //   value: {
-    //     name: 'Backend',
-    //     imgUrl: '../../../assets/backend.png'
-    //   }
-    // },
-    // {label: 'Fullstack', value: {name: 'Fullstack', imgUrl: '../../../assets/fullstack.svg'}},
-    // {label: 'Data Analyst', value: {name: 'Data Analyst', imgUrl: '../../../assets/data-analyst.png'}},
-    // {label: 'SQL', value: {name: 'SQL', imgUrl: '../../../assets/sql.png'}}
-  ];
-
-  // constructor() {
-  //   this.hourlyWage = this.editShift?.hourlyWage;
-  //   this.workplace = this.editShift?.workplace;
-  //   this.comments = this.editShift?.comments;
-  // }
+  workplaces = workplaces;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['editShift'] && this.editShift) {
-      this.workTime = [new Date(this.editShift.startTime), new Date(this.editShift.endTime)];
+      this.workTime = [
+        new Date(this.editShift.startTime),
+        new Date(this.editShift.endTime),
+      ];
       this.hourlyWage = this.editShift.hourlyWage;
       this.workplace = this.editShift.workplace;
       this.comments = this.editShift.comments;

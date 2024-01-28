@@ -3,6 +3,7 @@ import { isDateBefore } from 'src/app/utils/validation';
 import { Message } from 'primeng/api';
 import { ShiftsService } from '../../services/shifts.service';
 import { calculateProfit } from '../../utils/computation';
+import { workplaces } from 'src/app/utils/workplaces';
 
 @Component({
   selector: 'app-add-form',
@@ -17,23 +18,7 @@ export class AddFormComponent {
   workplace: any;
   comments: any;
   messages: Message[] = [];
-  workplaces = [
-    {
-      label: 'Frontend',
-      value: 'Frontend',
-    },
-
-    // {
-    //   label: 'Backend',
-    //   value: {
-    //     name: 'Backend',
-    //     imgUrl: '../../../assets/backend.png'
-    //   }
-    // },
-    // {label: 'Fullstack', value: {name: 'Fullstack', imgUrl: '../../../assets/fullstack.svg'}},
-    // {label: 'Data Analyst', value: {name: 'Data Analyst', imgUrl: '../../../assets/data-analyst.png'}},
-    // {label: 'SQL', value: {name: 'SQL', imgUrl: '../../../assets/sql.png'}}
-  ];
+  workplaces = workplaces;
 
   constructor(private db: ShiftsService) {}
 

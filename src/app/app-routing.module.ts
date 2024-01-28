@@ -7,14 +7,23 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'shifts', component: ShiftsPageComponent },
   { path: 'profile', component: ProfilePageComponent },
-  { path: 'register', component: RegisterPageComponent },
-  { path: 'sign-in', component: LoginPageComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
+  {
+    path: 'register',
+    component: RegisterPageComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'sign-in', component: LoginPageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '**', component: ErrorPageComponent },
 ];
 

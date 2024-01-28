@@ -3,6 +3,7 @@
 <div class="card max-w-[1720px] mx-auto">
   <p-table
     #dt
+    styleClass="p-datatable-gridlines"
     [filterDelay]="0"
     [globalFilterFields]="['workplace']"
     [paginator]="true"
@@ -74,45 +75,11 @@
               <p-sortIcon field="workplace"></p-sortIcon>
             </div>
             <p-columnFilter
-              [showAddButton]="false"
-              [showMatchModes]="false"
-              [showOperator]="false"
-              class="ml-auto"
-              display="menu"
+              type="text"
               field="workplace"
-              matchMode="in"
-            >
-              <ng-template pTemplate="header">
-                <div class="px-3 pt-3 pb-0">
-                  <span class="font-bold">Workplace</span>
-                </div>
-              </ng-template>
-              <ng-template
-                let-filter="filterCallback"
-                let-value
-                pTemplate="filter"
-              >
-                <p-multiSelect
-                  (onChange)="filter($event.value)"
-                  [ngModel]="value"
-                  [options]="workplaces"
-                  optionLabel="name"
-                  placeholder="Any"
-                >
-                  <ng-template let-option pTemplate="item">
-                    <div class="inline-block vertical-align-middle">
-                      <img
-                        [alt]="option.label"
-                        [src]="option.imgUrl"
-                        class="vertical-align-middle"
-                        width="24"
-                      />
-                      <span class="ml-1 mt-1">{{ option.name }}</span>
-                    </div>
-                  </ng-template>
-                </p-multiSelect>
-              </ng-template>
-            </p-columnFilter>
+              display="menu"
+              class="ml-auto"
+            ></p-columnFilter>
           </div>
         </th>
         <th pSortableColumn="startTime" style="min-width: 15rem">
@@ -186,7 +153,10 @@
         <td>
           <span class="p-column-title">Workplace</span>
           <div class="flex items-center gap-1">
-            <img [src]="shift.workplace.imgUrl" style="width: 20px" />
+            <img
+              [src]="getWorplaceImage(shift.workplace)"
+              style="width: 20px; max-height: 22px"
+            />
             <span class="ml-1 vertical-align-middle">{{
               shift.workplace
             }}</span>
@@ -245,7 +215,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <!-- ! #TODO: the month with highest earnings (some stats: total profit, hours worked, average hourlywage) -->
 </div>
 
 <!-- add shift modal -->

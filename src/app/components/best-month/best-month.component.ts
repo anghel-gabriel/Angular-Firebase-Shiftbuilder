@@ -9,7 +9,13 @@ import { getBestMonthStats } from 'src/app/utils/computation';
   styleUrl: './best-month.component.scss',
 })
 export class BestMonthComponent {
-  bestMonthStats: any;
+  bestMonthStats = {
+    month: 'No stats',
+    year: 'No stats',
+    hoursWorked: 'No stats',
+    averageHourlyWage: 'No stats',
+    profit: 'No stats',
+  };
   constructor(private auth: AuthenticationService, private db: ShiftsService) {
     this.db.getShiftsChanges().subscribe((shifts) => {
       this.bestMonthStats = getBestMonthStats(shifts);
