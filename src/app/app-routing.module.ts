@@ -8,11 +8,16 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/auth.guard';
+import { UserGuard } from './guards/user-guard.guard';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
-  { path: 'shifts', component: ShiftsPageComponent },
-  { path: 'profile', component: ProfilePageComponent },
+  { path: 'shifts', component: ShiftsPageComponent, canActivate: [UserGuard] },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+    canActivate: [UserGuard],
+  },
   {
     path: 'register',
     component: RegisterPageComponent,

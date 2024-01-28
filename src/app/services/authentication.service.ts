@@ -32,16 +32,30 @@ export class AuthenticationService {
   private authStateChecked = new BehaviorSubject<boolean>(false);
 
   constructor(public auth: Auth, public firestore: Firestore) {
-    this.auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const loggedUserRef = doc(this.firestore, `users/${user.uid}`);
-        const loggedUserDoc = await getDoc(loggedUserRef);
-        this.loggedUser.next(loggedUserDoc.data() as UserInterface);
-      } else {
-        this.loggedUser.next(null);
-      }
-      this.authStateChecked.next(true);
-    });
+    this.initializeLoggedUser();
+    this.auth.onAuthStateChanged(this.handleAuthStateChange.bind(this));
+  }
+
+  private async initializeLoggedUser() {
+    const currentUser = this.auth.currentUser;
+    if (currentUser) {
+      const loggedUserRef = doc(this.firestore, `users/${currentUser.uid}`);
+      const loggedUserDoc = await getDoc(loggedUserRef);
+      this.loggedUser.next(loggedUserDoc.data() as UserInterface);
+    } else {
+      this.loggedUser.next(null);
+    }
+  }
+
+  private async handleAuthStateChange(user: any) {
+    if (user) {
+      const loggedUserRef = doc(this.firestore, `users/${user.uid}`);
+      const loggedUserDoc = await getDoc(loggedUserRef);
+      this.loggedUser.next(loggedUserDoc.data() as UserInterface);
+    } else {
+      this.loggedUser.next(null);
+    }
+    this.authStateChecked.next(true);
   }
 
   waitForAuthStateChecked(): Promise<void> {
@@ -181,10 +195,12 @@ export class AuthenticationService {
     try {
       const user = this.auth.currentUser;
       if (!user) throw new Error('No user is currently logged in.');
-
       const userRef = doc(this.firestore, `users/${user.uid}`);
       await setDoc(userRef, newData, { merge: true });
-      this.loggedUser.next(newData);
+      const updatedUserDoc = await getDoc(userRef);
+      if (updatedUserDoc.exists()) {
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
+      }
     } catch (error: any) {
       throw new Error(error.message);
     }
