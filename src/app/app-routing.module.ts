@@ -9,15 +9,11 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserGuard } from './guards/user-guard.guard';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent },
-  { path: 'shifts', component: ShiftsPageComponent, canActivate: [UserGuard] },
-  {
-    path: 'profile',
-    component: ProfilePageComponent,
-    canActivate: [UserGuard],
-  },
+  // auth routes
   {
     path: 'register',
     component: RegisterPageComponent,
@@ -29,6 +25,21 @@ const routes: Routes = [
     component: ForgotPasswordComponent,
     canActivate: [AuthGuard],
   },
+  // users routes
+  {
+    path: 'my-shifts',
+    component: ShiftsPageComponent,
+    canActivate: [UserGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+    canActivate: [UserGuard],
+  },
+  // admin routes
+  { path: 'users', component: UsersPageComponent },
+  { path: 'shifts', component: AllShiftsPageComponent },
+  // fallback route
   { path: '**', component: ErrorPageComponent },
 ];
 

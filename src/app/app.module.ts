@@ -56,6 +56,8 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { BestMonthComponent } from './components/best-month/best-month.component';
+import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { BestMonthComponent } from './components/best-month/best-month.component
     ForgotPasswordComponent,
     EditFormComponent,
     BestMonthComponent,
+    AllShiftsPageComponent,
+    UsersPageComponent,
   ],
   imports: [
     CommonModule,

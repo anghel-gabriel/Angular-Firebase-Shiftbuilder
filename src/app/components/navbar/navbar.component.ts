@@ -3,6 +3,8 @@ import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 
+// ! #TODO: add p-datatable-striped to table
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -24,9 +26,9 @@ export class NavbarComponent {
   updateNavbarItems(isUserLogged: boolean) {
     this.navbarItems = [
       {
-        label: 'Shifts',
-        icon: 'pi pi-fw pi-calendar',
-        url: 'shifts',
+        label: 'My shifts',
+        icon: 'pi pi-fw pi-stopwatch',
+        url: 'my-shifts',
         visible: isUserLogged,
       },
       {
@@ -34,6 +36,23 @@ export class NavbarComponent {
         icon: 'pi pi-fw pi-pencil',
         url: 'profile',
         visible: isUserLogged,
+      },
+
+      {
+        label: 'Dashboard',
+        icon: 'pi pi-fw pi-wrench',
+        items: [
+          {
+            label: 'Users',
+            icon: 'pi pi-fw pi-users',
+            url: 'users',
+          },
+          {
+            label: 'Shifts',
+            icon: 'pi pi-fw pi-calendar',
+            url: 'shifts',
+          },
+        ],
       },
 
       {

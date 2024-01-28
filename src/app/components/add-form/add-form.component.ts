@@ -50,7 +50,7 @@ export class AddFormComponent {
       return;
     }
 
-    if (!this.hourlyWage || this.hourlyWage <= 0) {
+    if (!this.hourlyWage || isNaN(this.hourlyWage) || this.hourlyWage <= 0) {
       this.showError('Hourly wage must be over 0.');
       return;
     }
