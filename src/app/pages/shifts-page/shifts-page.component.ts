@@ -4,6 +4,8 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ShiftsService } from '../../services/shifts.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 
 @Component({
   selector: 'app-shifts-page',
@@ -14,10 +16,13 @@ import { ShiftsService } from '../../services/shifts.service';
 export class ShiftsPageComponent implements OnInit {
   loading: boolean = false;
   isLoading: boolean = false;
+  userPhotoURL: any;
+  userCompleteName: string = '';
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
   addModalVisible = false;
   editModalVisible = false;
+  bestMonthModalVisible = false;
   currentComments: string = '';
   shifts: any = [];
   selectedShift: any = null;
@@ -41,8 +46,14 @@ export class ShiftsPageComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private db: ShiftsService
-  ) {}
+    private db: ShiftsService,
+    private auth: AuthenticationService
+  ) {
+    this.auth.getLoggedUser().subscribe((data) => {
+      this.userPhotoURL = data?.photoURL || defaultPhotoURL;
+      this.userCompleteName = data?.firstName + ' ' + data?.lastName;
+    });
+  }
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
@@ -52,27 +63,18 @@ export class ShiftsPageComponent implements OnInit {
     this.db.getAreShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
 
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  // best month modal
+  onBestMonthClick() {
+    this.bestMonthModalVisible = true;
   }
-
-  // view button overlay panel
-  toggleOverlayPanel(event: any, comments: string): void {
-    if (comments) {
-      this.currentComments = comments;
-      this.overlayPanel.toggle(event);
-    } else this.overlayPanel.hide();
+  onBestMonthModalClose() {
+    this.bestMonthModalVisible = false;
   }
 
   // add shift modal
   onAddClick() {
     this.addModalVisible = true;
   }
-
-  onAddModalClose() {
-    this.addModalVisible = false;
-  }
-
   async onAddSubmit(addedShift: any) {
     this.loading = true;
     this.addModalVisible = false;
@@ -84,12 +86,15 @@ export class ShiftsPageComponent implements OnInit {
       this.loading = false;
     }
   }
+  onAddModalClose() {
+    this.addModalVisible = false;
+  }
 
+  // edit modal
   onEditClick(shift: any) {
     this.selectedShift = shift;
     this.editModalVisible = true;
   }
-
   async onEditSubmit(editedShift: any) {
     this.loading = true;
     this.editModalVisible = false;
@@ -101,9 +106,9 @@ export class ShiftsPageComponent implements OnInit {
       this.loading = false;
     }
   }
-
   onEditModalClose() {
     this.selectedShift = null;
+    this.editModalVisible = false;
   }
 
   // delete confirmation popup
@@ -119,7 +124,6 @@ export class ShiftsPageComponent implements OnInit {
       reject: () => {},
     });
   }
-
   async onDeleteConfirm(shiftId: any) {
     this.loading = true;
     try {
@@ -131,6 +135,17 @@ export class ShiftsPageComponent implements OnInit {
     }
   }
 
+  // search input (by workplace)
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+  // view comment button overlay panel
+  toggleOverlayPanel(event: any, comments: string): void {
+    if (comments) {
+      this.currentComments = comments;
+      this.overlayPanel.toggle(event);
+    } else this.overlayPanel.hide();
+  }
   exportExcel() {
     import('xlsx').then((xlsx) => {
       FileSaver.saveAs(

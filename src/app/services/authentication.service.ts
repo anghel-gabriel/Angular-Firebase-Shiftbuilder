@@ -20,6 +20,7 @@ import {
 import { RegisterInterface, UserInterface } from '../utils/interfaces';
 import { BehaviorSubject } from 'rxjs';
 import { DocumentData } from '@angular/fire/compat/firestore';
+import { defaultPhotoURL } from '../utils/defaultProfileImage';
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +86,7 @@ export class AuthenticationService {
         birthDate: registerData.birthDate,
         gender: registerData.gender,
         role: 'user',
+        photoURL: defaultPhotoURL,
       };
       // create username in firestore
       const newUserRef = doc(this.firestore, `users/${newUserData.uid}`);

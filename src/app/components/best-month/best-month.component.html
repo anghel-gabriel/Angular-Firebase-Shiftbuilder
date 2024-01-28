@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-4 items-center">
+  <!-- month & year -->
+  <div
+    class="w-full flex items-center justify-between gap-1 sm:px-3 py-4 sm:rounded sm:bg-gray-100"
+  >
+    <p class="font-bold">Best month</p>
+    <p>
+      {{ bestMonthStats.month || "No shifts" }}
+      {{ bestMonthStats.year || "No shifts" }}
+    </p>
+  </div>
+  <!-- profit -->
+  <div
+    class="w-full flex items-center justify-between gap-1 sm:px-3 py-4 sm:rounded sm:bg-gray-200"
+  >
+    <p class="font-bold">Total profit</p>
+    <p>
+      {{ bestMonthStats.profit + "$" || "No shifts" }}
+    </p>
+  </div>
+  <!-- hours worked -->
+  <div
+    class="w-full flex items-center justify-between gap-1 sm:px-3 py-4 sm:rounded sm:bg-gray-100"
+  >
+    <p class="font-bold">Hours worked</p>
+    <p>
+      {{ bestMonthStats.hoursWorked + " hours" || "No shifts" }}
+    </p>
+  </div>
+  <!-- average hourly wage -->
+  <div
+    class="w-full flex items-center justify-between gap-1 sm:px-3 py-4 sm:rounded sm:bg-gray-200"
+  >
+    <p class="font-bold">Average hourly wage</p>
+    <p>
+      {{ bestMonthStats.averageHourlyWage + "$" || "No shifts" }}
+    </p>
+  </div>
+</div>

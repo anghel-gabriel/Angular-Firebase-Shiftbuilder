@@ -118,27 +118,33 @@
         </div>
       </div>
     </div>
+
     <div
       class="flex flex-col min-[785px]:flex-row max-[785px]:mx-auto gap-y-2 gap-x-8 items-center justify-between w-full"
     >
+      <!-- change password button -->
       <p-button
         (onClick)="isChangingPasswordModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
         label="Change password"
         styleClass="w-full"
+        icon="pi pi-external-link"
       ></p-button>
+      <!-- change email button -->
       <p-button
         (onClick)="isChangingEmailModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
         label="Change email address"
         styleClass="w-full"
+        icon="pi pi-external-link"
       ></p-button>
     </div>
     <div
       class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-end"
     >
+      <!-- save profile button -->
       <p-button
         (click)="handleSaveProfile()"
         class="max-[785px]:w-full max-w-[330px]"

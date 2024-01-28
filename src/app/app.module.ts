@@ -55,6 +55,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { EditFormComponent } from './components/edit-form/edit-form.component';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireModule } from '@angular/fire/compat';
+import { BestMonthComponent } from './components/best-month/best-month.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     ChangeEmailFormComponent,
     ForgotPasswordComponent,
     EditFormComponent,
+    BestMonthComponent,
   ],
   imports: [
     CommonModule,

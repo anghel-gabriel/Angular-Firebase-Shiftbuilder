@@ -1,4 +1,5 @@
 <!-- shifts table -->
+<!-- ! #TODO: update name and photoURL -->
 <div class="card max-w-[1720px] mx-auto">
   <p-table
     #dt
@@ -14,41 +15,54 @@
     dataKey="id"
   >
     <ng-template pTemplate="caption">
-      <div class="table-header flex gap-2">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input
-            (input)="applyFilterGlobal($event, 'contains')"
-            pInputText
-            placeholder="Search by workplace"
-            type="text"
-          />
-        </span>
-        <p-button
-          (click)="exportExcel()"
-          [outlined]="true"
-          icon="pi pi-file-excel"
-          pRipple
-          pTooltip="Export to Excel"
-          severity="success"
-          tooltipPosition="bottom"
-        ></p-button>
-        <p-button
-          (click)="onAddClick()"
-          [outlined]="true"
-          icon="pi pi-plus"
-          pRipple
-          pTooltip="Add a new shift"
-          tooltipPosition="bottom"
-        ></p-button>
-        <p-button
-          [outlined]="true"
-          icon="pi pi-refresh"
-          pRipple
-          pTooltip="Reload shifts"
-          severity="help"
-          tooltipPosition="bottom"
-        ></p-button>
+      <div class="flex items-center justify-between">
+        <div class="table-header flex gap-2">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              (input)="applyFilterGlobal($event, 'contains')"
+              pInputText
+              placeholder="Search by workplace"
+              type="text"
+            />
+          </span>
+          <p-button
+            (click)="onAddClick()"
+            [outlined]="true"
+            icon="pi pi-plus"
+            pRipple
+            pTooltip="Add a new shift"
+            tooltipPosition="bottom"
+          ></p-button>
+          <p-button
+            (click)="exportExcel()"
+            [outlined]="true"
+            icon="pi pi-file-excel"
+            pRipple
+            pTooltip="Export to Excel"
+            [disabled]="shifts.length < 1"
+            severity="success"
+            tooltipPosition="bottom"
+          ></p-button>
+          <p-button
+            [outlined]="true"
+            icon="pi pi-chart-line"
+            pRipple
+            pTooltip="Show best month"
+            severity="help"
+            tooltipPosition="bottom"
+            [disabled]="shifts.length < 1"
+            (click)="onBestMonthClick()"
+          ></p-button>
+        </div>
+        <div class="gap-2 flex items-center">
+          <p-avatar
+            [image]="userPhotoURL"
+            shape="circle"
+            size="normal"
+          ></p-avatar>
+          <p>Hello, {{ userCompleteName }}!</p>
+        </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -231,6 +245,7 @@
       </tr>
     </ng-template>
   </p-table>
+  <!-- ! #TODO: the month with highest earnings (some stats: total profit, hours worked, average hourlywage) -->
 </div>
 
 <!-- add shift modal -->
@@ -252,18 +267,28 @@
   header="Edit Shift"
   styleClass="w-[90vw] max-w-[600px]"
 >
-  <!-- The form to edit a shift. Add necessary fields here -->
   <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift" />
 </p-dialog>
 
-<!-- overlay panel for -->
+<!-- best month modal -->
+<p-dialog
+  (onHide)="onBestMonthModalClose()"
+  [(visible)]="bestMonthModalVisible"
+  [modal]="true"
+  header="Best Month"
+  styleClass="w-[90vw] max-w-[600px]"
+>
+  <app-best-month />
+</p-dialog>
+
+<!-- overlay panel for showing comments-->
 <p-overlayPanel #op styleClass="max-w-[300px]">
   {{ currentComments }}
 </p-overlayPanel>
 
 <!-- delete confirm popup -->
-<p-confirmPopup></p-confirmPopup>
+<p-confirmPopup />
 
 @if (loading || isLoading) {
-<app-spinner></app-spinner>
+<app-spinner />
 }

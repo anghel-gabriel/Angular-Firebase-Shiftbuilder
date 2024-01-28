@@ -17,4 +17,5 @@ export interface UserInterface {
   birthDate: any;
   gender: any;
   role: 'user' | 'admin';
+  photoURL: string;
 }
