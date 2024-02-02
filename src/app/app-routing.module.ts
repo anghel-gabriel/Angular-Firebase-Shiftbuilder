@@ -5,7 +5,6 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
-import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserGuard } from './guards/user-guard.guard';
@@ -13,7 +12,7 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
 
 const routes: Routes = [
-  // auth routes
+  // authentication routes
   {
     path: 'register',
     component: RegisterPageComponent,
@@ -37,8 +36,8 @@ const routes: Routes = [
     canActivate: [UserGuard],
   },
   // admin routes
-  { path: 'users', component: UsersPageComponent },
-  { path: 'shifts', component: AllShiftsPageComponent },
+  { path: 'workers', component: UsersPageComponent },
+  { path: 'workers-shifts', component: AllShiftsPageComponent },
   // fallback route
   { path: '**', component: ErrorPageComponent },
 ];

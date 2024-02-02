@@ -43,14 +43,14 @@ export class NavbarComponent {
         icon: 'pi pi-fw pi-wrench',
         items: [
           {
-            label: 'Users',
+            label: 'Workers',
             icon: 'pi pi-fw pi-users',
-            url: 'users',
+            url: 'workers',
           },
           {
             label: 'Shifts',
             icon: 'pi pi-fw pi-calendar',
-            url: 'shifts',
+            url: 'workers-shifts',
           },
         ],
       },

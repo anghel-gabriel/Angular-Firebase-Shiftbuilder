@@ -3,7 +3,7 @@ import * as FileSaver from 'file-saver';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ShiftsService } from '../../services/shifts.service';
+import { ShiftsService } from 'src/app/services/shifts.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
@@ -57,7 +57,7 @@ export class ShiftsPageComponent implements OnInit {
         };
       });
     });
-    this.db.getAreShiftsLoading().subscribe((val) => (this.isLoading = val));
+    this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
 
   // best month modal
