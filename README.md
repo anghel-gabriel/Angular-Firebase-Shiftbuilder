@@ -11,3 +11,4 @@ Features of Angular used:
 - services, observables,
 - some new Angular syntax @ngIf;
 - rxJS, for reactive programming;
+- pipes;

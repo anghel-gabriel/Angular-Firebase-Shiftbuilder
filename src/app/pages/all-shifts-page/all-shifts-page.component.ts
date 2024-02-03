@@ -48,7 +48,7 @@ export class AllShiftsPageComponent {
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
-    this.db.getMyShifts().subscribe((shifts) => {
+    this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts].map((shift) => {
         return {
           ...shift,

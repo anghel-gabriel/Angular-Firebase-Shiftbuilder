@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
@@ -12,7 +12,7 @@ import { DatabaseService } from 'src/app/services/database.service';
   selector: 'app-shifts-page',
   templateUrl: './shifts-page.component.html',
   styleUrls: ['./shifts-page.component.scss'],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService],
 })
 export class ShiftsPageComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
@@ -36,7 +36,6 @@ export class ShiftsPageComponent implements OnInit {
 
   constructor(
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     private db: DatabaseService,
     private auth: AuthenticationService
   ) {
@@ -49,7 +48,7 @@ export class ShiftsPageComponent implements OnInit {
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
     // ! #TODO: filter
-    this.db.getMyShifts().subscribe((shifts) => {
+    this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts]
         .filter((shift: any) => shift.author === this.auth?.getAuthUser()?.uid)
         .map((shift) => {

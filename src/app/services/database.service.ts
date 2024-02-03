@@ -6,10 +6,8 @@ import {
   getDocs,
   doc,
   deleteDoc,
-  getDoc,
   updateDoc,
   collectionChanges,
-  where,
   orderBy,
   query,
 } from '@angular/fire/firestore';
@@ -20,10 +18,9 @@ import { AuthenticationService } from './authentication.service';
   providedIn: 'root',
 })
 export class DatabaseService {
-  shiftsObs = new BehaviorSubject<any>([]);
-  shiftsCol = collection(this.firestore, 'shifts');
   loggedUserUid = new BehaviorSubject<string>('');
   private areMyShiftsLoading = new BehaviorSubject<boolean>(false);
+  private areAllUsersLoading = new BehaviorSubject<boolean>(false);
 
   constructor(
     public firestore: Firestore,
@@ -34,36 +31,57 @@ export class DatabaseService {
       .subscribe((userData) => this.loggedUserUid.next(userData?.uid));
   }
 
+  // loading states for data fetching
   getAreMyShiftsLoading() {
     return this.areMyShiftsLoading.asObservable();
   }
 
-  getMyShifts() {
+  getAreAllUsersLoading() {
+    return this.areAllUsersLoading.asObservable();
+  }
+
+  // shifts CRUD
+  updateShifts() {
     return collectionChanges(query(collection(this.firestore, 'shifts'))).pipe(
       switchMap(async () => {
-        const val = await this.getUserShifts();
+        const val = await this.getShifts();
         return val;
       })
     );
   }
 
-  async getUserFields() {
+  private async getShifts() {
+    this.areMyShiftsLoading.next(true);
     try {
-      const userDocRef = doc(this.firestore, `users/J1ZOqPAlYaBSbT5thkI9`);
-      const userDocSnapshot = await getDoc(userDocRef);
-      if (userDocSnapshot.exists()) {
-        console.log('User data:', userDocSnapshot.data());
-      } else {
-        console.log('No such user!');
-      }
+      const user = this.auth.getAuthUser();
+      const userId = user?.uid || '';
+      if (!userId) throw new Error('User not logged');
+
+      let queryRef = query(
+        collection(this.firestore, 'shifts'),
+        orderBy('startTime', 'desc')
+      );
+      const docs = await getDocs(queryRef);
+      const shiftsList = [] as any;
+
+      docs.forEach((val: any) => {
+        shiftsList.push({
+          id: val.id,
+          ...val.data(),
+        });
+      });
+
+      return shiftsList;
     } catch (error) {
-      console.error('Problem getting user document.', error);
+      console.log(error);
+    } finally {
+      this.areMyShiftsLoading.next(false);
     }
   }
 
   async addShift(shift: any) {
     try {
-      await addDoc(this.shiftsCol, {
+      await addDoc(collection(this.firestore, 'shifts'), {
         ...shift,
         author: this.auth.getAuthUser()?.uid,
       });
@@ -90,17 +108,20 @@ export class DatabaseService {
     }
   }
 
-  private async getUserShifts() {
-    this.areMyShiftsLoading.next(true);
-    try {
-      const user = this.auth.getAuthUser();
-      const userId = user?.uid || '';
-      if (!userId) throw new Error('User not logged');
+  // users CRUD
+  updateAllUsers() {
+    return collectionChanges(query(collection(this.firestore, 'users'))).pipe(
+      switchMap(async () => {
+        const val = await this.getAllUsers();
+        return val;
+      })
+    );
+  }
 
-      let queryRef = query(
-        collection(this.firestore, 'shifts'),
-        orderBy('startTime', 'desc')
-      );
+  private async getAllUsers() {
+    this.areAllUsersLoading.next(true);
+    try {
+      let queryRef = query(collection(this.firestore, 'users'));
       const docs = await getDocs(queryRef);
       const shiftsList = [] as any;
 
@@ -110,13 +131,15 @@ export class DatabaseService {
           ...val.data(),
         });
       });
+      console.log('allshifts', shiftsList);
 
-      console.log('shiftsserv', shiftsList);
       return shiftsList;
     } catch (error) {
       console.log(error);
     } finally {
-      this.areMyShiftsLoading.next(false);
+      this.areAllUsersLoading.next(false);
     }
   }
+
+  // ! #TODO: worker of the month (the one with most shifts?)
 }

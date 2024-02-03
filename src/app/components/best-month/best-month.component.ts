@@ -20,9 +20,8 @@ export class BestMonthComponent {
     private auth: AuthenticationService,
     private db: DatabaseService
   ) {
-    this.db.getMyShifts().subscribe((shifts) => {
+    this.db.updateShifts().subscribe((shifts) => {
       this.bestMonthStats = getBestMonthStats(shifts);
-      console.log(this.bestMonthStats);
     });
   }
 }
