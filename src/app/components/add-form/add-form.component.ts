@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { isDateBefore } from 'src/app/utils/validation';
 import { Message } from 'primeng/api';
-import { ShiftsService } from '../../services/shifts.service';
+import { DatabaseService } from '../../services/database.service';
 import { calculateProfit } from '../../utils/computation';
 import { workplaces } from 'src/app/utils/workplaces';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-add-form',
@@ -19,8 +20,13 @@ export class AddFormComponent {
   comments: any;
   messages: Message[] = [];
   workplaces = workplaces;
+  authorFullName = '';
 
-  constructor(private db: ShiftsService) {}
+  constructor(private auth: AuthenticationService) {
+    this.auth.getLoggedUser().subscribe((value: any) => {
+      this.authorFullName = value.firstName + ' ' + value.lastName;
+    });
+  }
 
   showError(message: string) {
     this.messages = [
@@ -67,6 +73,7 @@ export class AddFormComponent {
       workplace: this.workplace,
       comments: this.comments || '',
       profit: calculateProfit(startTime, endTime, this.hourlyWage),
+      authorFullName: this.authorFullName,
     };
 
     this.submit.emit(shift);

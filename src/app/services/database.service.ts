@@ -19,10 +19,9 @@ import { AuthenticationService } from './authentication.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ShiftsService {
+export class DatabaseService {
   shiftsObs = new BehaviorSubject<any>([]);
   shiftsCol = collection(this.firestore, 'shifts');
-  shiftsArray: any = [];
   loggedUserUid = new BehaviorSubject<string>('');
   private areMyShiftsLoading = new BehaviorSubject<boolean>(false);
 
@@ -39,7 +38,7 @@ export class ShiftsService {
     return this.areMyShiftsLoading.asObservable();
   }
 
-  getShiftsChanges() {
+  getMyShifts() {
     return collectionChanges(query(collection(this.firestore, 'shifts'))).pipe(
       switchMap(async () => {
         const val = await this.getUserShifts();
@@ -92,37 +91,6 @@ export class ShiftsService {
   }
 
   private async getUserShifts() {
-    this.areMyShiftsLoading.next(true);
-    try {
-      const user = this.auth.getAuthUser();
-      const userId = user?.uid || '';
-      if (!userId) throw new Error('User not logged');
-
-      let queryRef = query(
-        collection(this.firestore, 'shifts'),
-        where('author', '==', userId),
-        orderBy('startTime', 'desc')
-      );
-      const docs = await getDocs(queryRef);
-      const shiftsList = [] as any;
-
-      docs.forEach((val: any) => {
-        shiftsList.push({
-          id: val.id,
-          ...val.data(),
-        });
-      });
-
-      console.log('shiftsserv', shiftsList);
-      return shiftsList;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.areMyShiftsLoading.next(false);
-    }
-  }
-
-  private async getAllUsersShifts() {
     this.areMyShiftsLoading.next(true);
     try {
       const user = this.auth.getAuthUser();

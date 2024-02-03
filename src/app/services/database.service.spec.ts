@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ShiftsService } from './shifts.service';
+import { DatabaseService } from './database.service';
 
-describe('ShiftsService', () => {
-  let service: ShiftsService;
+describe('DatabaseService', () => {
+  let service: DatabaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ShiftsService);
+    service = TestBed.inject(DatabaseService);
   });
 
   it('should be created', () => {

@@ -200,7 +200,7 @@ export class RegisterPageComponent {
       });
       // adding a delay before redirecting user to have enough time to read the notifications
       await new Promise((resolve) => setTimeout(resolve, 4000));
-      this.router.navigate(['/shifts']);
+      this.router.navigate(['/my-shifts']);
     } catch (error: any) {
       if (error.message.includes('auth/email-already-in-use')) {
         this.showError(

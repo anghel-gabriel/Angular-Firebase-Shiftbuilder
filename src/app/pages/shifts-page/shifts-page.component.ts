@@ -3,10 +3,10 @@ import * as FileSaver from 'file-saver';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ShiftsService } from 'src/app/services/shifts.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-shifts-page',
@@ -37,7 +37,7 @@ export class ShiftsPageComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private db: ShiftsService,
+    private db: DatabaseService,
     private auth: AuthenticationService
   ) {
     this.auth.getLoggedUser().subscribe((data) => {
@@ -48,14 +48,17 @@ export class ShiftsPageComponent implements OnInit {
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
-    this.db.getShiftsChanges().subscribe((shifts) => {
-      this.shifts = [...shifts].map((shift) => {
-        return {
-          ...shift,
-          startTime: new Date(shift.startTime),
-          endTime: new Date(shift.endTime),
-        };
-      });
+    // ! #TODO: filter
+    this.db.getMyShifts().subscribe((shifts) => {
+      this.shifts = [...shifts]
+        .filter((shift: any) => shift.author === this.auth?.getAuthUser()?.uid)
+        .map((shift) => {
+          return {
+            ...shift,
+            startTime: new Date(shift.startTime),
+            endTime: new Date(shift.endTime),
+          };
+        });
     });
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
   }

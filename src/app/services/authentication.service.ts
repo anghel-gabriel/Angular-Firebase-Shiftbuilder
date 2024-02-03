@@ -26,9 +26,7 @@ import { defaultPhotoURL } from '../utils/defaultProfileImage';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private loggedUser = new BehaviorSubject<
-    UserInterface | DocumentData | null | undefined
-  >(null);
+  private loggedUser = new BehaviorSubject<any>(null);
   private authStateChecked = new BehaviorSubject<boolean>(false);
 
   constructor(public auth: Auth, public firestore: Firestore) {

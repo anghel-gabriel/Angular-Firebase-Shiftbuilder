@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ShiftsService } from 'src/app/services/shifts.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { getBestMonthStats } from 'src/app/utils/computation';
 
 @Component({
@@ -16,8 +16,11 @@ export class BestMonthComponent {
     averageHourlyWage: 'No stats',
     profit: 'No stats',
   };
-  constructor(private auth: AuthenticationService, private db: ShiftsService) {
-    this.db.getShiftsChanges().subscribe((shifts) => {
+  constructor(
+    private auth: AuthenticationService,
+    private db: DatabaseService
+  ) {
+    this.db.getMyShifts().subscribe((shifts) => {
       this.bestMonthStats = getBestMonthStats(shifts);
       console.log(this.bestMonthStats);
     });
