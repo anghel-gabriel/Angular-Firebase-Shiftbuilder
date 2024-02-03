@@ -41,7 +41,6 @@ import { AvatarModule } from 'primeng/avatar';
 import { SliderModule } from 'primeng/slider';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { MessagesModule } from 'primeng/messages';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -58,6 +57,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { BestMonthComponent } from './components/best-month/best-month.component';
 import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +69,6 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
     LoginPageComponent,
     AddFormComponent,
     ErrorPageComponent,
-    HomepageComponent,
     SpinnerComponent,
     ChangePasswordFormComponent,
     ChangeEmailFormComponent,
@@ -78,6 +77,7 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
     BestMonthComponent,
     AllShiftsPageComponent,
     UsersPageComponent,
+    EmployeePageComponent,
   ],
   imports: [
     CommonModule,

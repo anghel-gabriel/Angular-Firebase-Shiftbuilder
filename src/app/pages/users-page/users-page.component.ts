@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
@@ -36,7 +37,8 @@ export class UsersPageComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private db: DatabaseService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -62,31 +64,15 @@ export class UsersPageComponent {
   }
 
   // edit modal
-  onEditClick(shift: any) {
-    this.selectedShift = shift;
-    this.editModalVisible = true;
-  }
-  async onEditSubmit(editedShift: any) {
-    this.loading = true;
-    this.editModalVisible = false;
-    try {
-      await this.db.editShift(this.selectedShift.id, editedShift);
-    } catch (error: any) {
-      console.log(error);
-    } finally {
-      this.loading = false;
-    }
-  }
-  onEditModalClose() {
-    this.selectedShift = null;
-    this.editModalVisible = false;
+  onEditClick(employee: any) {
+    this.router.navigate([`/employee/${employee.uid}`]);
   }
 
   // delete confirmation popup
-  onDeleteClick(event: Event, shift: any) {
+  onDeleteEmployeeClick(event: Event, shift: any) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Are you sure?',
+      message: 'Are you sure you want to delete the employee?',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass: 'p-button-danger p-button-sm',
       accept: () => {
@@ -96,27 +82,15 @@ export class UsersPageComponent {
     });
   }
   async onDeleteConfirm(shiftId: any) {
-    this.loading = true;
-    try {
-      await this.db.deleteShift(shiftId);
-    } catch (error: any) {
-      console.error('Error deleting shift', error);
-    } finally {
-      this.loading = false;
-    }
+    // ! #TODO: delete employee function
   }
+
+  // delete all employee shifts
+  async onDeleteEmployeeShifts(employee: any) {}
 
   // search input (by workplace)
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
-  }
-
-  // view comment button overlay panel
-  toggleOverlayPanel(event: any, comments: string): void {
-    if (comments) {
-      this.currentComments = comments;
-      this.overlayPanel.toggle(event);
-    } else this.overlayPanel.hide();
   }
 
   // shifts to excel

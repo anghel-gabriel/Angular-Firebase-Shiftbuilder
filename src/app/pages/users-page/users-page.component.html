@@ -5,14 +5,14 @@
     #dt
     styleClass="p-datatable-gridlines"
     [filterDelay]="0"
-    [globalFilterFields]="['workplace']"
+    [globalFilterFields]="['firstName']"
     [paginator]="true"
     [rowHover]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
     [rows]="10"
     [showCurrentPageReport]="true"
     [value]="users"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total users"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total employees"
     dataKey="id"
   >
     <ng-template pTemplate="caption">
@@ -23,7 +23,7 @@
             <input
               (input)="applyFilterGlobal($event, 'contains')"
               pInputText
-              placeholder="Search by workplace"
+              placeholder="Search by first name"
               type="text"
             />
           </span>
@@ -157,14 +157,6 @@
         <td>
           <div class="flex gap-2">
             <p-button
-              (onClick)="toggleOverlayPanel($event, employee.username)"
-              [icon]="employee.username ? 'pi pi-eye' : 'pi pi-eye-slash'"
-              [pTooltip]="employee.username ? 'View comments' : 'No comments'"
-              [rounded]="true"
-              [severity]="employee.username ? 'info' : 'secondary'"
-              tooltipPosition="top"
-            ></p-button>
-            <p-button
               (onClick)="onEditClick(employee)"
               [rounded]="true"
               icon="pi pi-pencil"
@@ -174,7 +166,15 @@
               tooltipPosition="top"
             ></p-button>
             <p-button
-              (onClick)="onDeleteClick($event, employee)"
+              (onClick)="onDeleteEmployeeShifts(employee)"
+              [rounded]="true"
+              icon="pi pi-delete-left"
+              pTooltip="Delete all shifts"
+              severity="warning"
+              tooltipPosition="top"
+            ></p-button>
+            <p-button
+              (onClick)="onDeleteEmployeeClick($event, employee)"
               [rounded]="true"
               icon="pi pi-trash"
               pTooltip="Delete"
@@ -187,22 +187,11 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="8">No users found.</td>
+        <td colspan="8">No employees found.</td>
       </tr>
     </ng-template>
   </p-table>
 </div>
-
-<!-- edit shift modal -->
-<p-dialog
-  (onHide)="onEditModalClose()"
-  [(visible)]="editModalVisible"
-  [modal]="true"
-  header="Edit Shift"
-  styleClass="w-[90vw] max-w-[600px]"
->
-  <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift" />
-</p-dialog>
 
 <!-- best month modal -->
 <p-dialog

@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserGuard } from './guards/user-guard.guard';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
+import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
 
 const routes: Routes = [
   // authentication routes
@@ -36,8 +37,9 @@ const routes: Routes = [
     canActivate: [UserGuard],
   },
   // admin routes
-  { path: 'workers', component: UsersPageComponent },
-  { path: 'workers-shifts', component: AllShiftsPageComponent },
+  { path: 'employees', component: UsersPageComponent },
+  { path: 'shifts', component: AllShiftsPageComponent },
+  { path: 'employee/:employeeId', component: EmployeePageComponent },
   // fallback route
   { path: '**', component: ErrorPageComponent },
 ];
