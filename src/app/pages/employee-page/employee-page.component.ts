@@ -1,18 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 
 @Component({
   selector: 'app-employee-page',
   templateUrl: './employee-page.component.html',
   styleUrl: './employee-page.component.scss',
+  providers: [MessageService],
 })
 export class EmployeePageComponent implements OnInit {
+  defaultPhotoURL = defaultPhotoURL;
   isLoading = true;
   employeeId: any;
-  constructor(private route: ActivatedRoute) {}
+  // employeeData
+  firstName = '';
+  lastName = '';
+  username = '';
+  birthDate: any;
+  gender = '';
+  photoURL = '';
+  genderOptions = [
+    { name: 'Unknown', value: 'unknown' },
+    { name: 'Male', value: 'male' },
+    { name: 'Female', value: 'female' },
+    { name: 'Other', value: 'other' },
+  ];
+  isChangingPasswordModalVisible = false;
+  isChangingEmailModalVisible = false;
+  constructor(
+    private route: ActivatedRoute,
+    private auth: AuthenticationService
+  ) {}
 
   ngOnInit() {
     this.employeeId = this.route.snapshot.paramMap.get('employeeId');
-    console.log(this.employeeId);
+    const employeeData = this.fillFieldsWithEmployeeData();
   }
+
+  async fillFieldsWithEmployeeData() {
+    try {
+      const employeeData = await this.auth.getEmployeeData(this.employeeId);
+      if (employeeData) {
+        this.firstName = employeeData['firstName'];
+        this.lastName = employeeData['lastName'];
+        this.username = employeeData['username'];
+        this.gender = employeeData['gender'];
+        this.photoURL = employeeData['photoURL'] || defaultPhotoURL;
+        this.birthDate = new Date(employeeData['birthDate']);
+      }
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  removePhoto() {}
+  onUpload(event: any) {}
+  handleSaveProfile() {}
 }

@@ -245,4 +245,22 @@ export class AuthenticationService {
       }
     });
   }
+
+  async getEmployeeData(userId: string) {
+    const userRef = doc(this.firestore, 'users', userId);
+    try {
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        console.log('User data:', docSnap.data());
+        return docSnap.data();
+      } else {
+        // ! #TODO: show diffrent page when no user
+        console.log('No such user!');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      throw error;
+    }
+  }
 }
