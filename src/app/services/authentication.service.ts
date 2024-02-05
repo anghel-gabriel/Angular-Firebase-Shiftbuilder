@@ -19,7 +19,6 @@ import {
 } from '@angular/fire/firestore';
 import { RegisterInterface, UserInterface } from '../utils/interfaces';
 import { BehaviorSubject } from 'rxjs';
-import { DocumentData } from '@angular/fire/compat/firestore';
 import { defaultPhotoURL } from '../utils/defaultProfileImage';
 
 @Injectable({

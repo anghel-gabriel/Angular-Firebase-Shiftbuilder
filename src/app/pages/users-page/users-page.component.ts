@@ -86,7 +86,16 @@ export class UsersPageComponent {
   }
 
   // delete all employee shifts
-  async onDeleteEmployeeShifts(employee: any) {}
+  async onDeleteEmployeeShifts(employee: any) {
+    try {
+      this.isLoading = true;
+      await this.db.deleteShiftsByUserId(employee);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 
   // search input (by workplace)
   applyFilterGlobal($event: any, stringVal: any) {

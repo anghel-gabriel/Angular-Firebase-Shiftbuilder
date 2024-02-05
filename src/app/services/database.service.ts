@@ -10,6 +10,7 @@ import {
   collectionChanges,
   orderBy,
   query,
+  where,
 } from '@angular/fire/firestore';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
@@ -138,6 +139,23 @@ export class DatabaseService {
       console.log(error);
     } finally {
       this.areAllUsersLoading.next(false);
+    }
+  }
+
+  async deleteShiftsByUserId(userId: string) {
+    const shiftsRef = collection(this.firestore, 'shifts');
+    const q = query(shiftsRef, where('author', '==', userId));
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (document) => {
+        try {
+          await deleteDoc(doc(this.firestore, 'shifts', document.id));
+        } catch (error: any) {
+          throw new Error(error);
+        }
+      });
+    } catch (error) {
+      throw new Error('Error deleting shifts:' + error);
     }
   }
 
