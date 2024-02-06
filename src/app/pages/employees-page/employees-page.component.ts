@@ -10,12 +10,12 @@ import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
 
 @Component({
-  selector: 'app-users-page',
-  templateUrl: './users-page.component.html',
+  selector: 'app-employees-page',
+  templateUrl: './employees-page.component.html',
   styleUrl: './users-page.component.scss',
   providers: [ConfirmationService, MessageService],
 })
-export class UsersPageComponent {
+export class EmployeesPageComponent {
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
   // loading states
@@ -107,6 +107,7 @@ export class UsersPageComponent {
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(
         this.users.map((shift: any) => ({
+          // ! #TODO: modify this
           Workplace: shift.workplace,
           'Start Time': shift.startTime.toLocaleString(),
           'End Time': shift.endTime.toLocaleString(),

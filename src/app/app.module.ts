@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // angular pages
-import { ShiftsPageComponent } from './pages/shifts-page/shifts-page.component';
+import { MyShiftsPageComponent } from './pages/my-shifts-page/my-shifts-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { AddFormComponent } from './components/add-form/add-form.component';
@@ -56,13 +56,13 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { BestMonthComponent } from './components/best-month/best-month.component';
 import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
-import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { EmployeesPageComponent } from './pages/employees-page/employees-page.component';
 import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ShiftsPageComponent,
+    MyShiftsPageComponent,
     NavbarComponent,
     ProfilePageComponent,
     RegisterPageComponent,
@@ -76,7 +76,7 @@ import { EmployeePageComponent } from './pages/employee-page/employee-page.compo
     EditFormComponent,
     BestMonthComponent,
     AllShiftsPageComponent,
-    UsersPageComponent,
+    EmployeesPageComponent,
     EmployeePageComponent,
   ],
   imports: [

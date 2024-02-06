@@ -9,12 +9,12 @@ import { getImageUrl } from 'src/app/utils/workplaces';
 import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
-  selector: 'app-shifts-page',
-  templateUrl: './shifts-page.component.html',
-  styleUrls: ['./shifts-page.component.scss'],
+  selector: 'app-my-shifts-page',
+  templateUrl: './my-shifts-page.component.html',
+  styleUrls: ['./my-shifts-page.component.scss'],
   providers: [ConfirmationService],
 })
-export class ShiftsPageComponent implements OnInit {
+export class MyShiftsPageComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
   @ViewChild('op') overlayPanel!: OverlayPanel;
   // loading states

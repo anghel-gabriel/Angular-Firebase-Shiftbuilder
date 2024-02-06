@@ -92,6 +92,7 @@ export class AuthenticationService {
     return snapshot.empty;
   }
 
+  // function used for logging with username
   async getEmailFromUsername(username: any) {
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('username', '==', username));
