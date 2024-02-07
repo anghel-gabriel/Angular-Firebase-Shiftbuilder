@@ -34,6 +34,28 @@ export class MyShiftsPageComponent implements OnInit {
   selectedShift: any = null;
   getWorplaceImage = getImageUrl;
 
+  // chart options
+  data = {
+    labels: ['A', 'B', 'C'],
+    datasets: [
+      {
+        data: [540, 325, 702],
+        backgroundColor: 'red',
+        hoverBackgroundColor: 'blue',
+      },
+    ],
+  };
+  options = {
+    plugins: {
+      legend: {
+        labels: {
+          usePointStyle: true,
+          color: 'green',
+        },
+      },
+    },
+  };
+
   constructor(
     private confirmationService: ConfirmationService,
     private db: DatabaseService,

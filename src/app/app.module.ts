@@ -58,6 +58,7 @@ import { BestMonthComponent } from './components/best-month/best-month.component
 import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.component';
 import { EmployeesPageComponent } from './pages/employees-page/employees-page.component';
 import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { EmployeePageComponent } from './pages/employee-page/employee-page.compo
     DialogModule,
     InputGroupModule,
     InputGroupAddonModule,
+    ChartModule,
     InputTextareaModule,
     FileUploadModule,
     AvatarModule,
