@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
-
-// ! #TODO: add p-datatable-striped to table
 
 @Component({
   selector: 'app-navbar',
@@ -11,19 +9,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
   providers: [MessageService],
 })
-export class NavbarComponent {
-  navbarItems = [
-    { label: 'Homepage', icon: 'pi pi-fw pi-home', url: '' },
-  ] as any;
-  isLoading: boolean = false;
+export class NavbarComponent implements OnInit {
+  navbarItems: any[] = [];
+  isLoading = false;
 
-  constructor(private auth: AuthenticationService, private router: Router) {
-    this.auth.onUserStateChanged(() => {
-      this.updateNavbarItems(!!this.auth.getAuthUser());
+  constructor(private auth: AuthenticationService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.auth.getLoggedUser().subscribe((user) => {
+      this.updateNavbarItems(!!user, user?.role);
     });
   }
 
-  updateNavbarItems(isUserLogged: boolean) {
+  updateNavbarItems(isUserLogged: boolean, userRole?: string) {
     this.navbarItems = [
       {
         label: 'My shifts',
@@ -37,10 +35,10 @@ export class NavbarComponent {
         url: 'profile',
         visible: isUserLogged,
       },
-
       {
         label: 'Dashboard',
         icon: 'pi pi-fw pi-wrench',
+        visible: isUserLogged && userRole === 'admin',
         items: [
           {
             label: 'Employees',
@@ -54,13 +52,10 @@ export class NavbarComponent {
           },
         ],
       },
-
       {
         label: 'Sign Out',
         icon: 'pi pi-fw pi-power-off',
-        command: async () => {
-          await this.onSignOut();
-        },
+        command: () => this.onSignOut(),
         visible: isUserLogged,
       },
       {
