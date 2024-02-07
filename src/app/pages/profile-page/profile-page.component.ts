@@ -12,6 +12,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FileUploadEvent } from 'primeng/fileupload';
 import { forkJoin } from 'rxjs';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
+import { IGenderOption, genderOptionList } from 'src/app/utils/genderOptions';
 
 @Component({
   selector: 'app-profile-page',
@@ -20,14 +21,17 @@ import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
   providers: [MessageService],
 })
 export class ProfilePageComponent {
+  // user properties
   email = '';
   username = '';
   password = '';
   confirmPassword = '';
   firstName = '';
   lastName = '';
+  // ! #TODO: fix birthdate type
   birthDate: any;
-  gender: string | { name: string; value: string } = '';
+  gender: string | IGenderOption = '';
+  // ! #TODO: add default photoURL
   photoURL = '';
   activeIndex = 0;
   checked = false;
@@ -37,12 +41,7 @@ export class ProfilePageComponent {
   isChangingPasswordModalVisible = false;
   isChangingEmailModalVisible = false;
 
-  genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
-  ];
+  genderOptions = genderOptionList;
   // steps component
   items: MenuItem[] | undefined = [
     {

@@ -148,8 +148,10 @@ export class MyShiftsPageComponent implements OnInit {
   }
 
   // shifts to excel
-  exportExcel() {
-    import('xlsx').then((xlsx) => {
+  async exportExcel() {
+    this.isLoading = true;
+    try {
+      const xlsx = await import('xlsx');
       const worksheet = xlsx.utils.json_to_sheet(
         this.shifts.map((shift: any) => ({
           Workplace: shift.workplace,
@@ -170,11 +172,17 @@ export class MyShiftsPageComponent implements OnInit {
         bookType: 'xlsx',
         type: 'array',
       });
+
       const data = new Blob([excelBuffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
       });
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
-    });
+    } catch (error) {
+      // ! #TODO: this.showError
+      console.error('Failed to export Excel:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

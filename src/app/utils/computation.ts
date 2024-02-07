@@ -17,6 +17,7 @@ export function calculateProfit(
   return hourlyWage * workedHours;
 }
 
+// ! #TODO: get only best month by my shifts (currently it takes shifts from all users)
 export function getBestMonthStats(shifts: any): any {
   const parseShifts = (shift: any) => {
     const startTime = new Date(shift.startTime);

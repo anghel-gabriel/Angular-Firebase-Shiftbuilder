@@ -9,6 +9,7 @@ import {
 } from '../../utils/validation';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { genderOptionList } from 'src/app/utils/genderOptions';
 
 @Component({
   selector: 'app-register-page',
@@ -17,29 +18,27 @@ import { Router } from '@angular/router';
   providers: [MessageService],
 })
 export class RegisterPageComponent {
+  // user properties
   email = '';
   username = '';
   password = '';
   confirmPassword = '';
   firstName = '';
   lastName = '';
+  // ! #TODO: fix birthday and gender type
   birthDate: string = '';
   gender: any = '';
-  activeIndex = 0;
+  // user agreement checkbox
   checked = false;
+  // loading state
   isLoading = false;
-  isViewPortAtLeastMedium: boolean = false;
+  isViewPortAtLeastMedium = false;
 
-  // gender select element options
-  genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
-  ];
+  // gender dropdown options
+  genderOptions = genderOptionList;
 
-  // steps component
-  items: MenuItem[] | undefined = [
+  // steps component navigation
+  items: MenuItem[] = [
     {
       label: 'Credentials',
     },
@@ -51,6 +50,10 @@ export class RegisterPageComponent {
       label: 'Agreement',
     },
   ];
+  activeIndex = 0;
+  onActiveIndexChange(event: number) {
+    this.activeIndex = event;
+  }
 
   constructor(
     private messageService: MessageService,
@@ -60,7 +63,7 @@ export class RegisterPageComponent {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
   }
 
-  // adjust previous&next buttons depending on viewport width
+  // adjust form navigation buttons depending on viewport width
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
@@ -80,55 +83,31 @@ export class RegisterPageComponent {
     // first step validation
     if (this.activeIndex === 0) {
       if (!isEmailValid(this.email)) {
-        this.showError('Please use a valid email address');
+        this.showError('Please use a valid email address.');
         return;
       }
       if (this.username.length < 6) {
-        this.showError('Your username must be at least 6 characters long');
+        this.showError('Your username must be at least 6 characters long.');
         return;
       }
       if (!isUsernameValid(this.username)) {
-        this.showError('Your username must be alphanumeric');
+        this.showError('Your username must be alphanumeric.');
         return;
       }
       if (!isPasswordValid(this.password)) {
-        this.showError('Your password must respect the requested format');
+        this.showError('Your password must respect the requested format.');
         return;
       }
       if (this.password !== this.confirmPassword) {
-        this.showError('Your passwords must match');
+        this.showError('Your passwords must match.');
         return;
       }
-
-      if (this.activeIndex === 0) {
-        if (!isEmailValid(this.email)) {
-          this.showError('Please use a valid email address');
-          return;
-        }
-        if (this.username.length < 6) {
-          this.showError('Your username must be at least 6 characters long');
-          return;
-        }
-        if (!isUsernameValid(this.username)) {
-          this.showError('Your username must be alphanumeric');
-          return;
-        }
-        if (!isPasswordValid(this.password)) {
-          this.showError('Your password must respect the requested format');
-          return;
-        }
-        if (this.password !== this.confirmPassword) {
-          this.showError('Your passwords must match');
-          return;
-        }
-        // check if the username is available
+      try {
         this.isLoading = true;
         const isUsernameAvailable = await this.auth.isUsernameAvailable(
           this.username
         );
         const isEmailAvailable = await this.auth.isEmailAvailable(this.email);
-
-        this.isLoading = false;
         if (!isUsernameAvailable) {
           this.showError(
             'This username is already taken. Please choose another one.'
@@ -141,6 +120,12 @@ export class RegisterPageComponent {
           );
           return;
         }
+      } catch (error: any) {
+        this.showError(
+          'An error has occured. Please refresh the page and try again.'
+        );
+      } finally {
+        this.isLoading = false;
       }
     }
 
@@ -148,7 +133,7 @@ export class RegisterPageComponent {
     if (this.activeIndex === 1) {
       if (this.firstName.length < 2 || this.lastName.length < 2) {
         this.showError(
-          'First name and last name must be at least 2 characters long'
+          'First name and last name must be at least 2 characters long.'
         );
         return;
       }
@@ -157,7 +142,7 @@ export class RegisterPageComponent {
         !isUserAgeBetweenEighteenAndNinety(this.birthDate)
       ) {
         this.showError(
-          'You must be between 18 and 90 years old in order to register'
+          'You must be between 18 and 90 years old in order to register.'
         );
         return;
       }
@@ -168,10 +153,6 @@ export class RegisterPageComponent {
 
   handlePrevious() {
     if (this.activeIndex !== 0) this.activeIndex--;
-  }
-
-  onActiveIndexChange(event: number) {
-    this.activeIndex = event;
   }
 
   async onSubmit() {
@@ -202,19 +183,10 @@ export class RegisterPageComponent {
       await new Promise((resolve) => setTimeout(resolve, 4000));
       this.router.navigate(['/my-shifts']);
     } catch (error: any) {
-      if (error.message.includes('auth/email-already-in-use')) {
-        this.showError(
-          'This email address is already in use. Please choose another one.'
-        );
-      } else {
-        // TODO: handle disabled/deleted user or other errors
-        this.showError('Registration failed. Please contact an admin.');
-      }
+      // ! #TODO: handle disabled/deleted user or other errors
+      this.showError('Registration failed. Please contact an admin.');
     } finally {
       this.isLoading = false;
     }
   }
-
-  // TODO: fix birthdate
-  // TODO: after registration, user will go to homepage
 }

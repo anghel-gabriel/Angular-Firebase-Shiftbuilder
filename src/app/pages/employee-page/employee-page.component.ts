@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
+import { genderOptionList } from 'src/app/utils/genderOptions';
 
 @Component({
   selector: 'app-employee-page',
@@ -21,12 +22,7 @@ export class EmployeePageComponent implements OnInit {
   birthDate: any;
   gender = '';
   photoURL = '';
-  genderOptions = [
-    { name: 'Unknown', value: 'unknown' },
-    { name: 'Male', value: 'male' },
-    { name: 'Female', value: 'female' },
-    { name: 'Other', value: 'other' },
-  ];
+  genderOptions = genderOptionList;
   isChangingPasswordModalVisible = false;
   isChangingEmailModalVisible = false;
   constructor(

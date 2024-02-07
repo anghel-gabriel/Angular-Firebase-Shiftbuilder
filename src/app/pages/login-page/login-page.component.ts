@@ -13,7 +13,7 @@ export class LoginPageComponent {
   isLoading = false;
   loginEmailOrUsername = '';
   password = '';
-  loginWay: string = 'email';
+  loginWay = 'email';
 
   // login way toggle for desktop
   desktopSelectOptions: any[] = [
@@ -62,8 +62,6 @@ export class LoginPageComponent {
   }
 
   async onSubmit() {
-    console.log(this.loginWay);
-
     if (!this.password || !this.loginEmailOrUsername) {
       this.showError('Please enter your login credentials.');
       return;
@@ -71,7 +69,6 @@ export class LoginPageComponent {
 
     try {
       this.isLoading = true;
-
       if (this.loginWay === 'email') {
         await this.auth.signIn(this.loginEmailOrUsername, this.password);
         this.router.navigate(['/my-shifts']);
@@ -115,4 +112,4 @@ export class LoginPageComponent {
   }
 }
 
-// TODO: ask: The user will be asked to put user information that will be saved via the server for 60 minutes / token expiration
+// ! #TODO: The user will be asked to put user information that will be saved via the server for 60 minutes / token expiration

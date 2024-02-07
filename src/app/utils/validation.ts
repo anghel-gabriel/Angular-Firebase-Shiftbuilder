@@ -13,6 +13,7 @@ export function isUsernameValid(username: string) {
   return username.match(regex);
 }
 
+// ! #TODO: age must be between 6 and 130
 export function isUserAgeBetweenEighteenAndNinety(date: any) {
   const givenDate = new Date(date);
   const currentDate = new Date();
@@ -24,7 +25,7 @@ export function isUserAgeBetweenEighteenAndNinety(date: any) {
   );
 
   const ninetyYearsAgo = new Date(
-    currentDate.getFullYear() - 130,
+    currentDate.getFullYear() - 90,
     currentDate.getMonth(),
     currentDate.getDate()
   );
