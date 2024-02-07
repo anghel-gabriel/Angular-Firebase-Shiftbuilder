@@ -13,6 +13,7 @@ import { FileUploadEvent } from 'primeng/fileupload';
 import { forkJoin } from 'rxjs';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { IGenderOption, genderOptionList } from 'src/app/utils/genderOptions';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -40,6 +41,8 @@ export class ProfilePageComponent {
   defaultPhotoURL = defaultPhotoURL;
   isChangingPasswordModalVisible = false;
   isChangingEmailModalVisible = false;
+  actualFirstName = '';
+  actualLastName = '';
 
   genderOptions = genderOptionList;
   // steps component
@@ -58,7 +61,8 @@ export class ProfilePageComponent {
   constructor(
     private messageService: MessageService,
     private auth: AuthenticationService,
-    private fileUpload: FileUploadService
+    private fileUpload: FileUploadService,
+    private database: DatabaseService
   ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
     this.auth.getLoggedUser().subscribe((data: any) => {
@@ -85,6 +89,8 @@ export class ProfilePageComponent {
       this.birthDate = new Date(data.birthDate);
       this.gender = data.gender || { name: 'Unknown', value: 'unknown' };
       this.photoURL = data.photoURL || this.defaultPhotoURL;
+      this.actualFirstName = data.firstName;
+      this.actualLastName = data.lastName;
     }
   }
 
@@ -100,14 +106,13 @@ export class ProfilePageComponent {
   // form validation
   async handleSaveProfile() {
     try {
-      if (this.activeIndex === 0) {
-        if (this.username.length < 6) {
-          this.showError('Your username must be at least 6 characters long');
-        }
-        if (!isUsernameValid(this.username)) {
-          this.showError('Your username must be alphanumeric');
-          return;
-        }
+      // ! #TODO: check if username is already existing
+      if (this.username.length < 6) {
+        this.showError('Your username must be at least 6 characters long');
+      }
+      if (!isUsernameValid(this.username)) {
+        this.showError('Your username must be alphanumeric');
+        return;
       }
       if (this.firstName.length < 2 || this.lastName.length < 2) {
         this.showError(
@@ -126,6 +131,7 @@ export class ProfilePageComponent {
       }
 
       this.isLoading = true;
+      let isFullNameChanged = false;
       const newData = {
         email: this.email,
         username: this.username,
@@ -134,7 +140,22 @@ export class ProfilePageComponent {
         birthDate: this.birthDate.toISOString(),
         gender: this.gender,
       };
+      if (
+        newData.firstName !== this.actualFirstName ||
+        newData.lastName !== this.actualLastName
+      ) {
+        isFullNameChanged = true;
+      }
       await this.auth.editProfile(newData as any);
+      if (isFullNameChanged) {
+        const userId = this.auth.getAuthUser()?.uid;
+        if (userId) {
+          await this.database.updateShiftAuthorFullName(
+            userId,
+            `${this.firstName} ${this.lastName}`
+          );
+        }
+      }
       this.messageService.add({
         severity: 'success',
         detail: 'Changes saved succesfully',

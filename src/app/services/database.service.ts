@@ -159,5 +159,17 @@ export class DatabaseService {
     }
   }
 
-  // ! #TODO: worker of the month (the one with most shifts?)
+  async updateShiftAuthorFullName(userId: string, newFullName: string) {
+    const shiftsRef = collection(this.firestore, 'shifts');
+    const q = query(shiftsRef, where('author', '==', userId));
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => {
+        const shiftRef = doc.ref;
+        await updateDoc(shiftRef, { authorFullName: newFullName });
+      });
+    } catch (error: any) {
+      throw new Error(`Error updating shift author names: ${error.message}`);
+    }
+  }
 }
