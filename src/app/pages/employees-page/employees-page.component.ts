@@ -12,7 +12,7 @@ import { getImageUrl } from 'src/app/utils/workplaces';
 @Component({
   selector: 'app-employees-page',
   templateUrl: './employees-page.component.html',
-  styleUrl: './users-page.component.scss',
+  styleUrl: './employees-page.component.scss',
   providers: [ConfirmationService, MessageService],
 })
 export class EmployeesPageComponent {
