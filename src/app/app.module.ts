@@ -59,6 +59,7 @@ import { AllShiftsPageComponent } from './pages/all-shifts-page/all-shifts-page.
 import { EmployeesPageComponent } from './pages/employees-page/employees-page.component';
 import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
 import { ChartModule } from 'primeng/chart';
+import { AdminStatsComponent } from './components/admin-stats/admin-stats.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ChartModule } from 'primeng/chart';
     AllShiftsPageComponent,
     EmployeesPageComponent,
     EmployeePageComponent,
+    AdminStatsComponent,
   ],
   imports: [
     CommonModule,

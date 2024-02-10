@@ -8,7 +8,7 @@ import { getBestMonthStats } from 'src/app/utils/computation';
   templateUrl: './best-month.component.html',
   styleUrls: ['./best-month.component.scss'],
 })
-export class BestMonthComponent implements OnInit {
+export class BestMonthComponent {
   bestMonthStats = {
     month: 'No stats',
     year: 'No stats',
@@ -17,16 +17,13 @@ export class BestMonthComponent implements OnInit {
     profit: 'No stats',
   };
 
-  // Chart options
-  data: any;
-  options: any;
+  data = {};
+  options = {};
 
   constructor(
     private auth: AuthenticationService,
     private db: DatabaseService
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.db.updateShifts().subscribe((shifts) => {
       const currentId = this.auth?.getAuthUser()?.uid;
       const myShifts = shifts.filter(
@@ -37,7 +34,7 @@ export class BestMonthComponent implements OnInit {
     });
   }
 
-  private updateChartData(shifts: any[]): void {
+  updateChartData(shifts: any[]): void {
     const workplaceProfits = shifts.reduce((acc, shift) => {
       const { workplace, profit } = shift;
       acc[workplace] = (acc[workplace] || 0) + profit;

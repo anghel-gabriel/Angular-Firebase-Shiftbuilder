@@ -27,6 +27,7 @@ export class MyShiftsPageComponent implements OnInit {
   addModalVisible = false;
   editModalVisible = false;
   bestMonthModalVisible = false;
+  statisticsModalVisible = false;
   // comment
   currentComments: string = '';
   // shifts

@@ -55,6 +55,16 @@
             [disabled]="shifts.length < 1"
             (click)="onBestMonthClick()"
           ></p-button>
+          <p-button
+            [outlined]="true"
+            icon="pi pi-chart-pie"
+            pRipple
+            pTooltip="Show overall statistics"
+            severity="danger"
+            tooltipPosition="bottom"
+            [disabled]="shifts.length < 1"
+            (click)="onStatisticsClick()"
+          ></p-button>
         </div>
       </div>
     </ng-template>
@@ -251,13 +261,13 @@
 
 <!-- best month modal -->
 <p-dialog
-  (onHide)="onBestMonthModalClose()"
-  [(visible)]="bestMonthModalVisible"
+  (onHide)="onStatisticsModalClose()"
+  [(visible)]="statisticsModalVisible"
   [modal]="true"
-  header="Best Month"
+  header="Statistics"
   styleClass="w-[90vw] max-w-[600px]"
 >
-  <app-best-month />
+  <app-admin-stats />
 </p-dialog>
 
 <!-- overlay panel for showing comments-->

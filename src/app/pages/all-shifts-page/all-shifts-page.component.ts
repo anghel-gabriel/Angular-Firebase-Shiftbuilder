@@ -27,6 +27,7 @@ export class AllShiftsPageComponent {
   addModalVisible = false;
   editModalVisible = false;
   bestMonthModalVisible = false;
+  statisticsModalVisible = false;
   // comment
   currentComments: string = '';
   // shifts
@@ -58,6 +59,14 @@ export class AllShiftsPageComponent {
       });
     });
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
+  }
+
+  // best month modal
+  onStatisticsClick() {
+    this.statisticsModalVisible = true;
+  }
+  onStatisticsModalClose() {
+    this.statisticsModalVisible = false;
   }
 
   // best month modal

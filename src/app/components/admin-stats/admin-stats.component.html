@@ -1,0 +1,18 @@
+<div class="min-h-[230px]">
+  <div class="flex justify-center">
+    <p-dropdown
+      styleClass="w-[240px] sm:w-[300px] mb-4"
+      [options]="dropdownOptions"
+      (onChange)="onChartChange($event)"
+      (change)="onChartChange($event)"
+      optionLabel="name"
+      placeholder="Select a City"
+    ></p-dropdown>
+  </div>
+
+  @if(isChartShowing){
+  <div class="max-h-[300px]">
+    <p-chart height="300px" type="pie" [data]="data" [options]="options" />
+  </div>
+  }
+</div>

@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit {
             url: 'employees',
           },
           {
-            label: 'Shifts',
+            label: 'All Shifts',
             icon: 'pi pi-fw pi-calendar',
             url: 'shifts',
           },
