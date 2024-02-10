@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -40,7 +40,8 @@ export class EmployeePageComponent implements OnInit {
     private auth: AuthenticationService,
     private fileUpload: FileUploadService,
     private messageService: MessageService,
-    private database: DatabaseService
+    private database: DatabaseService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -51,6 +52,7 @@ export class EmployeePageComponent implements OnInit {
   async fillFieldsWithEmployeeData() {
     try {
       const employeeData = await this.auth.getEmployeeData(this.employeeId);
+      if (!employeeData || !employeeData['uid']) this.router.navigate(['/404']);
       if (employeeData) {
         this.firstName = employeeData['firstName'];
         this.lastName = employeeData['lastName'];
