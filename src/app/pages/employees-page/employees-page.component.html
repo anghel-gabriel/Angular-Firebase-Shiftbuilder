@@ -175,11 +175,28 @@
             ></p-button>
             <p-button
               (onClick)="onDeleteEmployeeClick($event, employee)"
-              [disabled]="myId === employee.uid"
+              [disabled]="
+                myId === employee.uid ||
+                (employee.role === 'admin' && myRole !== 'superadmin')
+              "
               [rounded]="true"
               icon="pi pi-trash"
               pTooltip="Delete"
               severity="danger"
+              tooltipPosition="top"
+            ></p-button>
+            <p-button
+              (onClick)="
+                onEnableDisableEmployee(employee.uid, employee.disabled)
+              "
+              [rounded]="true"
+              [disabled]="
+                myId === employee.uid ||
+                (employee.role === 'admin' && myRole !== 'superadmin')
+              "
+              [icon]="employee.disabled ? 'pi pi-sun' : 'pi pi-moon'"
+              [pTooltip]="employee.disabled ? 'Enable' : 'Disable'"
+              [severity]="employee.disabled ? 'primary' : 'secondary'"
               tooltipPosition="top"
             ></p-button>
           </div>
