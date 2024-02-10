@@ -71,7 +71,8 @@ export class EmployeesPageComponent {
 
   // edit modal
   onEditClick(employee: any) {
-    this.router.navigate([`/employee/${employee.uid}`]);
+    if (employee.uid === this.myId) this.router.navigate(['/profile']);
+    else this.router.navigate([`/employee/${employee.uid}`]);
   }
 
   // delete confirmation employee popup
@@ -102,7 +103,6 @@ export class EmployeesPageComponent {
 
   async onEnableDisableEmployee(userId: string, isDisabled: boolean) {
     try {
-      console.log(status);
       this.isLoading = true;
       if (isDisabled) await this.auth.enableEmployee(userId);
       else await this.auth.disableEmployee(userId);
