@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as FileSaver from 'file-saver';
+import { doc } from 'firebase/firestore';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
+import { AdminService } from 'src/app/services/admin.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DatabaseService } from 'src/app/services/database.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
@@ -21,6 +23,7 @@ export class EmployeesPageComponent {
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
+  myId = this.auth.getAuthUser()?.uid;
 
   // modals
   addModalVisible = false;
@@ -38,7 +41,8 @@ export class EmployeesPageComponent {
     private messageService: MessageService,
     private db: DatabaseService,
     private auth: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private admin: AdminService
   ) {}
 
   ngOnInit() {
@@ -81,8 +85,16 @@ export class EmployeesPageComponent {
       reject: () => {},
     });
   }
-  async onDeleteConfirm(shiftId: any) {
+  async onDeleteConfirm(userId: any) {
     // ! #TODO: delete employee function
+    try {
+      this.isLoading = true;
+      await this.auth.deleteEmployee(userId);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   // delete all employee shifts

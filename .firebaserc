@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "shiftease-2155e"
+  },
+  "targets": {
+    "shiftease-2155e": {
+      "hosting": {
+        "shiftease": [
+          "shiftease-2155e"
+        ]
+      }
+    }
+  }
+}
