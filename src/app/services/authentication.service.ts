@@ -189,11 +189,10 @@ export class AuthenticationService {
     }
   }
 
-  async editProfile(newData: UserInterface) {
+  async editProfile(userId: string, newData: UserInterface) {
     try {
-      const user = this.auth.currentUser;
-      if (!user) throw new Error('No user is currently logged in.');
-      const userRef = doc(this.firestore, `users/${user.uid}`);
+      if (!userId) return;
+      const userRef = doc(this.firestore, `users/${userId}`);
       await setDoc(userRef, newData, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
       if (updatedUserDoc.exists()) {

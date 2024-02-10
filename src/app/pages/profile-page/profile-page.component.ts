@@ -6,11 +6,7 @@ import {
   isUserAgeBetweenEighteenAndNinety,
 } from '../../utils/validation';
 import { AuthenticationService } from '../../services/authentication.service';
-import { UserInterface } from '../../utils/interfaces';
 import { FileUploadService } from 'src/app/services/file-upload.service';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FileUploadEvent } from 'primeng/fileupload';
-import { forkJoin } from 'rxjs';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { IGenderOption, genderOptionList } from 'src/app/utils/genderOptions';
 import { DatabaseService } from 'src/app/services/database.service';
@@ -23,6 +19,7 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class ProfilePageComponent {
   // user properties
+  uid = '';
   email = '';
   username = '';
   password = '';
@@ -66,7 +63,6 @@ export class ProfilePageComponent {
   ) {
     this.isViewPortAtLeastMedium = window.innerWidth >= 640;
     this.auth.getLoggedUser().subscribe((data: any) => {
-      console.log(data);
       this.fillProfileFields(data);
       if (data) this.isLoading = false;
     });
@@ -81,6 +77,7 @@ export class ProfilePageComponent {
   // fill profile input fields
   fillProfileFields(data: any) {
     if (data) {
+      this.uid = data.uid;
       this.username = data.email;
       this.email = data.email;
       this.firstName = data.firstName;
@@ -106,7 +103,8 @@ export class ProfilePageComponent {
   // form validation
   async handleSaveProfile() {
     try {
-      // ! #TODO: check if username is already existing
+      // ! #TODO: add validation for every field here and on employee page
+      // ! #TODO: check if username is already existing here and on employee page
       if (this.username.length < 6) {
         this.showError('Your username must be at least 6 characters long');
       }
@@ -146,7 +144,7 @@ export class ProfilePageComponent {
       ) {
         isFullNameChanged = true;
       }
-      await this.auth.editProfile(newData as any);
+      await this.auth.editProfile(this.uid, newData as any);
       if (isFullNameChanged) {
         const userId = this.auth.getAuthUser()?.uid;
         if (userId) {
