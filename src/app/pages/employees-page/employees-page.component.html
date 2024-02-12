@@ -159,26 +159,20 @@
             <p-button
               (onClick)="onEditClick(employee)"
               [rounded]="true"
-              [disabled]="
-                employee.uid !== myId &&
-                employee.role === 'admin' &&
-                myRole !== 'superadmin'
-              "
               icon="pi pi-pencil"
               onClick
-              pTooltip="Edit profile"
+              pTooltip="Edit"
               severity="help"
               tooltipPosition="top"
-            />
+            ></p-button>
             <p-button
               (onClick)="onDeleteEmployeeShifts(employee.uid)"
               [rounded]="true"
-              [disabled]="employee.uid == 'admin' && myRole !== 'superadmin'"
               icon="pi pi-delete-left"
               pTooltip="Delete all shifts"
               severity="warning"
               tooltipPosition="top"
-            />
+            ></p-button>
             <p-button
               (onClick)="onDeleteEmployeeClick($event, employee)"
               [disabled]="
@@ -187,10 +181,10 @@
               "
               [rounded]="true"
               icon="pi pi-trash"
-              pTooltip="Delete  account"
+              pTooltip="Delete"
               severity="danger"
               tooltipPosition="top"
-            />
+            ></p-button>
             <p-button
               (onClick)="
                 onEnableDisableEmployee(employee.uid, employee.disabled)
@@ -201,12 +195,10 @@
                 (employee.role === 'admin' && myRole !== 'superadmin')
               "
               [icon]="employee.disabled ? 'pi pi-sun' : 'pi pi-moon'"
-              [pTooltip]="
-                employee.disabled ? 'Enable account' : 'Disable account'
-              "
+              [pTooltip]="employee.disabled ? 'Enable' : 'Disable'"
               [severity]="employee.disabled ? 'primary' : 'secondary'"
-              tooltipPosition="left"
-            />
+              tooltipPosition="top"
+            ></p-button>
           </div>
         </td>
       </tr>
