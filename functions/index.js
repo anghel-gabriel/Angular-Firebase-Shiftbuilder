@@ -4,6 +4,14 @@ admin.initializeApp();
 
 // Update user email
 exports.adminUpdateUserEmail = functions.https.onCall(async (data, context) => {
+  // Authentication / Authorization checks
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "Must be an admin to call this function.",
+    );
+  }
+
   const {userId, newEmail} = data;
   try {
     await admin.auth().updateUser(userId, {email: newEmail});
@@ -15,6 +23,14 @@ exports.adminUpdateUserEmail = functions.https.onCall(async (data, context) => {
 
 // Delete user
 exports.adminDeleteUser = functions.https.onCall(async (data, context) => {
+  // Authentication / Authorization checks
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+        "permission-denied",
+        "Must be an admin to call this function.",
+    );
+  }
+
   const {userId} = data;
   try {
     await admin.auth().deleteUser(userId);
@@ -24,38 +40,4 @@ exports.adminDeleteUser = functions.https.onCall(async (data, context) => {
   }
 });
 
-// Disable user
-exports.adminDisableUser = functions.https.onCall(async (data, context) => {
-  const {userId} = data;
-  try {
-    await admin.auth().updateUser(userId, {disabled: true});
-    return {success: true};
-  } catch (error) {
-    throw new functions.https.HttpsError("internal", error.message);
-  }
-});
-
-// Enable user
-exports.adminEnableUser = functions.https.onCall(async (data, context) => {
-  try {
-    const {userId} = data;
-    await admin.auth().updateUser(userId, {disabled: false});
-    return {success: true};
-  } catch (error) {
-    throw new functions.https.HttpsError("internal", error.message);
-  }
-});
-
-// Change user password
-exports.adminChangeUserPassword = functions.https.onCall(
-    async (data, context) => {
-      const {userId, newPassword} = data;
-      try {
-        await admin.auth().updateUser(userId, {password: newPassword});
-        return {success: true};
-      } catch (error) {
-        throw new functions.https.HttpsError("internal", error.message);
-      }
-    },
-);
 

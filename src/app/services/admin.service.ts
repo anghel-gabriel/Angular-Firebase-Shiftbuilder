@@ -15,35 +15,8 @@ export class AdminService {
     }
   }
 
-  async adminChangeUserPassword(userId: string, newPassword: string) {
-    const callable = this.fns.httpsCallable('adminChangeUserPassword');
-    try {
-      return await callable({ userId, newPassword }).toPromise();
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async adminDeleteUser(userId: string) {
     const callable = this.fns.httpsCallable('adminDeleteUser');
-    try {
-      return await callable({ userId }).toPromise();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async adminEnableUser(userId: string) {
-    const callable = this.fns.httpsCallable('adminEnableUser');
-    try {
-      return await callable({ userId }).toPromise();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async adminDisableUser(userId: string) {
-    const callable = this.fns.httpsCallable('adminDisableUser');
     try {
       return await callable({ userId }).toPromise();
     } catch (error) {

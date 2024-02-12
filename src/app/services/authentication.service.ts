@@ -219,26 +219,6 @@ export class AuthenticationService {
     }
   }
 
-  async disableEmployee(userId: any) {
-    try {
-      await this.admin.adminDisableUser(userId);
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await setDoc(userRef, { disabled: true }, { merge: true });
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
-  async enableEmployee(userId: any) {
-    try {
-      await this.admin.adminEnableUser(userId);
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await setDoc(userRef, { disabled: false }, { merge: true });
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
   async changeEmail(newEmail: string) {
     try {
       if (this.auth.currentUser)

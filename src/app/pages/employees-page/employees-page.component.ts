@@ -24,7 +24,7 @@ export class EmployeesPageComponent {
   loading: boolean = false;
   isLoading: boolean = false;
   myId = this.auth.getAuthUser()?.uid;
-  myRole = '';
+
   // modals
   addModalVisible = false;
   editModalVisible = false;
@@ -43,9 +43,7 @@ export class EmployeesPageComponent {
     private auth: AuthenticationService,
     private router: Router,
     private admin: AdminService
-  ) {
-    this.auth.getLoggedUser().subscribe((data) => (this.myRole = data.role));
-  }
+  ) {}
 
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
@@ -74,7 +72,7 @@ export class EmployeesPageComponent {
     this.router.navigate([`/employee/${employee.uid}`]);
   }
 
-  // delete confirmation employee popup
+  // delete confirmation popup
   onDeleteEmployeeClick(event: Event, shift: any) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
@@ -87,27 +85,13 @@ export class EmployeesPageComponent {
       reject: () => {},
     });
   }
-
-  // delete employee from auth and firestore
   async onDeleteConfirm(userId: any) {
+    // ! #TODO: delete employee function
     try {
       this.isLoading = true;
       await this.auth.deleteEmployee(userId);
     } catch (error: any) {
       console.log(error);
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async onEnableDisableEmployee(userId: string, isDisabled: boolean) {
-    try {
-      console.log(status);
-      this.isLoading = true;
-      if (isDisabled) await this.auth.enableEmployee(userId);
-      else await this.auth.disableEmployee(userId);
-    } catch (error: any) {
-      console.error(error);
     } finally {
       this.isLoading = false;
     }
@@ -162,6 +146,3 @@ export class EmployeesPageComponent {
     });
   }
 }
-
-// ! #TODO: feature to make user admin if superadmin
-// ! #TODO: handle disabled user
