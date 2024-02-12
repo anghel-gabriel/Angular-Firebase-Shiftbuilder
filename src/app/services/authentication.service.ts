@@ -165,9 +165,8 @@ export class AuthenticationService {
     try {
       await setDoc(userRef, { photoURL: photoURL }, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
+      if (userId === this.getAuthUser()?.uid)
         this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
     } catch (error: any) {
       console.log(error);
     }
@@ -181,9 +180,8 @@ export class AuthenticationService {
     try {
       await setDoc(userRef, { photoURL: defaultPhotoURL }, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
+      if (userId === this.getAuthUser()?.uid)
         this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
     } catch (error: any) {
       throw new Error(`Error removing user photo: ${error.message}`);
     }
@@ -195,9 +193,8 @@ export class AuthenticationService {
       const userRef = doc(this.firestore, `users/${userId}`);
       await setDoc(userRef, newData, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
+      if (userId === this.getAuthUser()?.uid)
         this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -263,3 +260,5 @@ export class AuthenticationService {
     }
   }
 }
+
+// ! #TODO: check data changing when modifying self profile ori any employee profile

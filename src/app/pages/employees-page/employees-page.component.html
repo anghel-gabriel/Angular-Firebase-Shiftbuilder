@@ -175,6 +175,10 @@
             ></p-button>
             <p-button
               (onClick)="onDeleteEmployeeClick($event, employee)"
+              [disabled]="
+                myId === employee.uid ||
+                (employee.role === 'admin' && myRole !== 'superadmin')
+              "
               [rounded]="true"
               icon="pi pi-trash"
               pTooltip="Delete"

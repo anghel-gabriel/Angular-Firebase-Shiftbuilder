@@ -6,7 +6,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { DatabaseService } from 'src/app/services/database.service';
-import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
 
 @Component({
@@ -21,7 +20,8 @@ export class EmployeesPageComponent {
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
-
+  myId = '';
+  myRole = '';
   // modals
   addModalVisible = false;
   editModalVisible = false;
@@ -47,6 +47,10 @@ export class EmployeesPageComponent {
       this.users = [...users];
       console.log('allusers', this.users);
     });
+    this.auth.getLoggedUser().subscribe((data) => {
+      this.myId = data.uid;
+      this.myRole = data.role;
+    });
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
 
@@ -65,7 +69,8 @@ export class EmployeesPageComponent {
 
   // edit modal
   onEditClick(employee: any) {
-    this.router.navigate([`/employee/${employee.uid}`]);
+    if (employee.uid === this.myId) this.router.navigate(['/profile']);
+    else this.router.navigate([`/employee/${employee.uid}`]);
   }
 
   // delete confirmation popup
