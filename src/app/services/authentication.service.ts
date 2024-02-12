@@ -16,12 +16,10 @@ import {
   collection,
   where,
   getDocs,
-  deleteDoc,
 } from '@angular/fire/firestore';
 import { RegisterInterface, UserInterface } from '../utils/interfaces';
 import { BehaviorSubject } from 'rxjs';
 import { defaultPhotoURL } from '../utils/defaultProfileImage';
-import { AdminService } from './admin.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +28,7 @@ export class AuthenticationService {
   private loggedUser = new BehaviorSubject<any>(null);
   private authStateChecked = new BehaviorSubject<boolean>(false);
 
-  constructor(
-    public auth: Auth,
-    public firestore: Firestore,
-    private admin: AdminService
-  ) {
+  constructor(public auth: Auth, public firestore: Firestore) {
     this.initializeLoggedUser();
     this.auth.onAuthStateChanged(this.handleAuthStateChange.bind(this));
   }
@@ -206,16 +200,6 @@ export class AuthenticationService {
       }
     } catch (error: any) {
       throw new Error(error.message);
-    }
-  }
-
-  async deleteEmployee(userId: string) {
-    try {
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await this.admin.adminDeleteUser(userId);
-      await deleteDoc(userRef);
-    } catch (error) {
-      console.error(error);
     }
   }
 

@@ -175,7 +175,6 @@
             ></p-button>
             <p-button
               (onClick)="onDeleteEmployeeClick($event, employee)"
-              [disabled]="myId === employee.uid"
               [rounded]="true"
               icon="pi pi-trash"
               pTooltip="Delete"
