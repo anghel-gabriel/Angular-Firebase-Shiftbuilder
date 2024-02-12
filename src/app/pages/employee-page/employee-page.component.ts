@@ -182,7 +182,3 @@ export class EmployeePageComponent implements OnInit {
     }
   }
 }
-
-// ! #TODO: add profanity check for username
-// ! #TODO: photo updating and removing toast notification
-// ! #TODO: when changing email handle email already existing
