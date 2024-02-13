@@ -88,13 +88,6 @@ export class AuthenticationService {
     return snapshot.empty;
   }
 
-  async isEmailAddressAvailable(username: string): Promise<boolean> {
-    const usersRef = collection(this.firestore, "users");
-    const q = query(usersRef, where("email", "==", username));
-    const snapshot = await getDocs(q);
-    return snapshot.empty;
-  }
-
   async isEmailAvailable(username: string): Promise<boolean> {
     const usersRef = collection(this.firestore, "users");
     const q = query(usersRef, where("email", "==", username));
@@ -212,13 +205,16 @@ export class AuthenticationService {
 
   async changeEmail(newEmail: string) {
     try {
-      if (this.auth.currentUser)
-        await updateEmail(this.auth.currentUser, newEmail);
+      const user = this.auth.currentUser;
+      if (user) {
+        await updateEmail(user, newEmail);
+        const userRef = doc(this.firestore, `users/${user.uid}`);
+        await setDoc(userRef, { email: newEmail }, { merge: true });
+      }
     } catch (error: any) {
       throw new Error(error);
     }
   }
-
   async changePassword(newPassword: string) {
     try {
       if (this.auth.currentUser)

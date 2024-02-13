@@ -172,7 +172,12 @@
     header="Change password"
     styleClass="w-[90vw] max-w-[600px]"
 >
-    <app-change-password-form />
+    <app-change-password-form
+        (errorEvent)="showError($event)"
+        (successEvent)="showSuccess($event)"
+        (setLoadingSpinner)="setLoadingSpinner($event)"
+        (closeForm)="isChangingEmailModalVisible = false"
+    />
 </p-dialog>
 
 <!-- change email modal -->
