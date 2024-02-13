@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private auth: AuthenticationService,
     private router: Router,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -76,13 +77,21 @@ export class NavbarComponent implements OnInit {
     ];
   }
 
+  showError(message: string) {
+    this.messageService.add({
+      severity: "error",
+      detail: message,
+      summary: "Error",
+    });
+  }
+
   async onSignOut() {
     this.isLoading = true;
     try {
       await this.auth.logOut();
       await this.router.navigate(["/sign-in"]);
     } catch (error: any) {
-      console.error(error);
+      this.showError(error);
     } finally {
       this.isLoading = false;
     }

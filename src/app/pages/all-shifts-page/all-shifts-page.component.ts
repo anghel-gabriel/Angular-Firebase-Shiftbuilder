@@ -3,9 +3,7 @@ import * as FileSaver from "file-saver";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { OverlayPanel } from "primeng/overlaypanel";
 import { Table } from "primeng/table";
-import { AuthenticationService } from "src/app/services/authentication.service";
 import { DatabaseService } from "src/app/services/database.service";
-import { defaultPhotoURL } from "src/app/utils/defaultProfileImage";
 import { getImageUrl } from "src/app/utils/workplaces";
 
 @Component({
@@ -20,9 +18,7 @@ export class AllShiftsPageComponent {
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
-  // user data
-  userPhotoURL: any;
-  userCompleteName: string = "";
+
   // modals
   editModalVisible = false;
   statisticsModalVisible = false;
@@ -37,13 +33,7 @@ export class AllShiftsPageComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private db: DatabaseService,
-    private auth: AuthenticationService,
-  ) {
-    this.auth.getLoggedUser().subscribe((data) => {
-      this.userPhotoURL = data?.photoURL || defaultPhotoURL;
-      this.userCompleteName = data?.firstName + " " + data?.lastName;
-    });
-  }
+  ) {}
 
   showError(message: string) {
     this.messageService.add({
@@ -54,7 +44,6 @@ export class AllShiftsPageComponent {
   }
 
   ngOnInit() {
-    // TODO: fix loading spinner when fetching data
     this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts].map((shift) => {
         return {

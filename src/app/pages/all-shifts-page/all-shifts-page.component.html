@@ -16,7 +16,7 @@
     >
         <ng-template pTemplate="caption">
             <div class="flex items-center justify-between">
-                <div class="table-header flex gap-2">
+                <div class="table-header flex flex-wrap gap-2">
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input
@@ -26,26 +26,28 @@
                             type="text"
                         />
                     </span>
-                    <p-button
-                        (click)="exportExcel()"
-                        [outlined]="true"
-                        icon="pi pi-file-excel"
-                        pRipple
-                        pTooltip="Export to Excel"
-                        [disabled]="shifts.length < 1"
-                        severity="success"
-                        tooltipPosition="bottom"
-                    ></p-button>
-                    <p-button
-                        [outlined]="true"
-                        icon="pi pi-chart-pie"
-                        pRipple
-                        pTooltip="Show overall statistics"
-                        severity="danger"
-                        tooltipPosition="bottom"
-                        [disabled]="shifts.length < 1"
-                        (click)="onStatisticsClick()"
-                    ></p-button>
+                    <div class="flex gap-2">
+                        <p-button
+                            (click)="exportExcel()"
+                            [outlined]="true"
+                            icon="pi pi-file-excel"
+                            pRipple
+                            pTooltip="Export to Excel"
+                            [disabled]="shifts.length < 1"
+                            severity="success"
+                            tooltipPosition="bottom"
+                        />
+                        <p-button
+                            [outlined]="true"
+                            icon="pi pi-chart-pie"
+                            pRipple
+                            pTooltip="Show overall statistics"
+                            severity="danger"
+                            tooltipPosition="bottom"
+                            [disabled]="shifts.length < 1"
+                            (click)="onStatisticsClick()"
+                        />
+                    </div>
                 </div>
             </div>
         </ng-template>

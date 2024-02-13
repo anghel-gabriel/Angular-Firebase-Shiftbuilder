@@ -22,7 +22,7 @@ export class MyShiftsPageComponent implements OnInit {
   isLoading: boolean = false;
   // user data
   userPhotoURL: any;
-  userCompleteName: string = "";
+  userFirstName: string = "";
   // modals
   addModalVisible = false;
   editModalVisible = false;
@@ -65,7 +65,7 @@ export class MyShiftsPageComponent implements OnInit {
   ) {
     this.auth.getLoggedUser().subscribe((data) => {
       this.userPhotoURL = data?.photoURL || defaultPhotoURL;
-      this.userCompleteName = data?.firstName + " " + data?.lastName;
+      this.userFirstName = data?.firstName;
     });
   }
 
@@ -78,7 +78,6 @@ export class MyShiftsPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: fix loading spinner when fetching data
     this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts]
         .filter((shift: any) => shift.author === this.auth?.getAuthUser()?.uid)

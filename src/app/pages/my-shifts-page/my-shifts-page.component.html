@@ -15,45 +15,52 @@
         dataKey="id"
     >
         <ng-template pTemplate="caption">
-            <div class="flex items-center justify-between">
-                <div class="table-header flex gap-2">
+            <div
+                class="ms-center flex flex-col-reverse items-center justify-between gap-y-2 sm:flex-row"
+            >
+                <div
+                    class="table-header flex flex-col gap-2 gap-y-4 sm:flex-row"
+                >
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input
+                            class="max-w-[215px]"
                             (input)="applyFilterGlobal($event, 'contains')"
                             pInputText
                             placeholder="Search by workplace"
                             type="text"
                         />
                     </span>
-                    <p-button
-                        (click)="onAddClick()"
-                        [outlined]="true"
-                        icon="pi pi-plus"
-                        pRipple
-                        pTooltip="Add a new shift"
-                        tooltipPosition="bottom"
-                    ></p-button>
-                    <p-button
-                        (click)="exportExcel()"
-                        [outlined]="true"
-                        icon="pi pi-file-excel"
-                        pRipple
-                        pTooltip="Export to Excel"
-                        [disabled]="shifts.length < 1"
-                        severity="success"
-                        tooltipPosition="bottom"
-                    />
-                    <p-button
-                        [outlined]="true"
-                        icon="pi pi-chart-line"
-                        pRipple
-                        pTooltip="Show best month"
-                        severity="help"
-                        tooltipPosition="bottom"
-                        [disabled]="shifts.length < 1"
-                        (click)="onBestMonthClick()"
-                    />
+                    <div class="max-sm: flex justify-center gap-2">
+                        <p-button
+                            (click)="onAddClick()"
+                            [outlined]="true"
+                            icon="pi pi-plus"
+                            pRipple
+                            pTooltip="Add a new shift"
+                            tooltipPosition="bottom"
+                        ></p-button>
+                        <p-button
+                            (click)="exportExcel()"
+                            [outlined]="true"
+                            icon="pi pi-file-excel"
+                            pRipple
+                            pTooltip="Export to Excel"
+                            [disabled]="shifts.length < 1"
+                            severity="success"
+                            tooltipPosition="bottom"
+                        />
+                        <p-button
+                            [outlined]="true"
+                            icon="pi pi-chart-line"
+                            pRipple
+                            pTooltip="Show best month"
+                            severity="help"
+                            tooltipPosition="bottom"
+                            [disabled]="shifts.length < 1"
+                            (click)="onBestMonthClick()"
+                        />
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <p-avatar
@@ -61,7 +68,7 @@
                         shape="circle"
                         size="normal"
                     ></p-avatar>
-                    <p>Hello, {{ userCompleteName }}!</p>
+                    <p>Hello, {{ userFirstName }}!</p>
                 </div>
             </div>
         </ng-template>

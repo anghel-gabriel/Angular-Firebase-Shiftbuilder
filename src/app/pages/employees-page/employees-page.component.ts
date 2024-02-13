@@ -38,7 +38,6 @@ export class EmployeesPageComponent {
     private router: Router,
     private messageService: MessageService,
   ) {
-    // TODO: fix loading spinner when fetching data
     this.db.updateAllUsers().subscribe((users) => {
       this.users = [...users];
     });
