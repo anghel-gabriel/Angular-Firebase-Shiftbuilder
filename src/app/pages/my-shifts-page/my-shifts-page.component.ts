@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Table } from 'primeng/table';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
 import { getImageUrl } from 'src/app/utils/workplaces';
@@ -12,7 +12,7 @@ import { DatabaseService } from 'src/app/services/database.service';
   selector: 'app-my-shifts-page',
   templateUrl: './my-shifts-page.component.html',
   styleUrls: ['./my-shifts-page.component.scss'],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
 })
 export class MyShiftsPageComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
@@ -60,7 +60,8 @@ export class MyShiftsPageComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private db: DatabaseService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private toast: MessageService
   ) {
     this.auth.getLoggedUser().subscribe((data) => {
       this.userPhotoURL = data?.photoURL || defaultPhotoURL;
@@ -68,9 +69,16 @@ export class MyShiftsPageComponent implements OnInit {
     });
   }
 
+  showError(message: string) {
+    this.toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: message,
+    });
+  }
+
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
-    // ! #TODO: filter
     this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts]
         .filter((shift: any) => shift.author === this.auth?.getAuthUser()?.uid)
@@ -202,8 +210,7 @@ export class MyShiftsPageComponent implements OnInit {
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
     } catch (error) {
-      // ! #TODO: this.showError
-      console.error('Failed to export Excel:', error);
+      this.showError('Failde to export Excel. Please try again.');
     } finally {
       this.isLoading = false;
     }

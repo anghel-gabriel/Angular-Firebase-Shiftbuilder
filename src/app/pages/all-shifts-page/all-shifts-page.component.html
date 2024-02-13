@@ -1,5 +1,4 @@
 <!-- shifts table -->
-<!-- ! #TODO: update name and photoURL -->
 <div class="card max-w-[1720px] mx-auto">
   <p-table
     #dt
@@ -28,14 +27,6 @@
             />
           </span>
           <p-button
-            (click)="onAddClick()"
-            [outlined]="true"
-            icon="pi pi-plus"
-            pRipple
-            pTooltip="Add a new shift"
-            tooltipPosition="bottom"
-          ></p-button>
-          <p-button
             (click)="exportExcel()"
             [outlined]="true"
             icon="pi pi-file-excel"
@@ -44,16 +35,6 @@
             [disabled]="shifts.length < 1"
             severity="success"
             tooltipPosition="bottom"
-          ></p-button>
-          <p-button
-            [outlined]="true"
-            icon="pi pi-chart-line"
-            pRipple
-            pTooltip="Show best month"
-            severity="help"
-            tooltipPosition="bottom"
-            [disabled]="shifts.length < 1"
-            (click)="onBestMonthClick()"
           ></p-button>
           <p-button
             [outlined]="true"
@@ -237,17 +218,6 @@
   </p-table>
 </div>
 
-<!-- add shift modal -->
-<p-dialog
-  [(visible)]="addModalVisible"
-  [modal]="true"
-  header="Add a new shift"
-  styleClass="w-[90vw] max-w-[600px]"
-  (onHide)="onAddModalClose()"
->
-  <app-add-form (submit)="onAddSubmit($event)" />
-</p-dialog>
-
 <!-- edit shift modal -->
 <p-dialog
   (onHide)="onEditModalClose()"
@@ -259,7 +229,7 @@
   <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift" />
 </p-dialog>
 
-<!-- best month modal -->
+<!-- statistics -->
 <p-dialog
   (onHide)="onStatisticsModalClose()"
   [(visible)]="statisticsModalVisible"

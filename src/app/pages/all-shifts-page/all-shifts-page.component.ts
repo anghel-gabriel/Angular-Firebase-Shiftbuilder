@@ -61,7 +61,7 @@ export class AllShiftsPageComponent {
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
   }
 
-  // best month modal
+  // statistics modal
   onStatisticsClick() {
     this.statisticsModalVisible = true;
   }

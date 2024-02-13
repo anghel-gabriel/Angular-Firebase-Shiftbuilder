@@ -250,8 +250,6 @@ export class AuthenticationService {
         console.log('User data:', docSnap.data());
         return docSnap.data();
       } else {
-        // ! #TODO: show diffrent page when no user
-        console.log('No such user!');
         return null;
       }
     } catch (error) {
@@ -260,5 +258,3 @@ export class AuthenticationService {
     }
   }
 }
-
-// ! #TODO: check data changing when modifying self profile ori any employee profile

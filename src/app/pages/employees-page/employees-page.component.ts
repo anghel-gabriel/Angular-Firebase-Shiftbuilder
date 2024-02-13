@@ -20,6 +20,7 @@ export class EmployeesPageComponent {
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
+  // self info
   myId = '';
   myRole = '';
   // modals
@@ -52,19 +53,6 @@ export class EmployeesPageComponent {
       this.myRole = data.role;
     });
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
-  }
-
-  // best month modal
-  onBestMonthClick() {
-    this.bestMonthModalVisible = true;
-  }
-  onBestMonthModalClose() {
-    this.bestMonthModalVisible = false;
-  }
-
-  // add shift modal
-  onAddClick() {
-    this.addModalVisible = true;
   }
 
   // edit modal
@@ -112,7 +100,7 @@ export class EmployeesPageComponent {
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(
         this.users.map((shift: any) => ({
-          // ! #TODO: modify this
+          // ! #TODO: modify this and all excels
           Workplace: shift.workplace,
           'Start Time': shift.startTime.toLocaleString(),
           'End Time': shift.endTime.toLocaleString(),

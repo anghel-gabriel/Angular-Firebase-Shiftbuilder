@@ -5,7 +5,7 @@ import {
   isEmailValid,
   isPasswordValid,
   isUsernameValid,
-  isUserAgeBetweenEighteenAndNinety,
+  isUserAgeBetween6And130,
 } from '../../utils/validation';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
@@ -25,7 +25,6 @@ export class RegisterPageComponent {
   confirmPassword = '';
   firstName = '';
   lastName = '';
-  // ! #TODO: fix birthday and gender type
   birthDate: string = '';
   gender: any = '';
   // user agreement checkbox
@@ -137,12 +136,9 @@ export class RegisterPageComponent {
         );
         return;
       }
-      if (
-        !this.birthDate ||
-        !isUserAgeBetweenEighteenAndNinety(this.birthDate)
-      ) {
+      if (!this.birthDate || !isUserAgeBetween6And130(this.birthDate)) {
         this.showError(
-          'You must be between 18 and 90 years old in order to register.'
+          'You must be between 6 and 130 years old in order to register.'
         );
         return;
       }

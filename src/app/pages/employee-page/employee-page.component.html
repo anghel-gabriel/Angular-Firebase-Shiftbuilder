@@ -124,23 +124,22 @@
     <div
       class="flex flex-col min-[785px]:flex-row max-[785px]:mx-auto gap-y-2 gap-x-8 items-center justify-between w-full"
     >
-      <!-- change password button -->
+      <!-- send password reset email button -->
       <p-button
         (onClick)="isChangingPasswordModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
-        label="Change password"
+        label="Send reset password email"
         styleClass="w-full"
-        icon="pi pi-external-link"
       ></p-button>
-      <!-- change email button -->
+      <!-- disable/enable account button -->
+      <!-- ! #TODO: do this feature -->
       <p-button
         (onClick)="isChangingEmailModalVisible = true"
         [outlined]="true"
         class="w-full max-w-[330px]"
-        label="Change email address"
+        label="Disable account"
         styleClass="w-full"
-        icon="pi pi-external-link"
       ></p-button>
     </div>
     <div
@@ -159,26 +158,6 @@
     </div>
   </div>
 </p-card>
-
-<!-- change password modal -->
-<p-dialog
-  [(visible)]="isChangingPasswordModalVisible"
-  [modal]="true"
-  header="Change password"
-  styleClass="w-[90vw] max-w-[600px]"
->
-  <app-change-password-form />
-</p-dialog>
-
-<!-- change email modal -->
-<p-dialog
-  [(visible)]="isChangingEmailModalVisible"
-  [modal]="true"
-  header="Change email"
-  styleClass="w-[90vw] max-w-[600px]"
->
-  <app-change-email-form />
-</p-dialog>
 
 <!-- loading spinner -->
 @if(isLoading){

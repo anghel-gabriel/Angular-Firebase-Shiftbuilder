@@ -1,5 +1,4 @@
 <!-- shifts table -->
-<!-- ! #TODO: update name and photoURL -->
 <div class="card max-w-[1720px] mx-auto">
   <p-table
     #dt
@@ -36,16 +35,6 @@
             [disabled]="users.length < 1"
             severity="success"
             tooltipPosition="bottom"
-          ></p-button>
-          <p-button
-            [outlined]="true"
-            icon="pi pi-chart-line"
-            pRipple
-            pTooltip="Show best month"
-            severity="help"
-            tooltipPosition="bottom"
-            [disabled]="users.length < 1"
-            (click)="onBestMonthClick()"
           ></p-button>
         </div>
       </div>
@@ -196,22 +185,6 @@
     </ng-template>
   </p-table>
 </div>
-
-<!-- best month modal -->
-<p-dialog
-  (onHide)="onBestMonthModalClose()"
-  [(visible)]="bestMonthModalVisible"
-  [modal]="true"
-  header="Best Month"
-  styleClass="w-[90vw] max-w-[600px]"
->
-  <app-best-month />
-</p-dialog>
-
-<!-- overlay panel for showing comments-->
-<p-overlayPanel #op styleClass="max-w-[300px]">
-  {{ currentComments }}
-</p-overlayPanel>
 
 <!-- delete confirm popup -->
 <p-confirmPopup />
