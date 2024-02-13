@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
-import { Message } from "primeng/api";
 import { isDateBefore } from "../../utils/validation";
 import { calculateProfit } from "../../utils/computation";
 import { workplaces } from "src/app/utils/workplaces";
@@ -24,7 +23,6 @@ export class EditFormComponent implements OnChanges {
   hourlyWage: any;
   workplace: any;
   comments: any;
-  messages: Message[] = [];
   workplaces = workplaces;
 
   ngOnChanges(changes: SimpleChanges) {
@@ -40,7 +38,6 @@ export class EditFormComponent implements OnChanges {
   }
 
   async onSubmit() {
-    this.messages = [];
     if (
       !this.workTime ||
       !Array.isArray(this.workTime) ||

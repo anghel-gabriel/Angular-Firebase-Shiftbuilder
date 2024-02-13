@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { DatabaseService } from 'src/app/services/database.service';
-import { getBestMonthStats } from 'src/app/utils/computation';
+import { Component, OnInit } from "@angular/core";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { DatabaseService } from "src/app/services/database.service";
+import { getBestMonthStats } from "src/app/utils/computation";
 
 @Component({
-  selector: 'app-best-month',
-  templateUrl: './best-month.component.html',
-  styleUrls: ['./best-month.component.scss'],
+  selector: "app-best-month",
+  templateUrl: "./best-month.component.html",
+  styleUrls: ["./best-month.component.scss"],
 })
 export class BestMonthComponent {
   bestMonthStats = {
-    month: 'No stats',
-    year: 'No stats',
-    hoursWorked: 'No stats',
-    averageHourlyWage: 'No stats',
-    profit: 'No stats',
+    month: "No stats",
+    year: "No stats",
+    hoursWorked: 0,
+    averageHourlyWage: 0,
+    profit: 0,
   };
 
   data = {};
@@ -22,12 +22,12 @@ export class BestMonthComponent {
 
   constructor(
     private auth: AuthenticationService,
-    private db: DatabaseService
+    private db: DatabaseService,
   ) {
     this.db.updateShifts().subscribe((shifts) => {
       const currentId = this.auth?.getAuthUser()?.uid;
       const myShifts = shifts.filter(
-        (shift: any) => shift.author === currentId
+        (shift: any) => shift.author === currentId,
       );
       this.bestMonthStats = getBestMonthStats(myShifts);
       this.updateChartData(myShifts);
@@ -50,18 +50,18 @@ export class BestMonthComponent {
         {
           data: profits,
           backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56",
+            "#4BC0C0",
+            "#9966FF",
           ],
           hoverBackgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56",
+            "#4BC0C0",
+            "#9966FF",
           ],
         },
       ],
@@ -71,10 +71,10 @@ export class BestMonthComponent {
       plugins: {
         legend: {
           display: true,
-          position: 'top',
+          position: "top",
           labels: {
             usePointStyle: true,
-            color: '#555',
+            color: "#555",
           },
         },
       },

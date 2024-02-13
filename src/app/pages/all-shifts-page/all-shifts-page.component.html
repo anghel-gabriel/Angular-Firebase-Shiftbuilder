@@ -4,7 +4,7 @@
         #dt
         styleClass="p-datatable-gridlines"
         [filterDelay]="0"
-        [globalFilterFields]="['workplace']"
+        [globalFilterFields]="['authorFullName']"
         [paginator]="true"
         [rowHover]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
@@ -22,7 +22,7 @@
                         <input
                             (input)="applyFilterGlobal($event, 'contains')"
                             pInputText
-                            placeholder="Search by workplace"
+                            placeholder="Search by employee"
                             type="text"
                         />
                     </span>
@@ -269,3 +269,5 @@
 @if (loading || isLoading) {
 <app-spinner />
 }
+
+<p-toast />

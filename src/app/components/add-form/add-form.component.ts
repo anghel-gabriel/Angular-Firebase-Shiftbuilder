@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { isDateBefore } from "src/app/utils/validation";
-import { Message } from "primeng/api";
 import { calculateProfit } from "../../utils/computation";
 import { workplaces } from "src/app/utils/workplaces";
 import { AuthenticationService } from "src/app/services/authentication.service";
@@ -18,7 +17,6 @@ export class AddFormComponent {
   hourlyWage: any;
   workplace: any;
   comments: any;
-  messages: Message[] = [];
   workplaces = workplaces;
   authorFullName = "";
 
@@ -66,5 +64,9 @@ export class AddFormComponent {
     };
 
     this.submit.emit(shift);
+    this.workTime = null;
+    this.hourlyWage = null;
+    this.workplace = null;
+    this.comments = null;
   }
 }
