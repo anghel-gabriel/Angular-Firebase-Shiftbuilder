@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { finalize } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class FileUploadService {
   constructor(private storage: AngularFireStorage) {}
@@ -19,7 +19,7 @@ export class FileUploadService {
           finalize(async () => {
             const downloadURL = await fileRef.getDownloadURL().toPromise();
             resolve(downloadURL);
-          })
+          }),
         )
         .subscribe();
     });
@@ -27,7 +27,7 @@ export class FileUploadService {
 
   async deleteFile(path: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const fileRef = this.storage.refFromURL(path);
+      const fileRef = this.storage.ref(path);
       fileRef
         .delete()
         .toPromise()

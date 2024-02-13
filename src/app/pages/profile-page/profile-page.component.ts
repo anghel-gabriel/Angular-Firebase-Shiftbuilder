@@ -10,7 +10,6 @@ import { FileUploadService } from "src/app/services/file-upload.service";
 import { defaultPhotoURL } from "src/app/utils/defaultProfileImage";
 import { IGenderOption, genderOptionList } from "src/app/utils/genderOptions";
 import { DatabaseService } from "src/app/services/database.service";
-import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-profile-page",
@@ -101,11 +100,18 @@ export class ProfilePageComponent {
     });
   }
 
+  // show success toast notification
+  showSuccess(message: string) {
+    this.messageService.add({
+      severity: "success",
+      detail: message,
+      summary: "Success",
+    });
+  }
+
   // form validation
   async handleSaveProfile() {
     try {
-      // ! #TODO: add validation for every field here and on employee page
-      // ! #TODO: check if username is already existing here and on employee page
       if (this.username.length < 6) {
         this.showError("Your username must be at least 6 characters long");
       }
@@ -138,7 +144,7 @@ export class ProfilePageComponent {
         );
         if (!isUsernameAvailable) {
           this.showError(
-            "Your new username is not available. Please choose another one.",
+            "The new username is not available. Please choose another one.",
           );
           return;
         }
@@ -193,13 +199,15 @@ export class ProfilePageComponent {
         const userId = this.auth.getAuthUser()?.uid;
         if (userId) {
           await this.auth.updateUserPhoto(userId, photoURL);
-          this.photoURL = photoURL; // Update the avatar
-          console.log("Photo uploaded and user profile updated.");
+          this.photoURL = photoURL;
         }
       } catch (error) {
-        console.error("Error uploading file: ", error);
+        this.showError(
+          "An error has occured while updating profile picture. Please try again.",
+        );
       } finally {
         this.isLoading = false;
+        this.showSuccess("Profile picture updated successfully.");
       }
     }
   }
@@ -212,12 +220,20 @@ export class ProfilePageComponent {
         await this.auth.removeUserPhoto(userId);
         await this.fileUpload.deleteFile(this.photoURL);
         this.photoURL = this.defaultPhotoURL;
-        console.log("Photo removed successfully.");
       }
-    } catch (error) {
-      console.error("Error removing photo: ", error);
+    } catch (error: any) {
+      if (
+        !error.message.includes(
+          "expected a child path but got a URL, use refFromURL instead",
+        )
+      )
+        this.showError(
+          "An error has occured while removing profile picture. Please try again.",
+        );
+      console.log(error);
     } finally {
       this.isLoading = false;
+      this.showSuccess("Profile picture removed successfully.");
     }
   }
 }

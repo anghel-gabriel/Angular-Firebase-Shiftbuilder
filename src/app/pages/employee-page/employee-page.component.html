@@ -1,162 +1,147 @@
 @if(isLoading){ <app-spinner />}
 
 <p-card styleClass="max-w-[920px] my-[60px] mx-auto">
-  <div class="flex flex-col gap-8 min-[785px]:gap-[60px] min- px-[3%]">
-    <div
-      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-between"
-    >
-      <!-- first name -->
-      <div class="flex flex-col flex-1 w-full max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="firstName"
-            class="w-full"
-            id="firstName"
-            pInputText
-          />
-          <label for="firstName">First name*</label>
-        </span>
-        <small class="mt-1"
-          >First name should be at least 6 characters long</small
+    <div class="min- flex flex-col gap-8 px-[3%] min-[785px]:gap-[60px]">
+        <div
+            class="flex w-full flex-col items-center justify-between gap-8 min-[785px]:flex-row"
         >
-      </div>
-      <!-- last name -->
-      <div class="flex flex-col flex-1 w-full max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="lastName"
-            class="w-full"
-            id="lastName"
-            pInputText
-          />
-          <label for="lastName">Last name*</label>
-        </span>
-        <small class="mt-1"
-          >Last name should be at least 6 characters long</small
-        >
-      </div>
-    </div>
-
-    <div
-      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center min-[785px]:items-start justify-between"
-    >
-      <!-- username -->
-      <div class="flex flex-col flex-1 w-full max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="username"
-            class="w-full"
-            id="username"
-            name="username"
-            pInputText
-          />
-          <label for="username">Username*</label>
-        </span>
-        <small class="mt-1"
-          >Username must be alphanumeric and at least 6 characters long</small
-        >
-      </div>
-      <!-- birthdate -->
-      <div class="flex flex-col flex-1 w-full max-w-[330px]">
-        <span class="p-float-label">
-          <span class="p-float-label">
-            <p-calendar
-              [(ngModel)]="birthDate"
-              id="birth-date"
-              inputId="birth_date"
-              styleClass="w-full"
-            ></p-calendar>
-            <label for="birth-date">Birth Date*</label>
-          </span>
-        </span>
-        <small class="mt-1" id="age-help"
-          >You must be at least 18 years-old</small
-        >
-      </div>
-    </div>
-  </div>
-  <div
-    class="flex flex-col gap-8 sm:gap-8 min-[785px]:gap-[40px] px-[3%] mt-8 min-[785px]:mt-[60px]"
-  >
-    <div
-      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-between"
-    >
-      <!-- gender -->
-      <div class="flex flex-col flex-1 w-full max-w-[330px]">
-        <span class="p-float-label">
-          <p-dropdown
-            [(ngModel)]="gender"
-            [options]="genderOptions"
-            id="gender"
-            inputId="float-label"
-            optionLabel="name"
-            styleClass="w-full"
-          ></p-dropdown>
-          <label for="gender">Gender</label>
-        </span>
-      </div>
-      <!-- profile picture -->
-      <div
-        class="flex justify-between gap-x-3 items-center w-full max-w-[330px]"
-      >
-        <p-avatar [image]="photoURL" shape="circle" size="large"></p-avatar>
-        <div class="flex flex-wrap justify-between gap-y-2 gap-x-1 mb-1">
-          <p-fileUpload
-            mode="basic"
-            [auto]="true"
-            chooseLabel="Choose"
-            name="demo[]"
-            url="https://www.primefaces.org/cdn/api/upload.php"
-            accept="image/*"
-            [maxFileSize]="1000000"
-            (onUpload)="onUpload($event)"
-          />
-          <p-button
-            icon="pi pi-trash"
-            label="Remove"
-            (onClick)="removePhoto()"
-            [disabled]="photoURL === defaultPhotoURL"
-          />
+            <!-- first name -->
+            <div class="flex w-full max-w-[330px] flex-1 flex-col">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="firstName"
+                        class="w-full"
+                        id="firstName"
+                        pInputText
+                    />
+                    <label for="firstName">First name*</label>
+                </span>
+                <small class="mt-1"
+                    >First name should be at least 6 characters long</small
+                >
+            </div>
+            <!-- last name -->
+            <div class="flex w-full max-w-[330px] flex-1 flex-col">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="lastName"
+                        class="w-full"
+                        id="lastName"
+                        pInputText
+                    />
+                    <label for="lastName">Last name*</label>
+                </span>
+                <small class="mt-1"
+                    >Last name should be at least 6 characters long</small
+                >
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div
-      class="flex flex-col min-[785px]:flex-row max-[785px]:mx-auto gap-y-2 gap-x-8 items-center justify-between w-full"
-    >
-      <!-- send password reset email button -->
-      <p-button
-        (onClick)="isChangingPasswordModalVisible = true"
-        [outlined]="true"
-        class="w-full max-w-[330px]"
-        label="Send reset password email"
-        styleClass="w-full"
-      ></p-button>
-      <!-- disable/enable account button -->
-      <!-- ! #TODO: do this feature -->
-      <p-button
-        (onClick)="isChangingEmailModalVisible = true"
-        [outlined]="true"
-        class="w-full max-w-[330px]"
-        label="Disable account"
-        styleClass="w-full"
-      ></p-button>
+        <div
+            class="flex w-full flex-col items-center justify-between gap-8 min-[785px]:flex-row min-[785px]:items-start"
+        >
+            <!-- username -->
+            <div class="flex w-full max-w-[330px] flex-1 flex-col">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="username"
+                        class="w-full"
+                        id="username"
+                        name="username"
+                        pInputText
+                    />
+                    <label for="username">Username*</label>
+                </span>
+                <small class="mt-1"
+                    >Username must be alphanumeric and at least 6 characters
+                    long</small
+                >
+            </div>
+            <!-- birthdate -->
+            <div class="flex w-full max-w-[330px] flex-1 flex-col">
+                <span class="p-float-label">
+                    <span class="p-float-label">
+                        <p-calendar
+                            [(ngModel)]="birthDate"
+                            id="birth-date"
+                            inputId="birth_date"
+                            styleClass="w-full"
+                        ></p-calendar>
+                        <label for="birth-date">Birth Date*</label>
+                    </span>
+                </span>
+                <small class="mt-1" id="age-help"
+                    >You must be at least 18 years-old</small
+                >
+            </div>
+        </div>
     </div>
     <div
-      class="flex flex-col min-[785px]:flex-row gap-8 w-full items-center justify-end"
+        class="mt-8 flex flex-col gap-8 px-[3%] sm:gap-8 min-[785px]:mt-[60px] min-[785px]:gap-[40px]"
     >
-      <!-- save profile button -->
-      <p-button
-        (click)="handleSaveProfile()"
-        class="max-[785px]:w-full max-w-[330px]"
-        icon="pi pi-check"
-        iconPos="right"
-        label="Save changes"
-        severity="success"
-        styleClass="w-full"
-      ></p-button>
+        <div
+            class="flex w-full flex-col items-center justify-between gap-8 min-[785px]:flex-row"
+        >
+            <!-- gender -->
+            <div class="flex w-full max-w-[330px] flex-1 flex-col">
+                <span class="p-float-label">
+                    <p-dropdown
+                        [(ngModel)]="gender"
+                        [options]="genderOptions"
+                        id="gender"
+                        inputId="float-label"
+                        optionLabel="name"
+                        styleClass="w-full"
+                    ></p-dropdown>
+                    <label for="gender">Gender</label>
+                </span>
+            </div>
+            <!-- profile picture -->
+            <div
+                class="flex w-full max-w-[330px] items-center justify-between gap-x-3"
+            >
+                <p-avatar
+                    [image]="photoURL"
+                    shape="circle"
+                    size="large"
+                ></p-avatar>
+                <div
+                    class="mb-1 flex flex-wrap justify-between gap-x-1 gap-y-2"
+                >
+                    <p-fileUpload
+                        mode="basic"
+                        [auto]="true"
+                        chooseLabel="Choose"
+                        name="demo[]"
+                        url="https://www.primefaces.org/cdn/api/upload.php"
+                        accept="image/*"
+                        [maxFileSize]="1000000"
+                        (onUpload)="onUpload($event)"
+                    />
+                    <p-button
+                        icon="pi pi-trash"
+                        label="Remove"
+                        (onClick)="removePhoto()"
+                        [disabled]="photoURL === defaultPhotoURL"
+                    />
+                </div>
+            </div>
+        </div>
+        <div
+            class="flex w-full flex-col items-center justify-end gap-8 min-[785px]:flex-row"
+        >
+            <!-- save profile button -->
+            <p-button
+                (click)="handleSaveProfile()"
+                class="max-w-[330px] max-[785px]:w-full"
+                icon="pi pi-check"
+                iconPos="right"
+                label="Save changes"
+                severity="success"
+                styleClass="w-full"
+            ></p-button>
+        </div>
     </div>
-  </div>
 </p-card>
 
 <!-- loading spinner -->

@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { FileUpload } from "primeng/fileupload";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { DatabaseService } from "src/app/services/database.service";
 import { FileUploadService } from "src/app/services/file-upload.service";
@@ -18,7 +17,7 @@ import {
   styleUrl: "./employee-page.component.scss",
   providers: [MessageService],
 })
-export class EmployeePageComponent implements OnInit {
+export class EmployeePageComponent {
   defaultPhotoURL = defaultPhotoURL;
   isLoading = true;
   employeeId: any;
@@ -43,11 +42,9 @@ export class EmployeePageComponent implements OnInit {
     private messageService: MessageService,
     private database: DatabaseService,
     private router: Router,
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.employeeId = this.route.snapshot.paramMap.get("employeeId");
-    const employeeData = this.fillFieldsWithEmployeeData();
+    this.fillFieldsWithEmployeeData();
   }
 
   async fillFieldsWithEmployeeData() {
@@ -82,6 +79,15 @@ export class EmployeePageComponent implements OnInit {
     });
   }
 
+  // show success toast notification
+  showSuccess(message: string) {
+    this.messageService.add({
+      severity: "success",
+      detail: message,
+      summary: "Success",
+    });
+  }
+
   async removePhoto() {
     try {
       this.isLoading = true;
@@ -91,10 +97,18 @@ export class EmployeePageComponent implements OnInit {
         this.photoURL = this.defaultPhotoURL;
         console.log("Photo removed successfully.");
       }
-    } catch (error) {
-      this.showError("Error removing profile picture.");
+    } catch (error: any) {
+      if (
+        !error.message.includes(
+          "expected a child path but got a URL, use refFromURL instead",
+        )
+      )
+        this.showError(
+          "An error has occured while removing profile picture. Please try again.",
+        );
     } finally {
       this.isLoading = false;
+      this.showSuccess("Profile picture removed successfully.");
     }
   }
 
@@ -109,20 +123,20 @@ export class EmployeePageComponent implements OnInit {
         if (this.employeeId) {
           await this.auth.updateUserPhoto(this.employeeId, photoURL);
           this.photoURL = photoURL;
-          console.log("Photo uploaded and user profile updated.");
         }
       } catch (error) {
-        console.error("Error uploading file: ", error);
+        this.showError(
+          "An error has occured while updating profile picture. Please try again.",
+        );
       } finally {
         this.isLoading = false;
+        this.showSuccess("Profile picture updated successfully.");
       }
     }
   }
 
   async handleSaveProfile() {
     try {
-      // ! #TODO: add validation for every field here and on employee page
-      // ! #TODO: check if username is already existing here and on employee page
       if (this.username.length < 6) {
         this.showError("Your username must be at least 6 characters long");
       }
@@ -155,7 +169,7 @@ export class EmployeePageComponent implements OnInit {
         );
         if (!isUsernameAvailable) {
           this.showError(
-            "Your new username is not available. Please choose another one.",
+            "The new username is not available. Please choose another one.",
           );
           return;
         }
@@ -199,5 +213,3 @@ export class EmployeePageComponent implements OnInit {
     }
   }
 }
-
-// ! #TODO: photo updating and removing toast notification
