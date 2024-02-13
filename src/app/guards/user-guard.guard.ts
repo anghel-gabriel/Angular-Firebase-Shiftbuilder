@@ -1,14 +1,17 @@
-import { CanActivate, Router } from '@angular/router';
-import { Injectable } from '@angular/core';
-import { AuthenticationService } from '../services/authentication.service';
-import { Observable, from } from 'rxjs';
-import { map, take, switchMap } from 'rxjs/operators';
+import { CanActivate, Router } from "@angular/router";
+import { Injectable } from "@angular/core";
+import { AuthenticationService } from "../services/authentication.service";
+import { Observable, from } from "rxjs";
+import { map, take, switchMap } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UserGuard implements CanActivate {
-  constructor(private auth: AuthenticationService, private router: Router) {}
+  constructor(
+    private auth: AuthenticationService,
+    private router: Router,
+  ) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return from(this.auth.waitForAuthStateChecked()).pipe(
@@ -17,14 +20,13 @@ export class UserGuard implements CanActivate {
           take(1),
           map((user) => {
             if (!user) {
-              console.log('guard');
-              this.router.navigate(['/sign-in']);
+              this.router.navigate(["/sign-in"]);
               return false;
             }
             return true;
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   }
 }

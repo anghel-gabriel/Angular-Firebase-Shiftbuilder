@@ -64,7 +64,7 @@ export class EmployeePageComponent {
         this.actualLastName = employeeData["lastName"];
       }
     } catch (error: any) {
-      console.log(error);
+      this.showError("An error occured while loading data. Please try again.");
     } finally {
       this.isLoading = false;
     }
@@ -95,7 +95,6 @@ export class EmployeePageComponent {
         await this.auth.removeUserPhoto(this.employeeId);
         await this.fileUpload.deleteFile(this.photoURL);
         this.photoURL = this.defaultPhotoURL;
-        console.log("Photo removed successfully.");
       }
     } catch (error: any) {
       if (
@@ -201,13 +200,11 @@ export class EmployeePageComponent {
           );
         }
       }
-      this.messageService.add({
-        severity: "success",
-        detail: "Changes saved succesfully",
-        summary: "Success",
-      });
+      this.showSuccess("Changes saved succesfully");
     } catch (error) {
-      console.log(error);
+      this.showError(
+        "An error has occurred while updating data. Please try again.",
+      );
     } finally {
       this.isLoading = false;
     }

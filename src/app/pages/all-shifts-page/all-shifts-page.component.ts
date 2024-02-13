@@ -24,9 +24,7 @@ export class AllShiftsPageComponent {
   userPhotoURL: any;
   userCompleteName: string = "";
   // modals
-  addModalVisible = false;
   editModalVisible = false;
-  bestMonthModalVisible = false;
   statisticsModalVisible = false;
   // comment
   currentComments: string = "";
@@ -77,33 +75,6 @@ export class AllShiftsPageComponent {
     this.statisticsModalVisible = false;
   }
 
-  // best month modal
-  onBestMonthClick() {
-    this.bestMonthModalVisible = true;
-  }
-  onBestMonthModalClose() {
-    this.bestMonthModalVisible = false;
-  }
-
-  // add shift modal
-  onAddClick() {
-    this.addModalVisible = true;
-  }
-  async onAddSubmit(addedShift: any) {
-    this.loading = true;
-    this.addModalVisible = false;
-    try {
-      await this.db.addShift(addedShift);
-    } catch (error: any) {
-      console.error(error);
-    } finally {
-      this.loading = false;
-    }
-  }
-  onAddModalClose() {
-    this.addModalVisible = false;
-  }
-
   // edit modal
   onEditClick(shift: any) {
     this.selectedShift = shift;
@@ -115,7 +86,9 @@ export class AllShiftsPageComponent {
     try {
       await this.db.editShift(this.selectedShift.id, editedShift);
     } catch (error: any) {
-      console.log(error);
+      this.showError(
+        "An error has occured while updating shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }
@@ -143,7 +116,9 @@ export class AllShiftsPageComponent {
     try {
       await this.db.deleteShift(shiftId);
     } catch (error: any) {
-      console.error("Error deleting shift", error);
+      this.showError(
+        "An error occurred while updating shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }

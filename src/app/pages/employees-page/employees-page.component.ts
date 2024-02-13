@@ -36,17 +36,25 @@ export class EmployeesPageComponent {
     private db: DatabaseService,
     private auth: AuthenticationService,
     private router: Router,
+    private messageService: MessageService,
   ) {
     // TODO: fix loading spinner when fetching data
     this.db.updateAllUsers().subscribe((users) => {
       this.users = [...users];
-      console.log("allusers", this.users);
     });
     this.auth.getLoggedUser().subscribe((data) => {
       this.myId = data.uid;
       this.myRole = data.role;
     });
     this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
+  }
+
+  showError(message: string) {
+    this.messageService.add({
+      severity: "error",
+      detail: message,
+      summary: "Error",
+    });
   }
 
   // edit modal
@@ -61,7 +69,9 @@ export class EmployeesPageComponent {
       this.isLoading = true;
       await this.db.deleteShiftsByUserId(employee);
     } catch (error: any) {
-      console.log(error);
+      this.showError(
+        "An error has occurred while removing data. Please try again.",
+      );
     } finally {
       this.isLoading = false;
     }

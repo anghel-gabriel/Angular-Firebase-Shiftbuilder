@@ -87,7 +87,6 @@ export class LoginPageComponent {
         }
       }
     } catch (error: any) {
-      console.log(error);
       // invalid credentials error
       switch (error.message) {
         case "FirebaseError: Firebase: Error (auth/invalid-email).":

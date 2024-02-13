@@ -171,7 +171,7 @@ export class AuthenticationService {
       if (userId === this.getAuthUser()?.uid)
         this.loggedUser.next(updatedUserDoc.data() as UserInterface);
     } catch (error: any) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -253,14 +253,12 @@ export class AuthenticationService {
     try {
       const docSnap = await getDoc(userRef);
       if (docSnap.exists()) {
-        console.log("User data:", docSnap.data());
         return docSnap.data();
       } else {
         return null;
       }
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      throw error;
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 }

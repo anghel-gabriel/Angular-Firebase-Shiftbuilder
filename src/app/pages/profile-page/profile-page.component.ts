@@ -185,7 +185,9 @@ export class ProfilePageComponent {
         summary: "Success",
       });
     } catch (error) {
-      console.log(error);
+      this.showError(
+        "An error has occurred while updating data. Please try again.",
+      );
     } finally {
       this.isLoading = false;
     }
@@ -233,7 +235,6 @@ export class ProfilePageComponent {
         this.showError(
           "An error has occured while removing profile picture. Please try again.",
         );
-      console.log(error);
     } finally {
       this.isLoading = false;
       this.showSuccess("Profile picture removed successfully.");

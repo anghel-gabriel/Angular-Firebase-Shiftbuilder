@@ -111,7 +111,9 @@ export class MyShiftsPageComponent implements OnInit {
     try {
       await this.db.addShift(addedShift);
     } catch (error: any) {
-      console.error(error);
+      this.showError(
+        "An error has occured while adding shift. Please try again.",
+      );
     } finally {
       this.loading = false;
       this.toast.add({
@@ -131,12 +133,14 @@ export class MyShiftsPageComponent implements OnInit {
     this.editModalVisible = true;
   }
   async onEditSubmit(editedShift: any) {
-    this.loading = true;
-    this.editModalVisible = false;
     try {
+      this.loading = true;
+      this.editModalVisible = false;
       await this.db.editShift(this.selectedShift.id, editedShift);
     } catch (error: any) {
-      console.log(error);
+      this.showError(
+        "An error has occured while updating shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }
@@ -164,7 +168,9 @@ export class MyShiftsPageComponent implements OnInit {
     try {
       await this.db.deleteShift(shiftId);
     } catch (error: any) {
-      console.error("Error deleting shift", error);
+      this.showError(
+        "An error has occured while deleting shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }

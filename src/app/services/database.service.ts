@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   Firestore,
   addDoc,
@@ -11,21 +11,21 @@ import {
   orderBy,
   query,
   where,
-} from '@angular/fire/firestore';
-import { BehaviorSubject, switchMap } from 'rxjs';
-import { AuthenticationService } from './authentication.service';
+} from "@angular/fire/firestore";
+import { BehaviorSubject, switchMap } from "rxjs";
+import { AuthenticationService } from "./authentication.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DatabaseService {
-  loggedUserUid = new BehaviorSubject<string>('');
+  loggedUserUid = new BehaviorSubject<string>("");
   private areMyShiftsLoading = new BehaviorSubject<boolean>(false);
   private areAllUsersLoading = new BehaviorSubject<boolean>(false);
 
   constructor(
     public firestore: Firestore,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
   ) {
     this.auth
       .getLoggedUser()
@@ -43,11 +43,11 @@ export class DatabaseService {
 
   // shifts CRUD
   updateShifts() {
-    return collectionChanges(query(collection(this.firestore, 'shifts'))).pipe(
+    return collectionChanges(query(collection(this.firestore, "shifts"))).pipe(
       switchMap(async () => {
         const val = await this.getShifts();
         return val;
-      })
+      }),
     );
   }
 
@@ -55,12 +55,12 @@ export class DatabaseService {
     this.areMyShiftsLoading.next(true);
     try {
       const user = this.auth.getAuthUser();
-      const userId = user?.uid || '';
-      if (!userId) throw new Error('User not logged');
+      const userId = user?.uid || "";
+      if (!userId) throw new Error("User not logged");
 
       let queryRef = query(
-        collection(this.firestore, 'shifts'),
-        orderBy('startTime', 'desc')
+        collection(this.firestore, "shifts"),
+        orderBy("startTime", "desc"),
       );
       const docs = await getDocs(queryRef);
       const shiftsList = [] as any;
@@ -73,8 +73,8 @@ export class DatabaseService {
       });
 
       return shiftsList;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       this.areMyShiftsLoading.next(false);
     }
@@ -82,17 +82,17 @@ export class DatabaseService {
 
   async addShift(shift: any) {
     try {
-      await addDoc(collection(this.firestore, 'shifts'), {
+      await addDoc(collection(this.firestore, "shifts"), {
         ...shift,
         author: this.auth.getAuthUser()?.uid,
       });
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 
   async editShift(shiftId: string, newData: any) {
-    const shiftRef = doc(this.firestore, 'shifts', shiftId);
+    const shiftRef = doc(this.firestore, "shifts", shiftId);
     try {
       await updateDoc(shiftRef, newData);
     } catch (error: any) {
@@ -102,7 +102,7 @@ export class DatabaseService {
 
   async deleteShift(shiftId: string) {
     try {
-      const shiftRef = doc(this.firestore, 'shifts', shiftId);
+      const shiftRef = doc(this.firestore, "shifts", shiftId);
       await deleteDoc(shiftRef);
     } catch (error: any) {
       throw new Error(error);
@@ -111,18 +111,18 @@ export class DatabaseService {
 
   // users CRUD
   updateAllUsers() {
-    return collectionChanges(query(collection(this.firestore, 'users'))).pipe(
+    return collectionChanges(query(collection(this.firestore, "users"))).pipe(
       switchMap(async () => {
         const val = await this.getAllUsers();
         return val;
-      })
+      }),
     );
   }
 
   private async getAllUsers() {
     this.areAllUsersLoading.next(true);
     try {
-      let queryRef = query(collection(this.firestore, 'users'));
+      let queryRef = query(collection(this.firestore, "users"));
       const docs = await getDocs(queryRef);
       const shiftsList = [] as any;
 
@@ -132,36 +132,34 @@ export class DatabaseService {
           ...val.data(),
         });
       });
-      console.log('allshifts', shiftsList);
-
       return shiftsList;
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       this.areAllUsersLoading.next(false);
     }
   }
 
   async deleteShiftsByUserId(userId: string) {
-    const shiftsRef = collection(this.firestore, 'shifts');
-    const q = query(shiftsRef, where('author', '==', userId));
+    const shiftsRef = collection(this.firestore, "shifts");
+    const q = query(shiftsRef, where("author", "==", userId));
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(async (document) => {
         try {
-          await deleteDoc(doc(this.firestore, 'shifts', document.id));
+          await deleteDoc(doc(this.firestore, "shifts", document.id));
         } catch (error: any) {
           throw new Error(error);
         }
       });
     } catch (error) {
-      throw new Error('Error deleting shifts:' + error);
+      throw new Error("Error deleting shifts:" + error);
     }
   }
 
   async updateShiftAuthorFullName(userId: string, newFullName: string) {
-    const shiftsRef = collection(this.firestore, 'shifts');
-    const q = query(shiftsRef, where('author', '==', userId));
+    const shiftsRef = collection(this.firestore, "shifts");
+    const q = query(shiftsRef, where("author", "==", userId));
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach(async (doc) => {
