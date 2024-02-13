@@ -22,8 +22,6 @@ export class ProfilePageComponent {
   uid = "";
   email = "";
   username = "";
-  password = "";
-  confirmPassword = "";
   firstName = "";
   lastName = "";
   birthDate: any;
@@ -92,7 +90,7 @@ export class ProfilePageComponent {
   }
 
   // show error toast function
-  showError(message: string) {
+  showError(message: any) {
     this.messageService.add({
       severity: "error",
       detail: message,
@@ -101,12 +99,17 @@ export class ProfilePageComponent {
   }
 
   // show success toast notification
-  showSuccess(message: string) {
+  showSuccess(message: any) {
     this.messageService.add({
       severity: "success",
       detail: message,
       summary: "Success",
     });
+  }
+
+  // set loading spinner
+  setLoadingSpinner(event: any) {
+    this.isLoading = event;
   }
 
   // form validation

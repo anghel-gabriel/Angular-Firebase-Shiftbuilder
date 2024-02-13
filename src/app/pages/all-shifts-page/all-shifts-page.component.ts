@@ -1,49 +1,49 @@
-import { Component, ViewChild } from '@angular/core';
-import * as FileSaver from 'file-saver';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { OverlayPanel } from 'primeng/overlaypanel';
-import { Table } from 'primeng/table';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { DatabaseService } from 'src/app/services/database.service';
-import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
-import { getImageUrl } from 'src/app/utils/workplaces';
+import { Component, ViewChild } from "@angular/core";
+import * as FileSaver from "file-saver";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Table } from "primeng/table";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { DatabaseService } from "src/app/services/database.service";
+import { defaultPhotoURL } from "src/app/utils/defaultProfileImage";
+import { getImageUrl } from "src/app/utils/workplaces";
 
 @Component({
-  selector: 'app-all-shifts-page',
-  templateUrl: './all-shifts-page.component.html',
-  styleUrl: './all-shifts-page.component.scss',
+  selector: "app-all-shifts-page",
+  templateUrl: "./all-shifts-page.component.html",
+  styleUrl: "./all-shifts-page.component.scss",
   providers: [ConfirmationService, MessageService],
 })
 export class AllShiftsPageComponent {
-  @ViewChild('dt') dt: Table | undefined;
-  @ViewChild('op') overlayPanel!: OverlayPanel;
+  @ViewChild("dt") dt: Table | undefined;
+  @ViewChild("op") overlayPanel!: OverlayPanel;
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
   // user data
   userPhotoURL: any;
-  userCompleteName: string = '';
+  userCompleteName: string = "";
   // modals
   addModalVisible = false;
   editModalVisible = false;
   bestMonthModalVisible = false;
   statisticsModalVisible = false;
   // comment
-  currentComments: string = '';
+  currentComments: string = "";
   // shifts
   shifts: any = [];
   selectedShift: any = null;
-  getWorplaceImage = getImageUrl;
+  getWorkplaceImage = getImageUrl;
 
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private db: DatabaseService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
   ) {
     this.auth.getLoggedUser().subscribe((data) => {
       this.userPhotoURL = data?.photoURL || defaultPhotoURL;
-      this.userCompleteName = data?.firstName + ' ' + data?.lastName;
+      this.userCompleteName = data?.firstName + " " + data?.lastName;
     });
   }
 
@@ -121,9 +121,9 @@ export class AllShiftsPageComponent {
   onDeleteClick(event: Event, shift: any) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Are you sure?',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-sm',
+      message: "Are you sure?",
+      icon: "pi pi-info-circle",
+      acceptButtonStyleClass: "p-button-danger p-button-sm",
       accept: () => {
         this.onDeleteConfirm(shift.id);
       },
@@ -135,7 +135,7 @@ export class AllShiftsPageComponent {
     try {
       await this.db.deleteShift(shiftId);
     } catch (error: any) {
-      console.error('Error deleting shift', error);
+      console.error("Error deleting shift", error);
     } finally {
       this.loading = false;
     }
@@ -156,29 +156,29 @@ export class AllShiftsPageComponent {
 
   // shifts to excel
   exportExcel() {
-    import('xlsx').then((xlsx) => {
+    import("xlsx").then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(
         this.shifts.map((shift: any) => ({
           Workplace: shift.workplace,
-          'Start Time': shift.startTime.toLocaleString(),
-          'End Time': shift.endTime.toLocaleString(),
-          'Hourly Wage ($)': shift.hourlyWage,
-          'Profit ($)': shift.profit,
+          "Start Time": shift.startTime.toLocaleString(),
+          "End Time": shift.endTime.toLocaleString(),
+          "Hourly Wage ($)": shift.hourlyWage,
+          "Profit ($)": shift.profit,
           Comments: shift.comments,
-        }))
+        })),
       );
 
       const workbook = {
         Sheets: { Shifts: worksheet },
-        SheetNames: ['Shifts'],
+        SheetNames: ["Shifts"],
       };
 
       const excelBuffer = xlsx.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array',
+        bookType: "xlsx",
+        type: "array",
       });
       const data = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);

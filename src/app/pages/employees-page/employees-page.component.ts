@@ -6,7 +6,6 @@ import { OverlayPanel } from "primeng/overlaypanel";
 import { Table } from "primeng/table";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { DatabaseService } from "src/app/services/database.service";
-import { getImageUrl } from "src/app/utils/workplaces";
 
 @Component({
   selector: "app-employees-page",
@@ -32,7 +31,6 @@ export class EmployeesPageComponent {
   // shifts
   users: any = [];
   selectedShift: any = null;
-  getWorplaceImage = getImageUrl;
 
   constructor(
     private db: DatabaseService,

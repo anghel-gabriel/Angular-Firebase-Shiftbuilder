@@ -1,40 +1,35 @@
-<div class="flex flex-col gap-8 mt-6">
-
-
-
-  <span class="p-float-label w-full">
+<div class="mt-6 flex flex-col gap-8">
     <span class="p-float-label w-full">
+        <span class="p-float-label w-full">
             <input
-              [(ngModel)]="newEmail"
-              class="w-full"
-              pInputText
-              type="email"
+                [(ngModel)]="newEmail"
+                class="w-full"
+                pInputText
+                type="email"
             />
             <label>New email address*</label>
-          </span>
-</span>
+        </span>
+    </span>
 
-  <span class="p-float-label w-full">
-          <span class="p-float-label w-full">
+    <span class="p-float-label w-full">
+        <span class="p-float-label w-full">
             <input
-              [(ngModel)]="newEmailConfirm"
-              class="w-full"
-              pInputText
-              type="email"
+                [(ngModel)]="newEmailConfirm"
+                class="w-full"
+                pInputText
+                type="email"
             />
             <label>Confirm new email address*</label>
-          </span>
-  </span>
+        </span>
+    </span>
 
-  <small>You will be logged out after changing the email address.</small>
-
-  <p-button
-    (onClick)="onSubmit()"
-    icon="pi pi-check"
-    iconPos="right"
-    label="Change email"
-    styleClass="w-full"
-  ></p-button>
+    <p-button
+        (onClick)="onSubmit()"
+        icon="pi pi-check"
+        iconPos="right"
+        label="Change email"
+        styleClass="w-full"
+    ></p-button>
 </div>
 
 <!--TODO: maybe push toasts to shifts page with output-->

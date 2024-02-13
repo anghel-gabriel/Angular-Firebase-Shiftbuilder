@@ -1,49 +1,49 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
-import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { AuthenticationService } from "../../services/authentication.service";
+import { MessageService } from "primeng/api";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.scss'],
+  selector: "app-login-page",
+  templateUrl: "./login-page.component.html",
+  styleUrls: ["./login-page.component.scss"],
   providers: [MessageService],
 })
 export class LoginPageComponent {
   isLoading = false;
-  loginEmailOrUsername = '';
-  password = '';
-  loginWay = 'email';
+  loginEmailOrUsername = "";
+  password = "";
+  loginWay = "email";
 
   // login way toggle for desktop
   desktopSelectOptions: any[] = [
     {
-      label: 'Sign in with email',
-      value: 'email',
+      label: "Sign in with email",
+      value: "email",
       disabled: true,
     },
     {
-      label: 'Sign in with username',
-      value: 'username',
+      label: "Sign in with username",
+      value: "username",
       disabled: false,
     },
   ];
   // login way toggle for mobile
   mobileSelectOptions = [
-    { label: 'Sign in with email', value: 'email' },
-    { label: 'Sign in with username', value: 'username' },
+    { label: "Sign in with email", value: "email" },
+    { label: "Sign in with username", value: "username" },
   ];
 
   constructor(
     private auth: AuthenticationService,
     private toast: MessageService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onDesktopSelectChange(): void {
     // prevent unselecting both login ways
     const isAlreadySelected = this.desktopSelectOptions.find(
-      (option) => option.value === this.loginWay && option.disabled
+      (option) => option.value === this.loginWay && option.disabled,
     );
     if (isAlreadySelected) return;
     // update the options to disable the selected one
@@ -55,34 +55,34 @@ export class LoginPageComponent {
 
   showError(message: string) {
     this.toast.add({
-      severity: 'error',
-      summary: 'Error',
+      severity: "error",
+      summary: "Error",
       detail: message,
     });
   }
 
   async onSubmit() {
     if (!this.password || !this.loginEmailOrUsername) {
-      this.showError('Please enter your login credentials.');
+      this.showError("Please enter your login credentials.");
       return;
     }
 
     try {
       this.isLoading = true;
-      if (this.loginWay === 'email') {
+      if (this.loginWay === "email") {
         await this.auth.signIn(this.loginEmailOrUsername, this.password);
-        this.router.navigate(['/my-shifts']);
-      } else if (this.loginWay === 'username') {
+        this.router.navigate(["/my-shifts"]);
+      } else if (this.loginWay === "username") {
         const userEmail = await this.auth.getEmailFromUsername(
-          this.loginEmailOrUsername
+          this.loginEmailOrUsername,
         );
 
         if (userEmail) {
           await this.auth.signIn(userEmail, this.password); // Here you should use userEmail, not this.loginEmailOrUsername
-          this.router.navigate(['/my-shifts']);
+          this.router.navigate(["/my-shifts"]);
         } else {
           this.showError(
-            'The username entered does not exist. Please try again.'
+            "The username entered does not exist. Please try again.",
           );
         }
       }
@@ -90,20 +90,20 @@ export class LoginPageComponent {
       console.log(error);
       // invalid credentials error
       switch (error.message) {
-        case 'FirebaseError: Firebase: Error (auth/invalid-email).':
+        case "FirebaseError: Firebase: Error (auth/invalid-email).":
           this.showError(
-            'Invalid email address. Please check the entered data and try again.'
+            "Invalid email address. Please check the entered data and try again.",
           );
           break;
-        case 'FirebaseError: Firebase: Error (auth/invalid-credential).':
-        case 'FirebaseError: Firebase: Error (auth/user-not-found).':
-        case 'FirebaseError: Firebase: Error (auth/wrong-password).':
+        case "FirebaseError: Firebase: Error (auth/invalid-credential).":
+        case "FirebaseError: Firebase: Error (auth/user-not-found).":
+        case "FirebaseError: Firebase: Error (auth/wrong-password).":
           this.showError(
-            'Invalid credentials. Please check the entered data and try again.'
+            "Invalid credentials. Please check the entered data and try again.",
           );
           break;
         default:
-          this.showError('An error has occurred. Please try again.');
+          this.showError("An error has occurred. Please try again.");
           break;
       }
     } finally {
@@ -111,5 +111,3 @@ export class LoginPageComponent {
     }
   }
 }
-
-// ! #TODO: The user will be asked to put user information that will be saved via the server for 60 minutes / token expiration

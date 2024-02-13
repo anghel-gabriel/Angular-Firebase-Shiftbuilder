@@ -1,248 +1,263 @@
 <!-- shifts table -->
-<div class="card max-w-[1720px] mx-auto">
-  <p-table
-    #dt
-    styleClass="p-datatable-gridlines"
-    [filterDelay]="0"
-    [globalFilterFields]="['workplace']"
-    [paginator]="true"
-    [rowHover]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [value]="shifts"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total shifts"
-    dataKey="id"
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex items-center justify-between">
-        <div class="table-header flex gap-2">
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input
-              (input)="applyFilterGlobal($event, 'contains')"
-              pInputText
-              placeholder="Search by workplace"
-              type="text"
-            />
-          </span>
-          <p-button
-            (click)="exportExcel()"
-            [outlined]="true"
-            icon="pi pi-file-excel"
-            pRipple
-            pTooltip="Export to Excel"
-            [disabled]="shifts.length < 1"
-            severity="success"
-            tooltipPosition="bottom"
-          ></p-button>
-          <p-button
-            [outlined]="true"
-            icon="pi pi-chart-pie"
-            pRipple
-            pTooltip="Show overall statistics"
-            severity="danger"
-            tooltipPosition="bottom"
-            [disabled]="shifts.length < 1"
-            (click)="onStatisticsClick()"
-          ></p-button>
-        </div>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="authorFullName">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              Employee
-              <p-sortIcon field="authorFullName"></p-sortIcon>
+<div class="card mx-auto max-w-[1720px]">
+    <p-table
+        #dt
+        styleClass="p-datatable-gridlines"
+        [filterDelay]="0"
+        [globalFilterFields]="['workplace']"
+        [paginator]="true"
+        [rowHover]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [value]="shifts"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total shifts"
+        dataKey="id"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex items-center justify-between">
+                <div class="table-header flex gap-2">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            (input)="applyFilterGlobal($event, 'contains')"
+                            pInputText
+                            placeholder="Search by workplace"
+                            type="text"
+                        />
+                    </span>
+                    <p-button
+                        (click)="exportExcel()"
+                        [outlined]="true"
+                        icon="pi pi-file-excel"
+                        pRipple
+                        pTooltip="Export to Excel"
+                        [disabled]="shifts.length < 1"
+                        severity="success"
+                        tooltipPosition="bottom"
+                    ></p-button>
+                    <p-button
+                        [outlined]="true"
+                        icon="pi pi-chart-pie"
+                        pRipple
+                        pTooltip="Show overall statistics"
+                        severity="danger"
+                        tooltipPosition="bottom"
+                        [disabled]="shifts.length < 1"
+                        (click)="onStatisticsClick()"
+                    ></p-button>
+                </div>
             </div>
-            <p-columnFilter
-              type="text"
-              field="authorFullName"
-              display="menu"
-              class="ml-auto"
-            ></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="workplace">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              Workplace
-              <p-sortIcon field="workplace"></p-sortIcon>
-            </div>
-            <p-columnFilter
-              type="text"
-              field="workplace"
-              display="menu"
-              class="ml-auto"
-            ></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="startTime">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              Start time
-              <p-sortIcon field="startTime"></p-sortIcon>
-            </div>
-            <p-columnFilter
-              class="ml-auto"
-              display="menu"
-              field="startTime"
-              ngClass="ml-2 mt-0.5"
-              type="date"
-            ></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="endTime">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              End time
-              <p-sortIcon field="endTime"></p-sortIcon>
-            </div>
-            <p-columnFilter
-              class="ml-auto"
-              display="menu"
-              field="endTime"
-              ngClass="ml-2 mt-0.5"
-              type="date"
-            >
-            </p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="hourlyWage">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              Rate
-              <p-sortIcon field="hourlyWage"></p-sortIcon>
-            </div>
-            <p-columnFilter
-              class="ml-auto"
-              currency="USD"
-              display="menu"
-              field="hourlyWage"
-              ngClass="ml-2 mt-0.5"
-              type="numeric"
-            ></p-columnFilter>
-          </div>
-        </th>
-        <th pSortableColumn="profit">
-          <div class="flex justify-content-between align-items-center">
-            <div class="mt-1 flex">
-              Profit
-              <p-sortIcon field="profit"></p-sortIcon>
-            </div>
-            <p-columnFilter
-              class="ml-auto"
-              currency="USD"
-              display="menu"
-              field="profit"
-              ngClass="ml-2 mt-0.5"
-              type="numeric"
-            ></p-columnFilter>
-          </div>
-        </th>
-        <th style="width: 160px">Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template let-shift pTemplate="body">
-      <tr class="p-selectable-row">
-        <td>
-          <span class="p-column-title">Start time</span>
-          {{ shift.authorFullName }}
-        </td>
-        <td>
-          <span class="p-column-title">Workplace</span>
-          <div class="flex items-center gap-1">
-            <img
-              [src]="getWorplaceImage(shift.workplace)"
-              style="width: 20px; max-height: 22px"
-            />
-            <span class="ml-1 vertical-align-middle">{{
-              shift.workplace
-            }}</span>
-          </div>
-        </td>
-        <td>
-          <span class="p-column-title">Start time</span>
-          {{ shift.startTime | date : "MMM, d, y, hh:mm" }}
-        </td>
-        <td>
-          <span class="p-column-title">End time</span>
-          {{ shift.endTime | date : "MMM, d, y, hh:mm" }}
-        </td>
-        <td>
-          <span class="p-column-title">Hourly wage</span>
-          {{ shift.hourlyWage | currency : "USD" : "symbol" }}
-        </td>
-        <td>
-          <span class="p-column-title">Profit</span>
-          {{ shift.profit | currency : "USD" : "symbol" }}
-        </td>
-        <td>
-          <div class="flex gap-2">
-            <p-button
-              (onClick)="toggleOverlayPanel($event, shift.comments)"
-              [icon]="shift.comments ? 'pi pi-eye' : 'pi pi-eye-slash'"
-              [pTooltip]="shift.comments ? 'View comments' : 'No comments'"
-              [rounded]="true"
-              [severity]="shift.comments ? 'info' : 'secondary'"
-              tooltipPosition="top"
-            ></p-button>
-            <p-button
-              (onClick)="onEditClick(shift)"
-              [rounded]="true"
-              icon="pi pi-pencil"
-              onClick
-              pTooltip="Edit"
-              severity="help"
-              tooltipPosition="top"
-            ></p-button>
-            <p-button
-              (onClick)="onDeleteClick($event, shift)"
-              [rounded]="true"
-              icon="pi pi-trash"
-              pTooltip="Delete"
-              severity="danger"
-              tooltipPosition="top"
-            ></p-button>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="8">No shifts found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="authorFullName">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            Employee
+                            <p-sortIcon field="authorFullName"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            type="text"
+                            field="authorFullName"
+                            display="menu"
+                            class="ml-auto"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="workplace">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            Workplace
+                            <p-sortIcon field="workplace"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            type="text"
+                            field="workplace"
+                            display="menu"
+                            class="ml-auto"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="startTime">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            Start time
+                            <p-sortIcon field="startTime"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            class="ml-auto"
+                            display="menu"
+                            field="startTime"
+                            ngClass="ml-2 mt-0.5"
+                            type="date"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="endTime">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            End time
+                            <p-sortIcon field="endTime"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            class="ml-auto"
+                            display="menu"
+                            field="endTime"
+                            ngClass="ml-2 mt-0.5"
+                            type="date"
+                        >
+                        </p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="hourlyWage">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            Rate
+                            <p-sortIcon field="hourlyWage"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            class="ml-auto"
+                            currency="USD"
+                            display="menu"
+                            field="hourlyWage"
+                            ngClass="ml-2 mt-0.5"
+                            type="numeric"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="profit">
+                    <div
+                        class="justify-content-between align-items-center flex"
+                    >
+                        <div class="mt-1 flex">
+                            Profit
+                            <p-sortIcon field="profit"></p-sortIcon>
+                        </div>
+                        <p-columnFilter
+                            class="ml-auto"
+                            currency="USD"
+                            display="menu"
+                            field="profit"
+                            ngClass="ml-2 mt-0.5"
+                            type="numeric"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th style="width: 160px">Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template let-shift pTemplate="body">
+            <tr class="p-selectable-row">
+                <td>
+                    <span class="p-column-title">Start time</span>
+                    {{ shift.authorFullName }}
+                </td>
+                <td>
+                    <span class="p-column-title">Workplace</span>
+                    <div class="flex items-center gap-1">
+                        <img
+                            [src]="getWorkplaceImage(shift.workplace)"
+                            style="width: 20px; max-height: 22px"
+                        />
+                        <span class="vertical-align-middle ml-1"
+                            >{{ shift.workplace }}</span
+                        >
+                    </div>
+                </td>
+                <td>
+                    <span class="p-column-title">Start time</span>
+                    {{ shift.startTime | date : "MMM, d, y, hh:mm" }}
+                </td>
+                <td>
+                    <span class="p-column-title">End time</span>
+                    {{ shift.endTime | date : "MMM, d, y, hh:mm" }}
+                </td>
+                <td>
+                    <span class="p-column-title">Hourly wage</span>
+                    {{ shift.hourlyWage | currency : "USD" : "symbol" }}
+                </td>
+                <td>
+                    <span class="p-column-title">Profit</span>
+                    {{ shift.profit | currency : "USD" : "symbol" }}
+                </td>
+                <td>
+                    <div class="flex gap-2">
+                        <p-button
+                            (onClick)="toggleOverlayPanel($event, shift.comments)"
+                            [icon]="shift.comments ? 'pi pi-eye' : 'pi pi-eye-slash'"
+                            [pTooltip]="shift.comments ? 'View comments' : 'No comments'"
+                            [rounded]="true"
+                            [severity]="shift.comments ? 'info' : 'secondary'"
+                            tooltipPosition="top"
+                        ></p-button>
+                        <p-button
+                            (onClick)="onEditClick(shift)"
+                            [rounded]="true"
+                            icon="pi pi-pencil"
+                            onClick
+                            pTooltip="Edit"
+                            severity="help"
+                            tooltipPosition="top"
+                        ></p-button>
+                        <p-button
+                            (onClick)="onDeleteClick($event, shift)"
+                            [rounded]="true"
+                            icon="pi pi-trash"
+                            pTooltip="Delete"
+                            severity="danger"
+                            tooltipPosition="top"
+                        ></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No shifts found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
 
 <!-- edit shift modal -->
 <p-dialog
-  (onHide)="onEditModalClose()"
-  [(visible)]="editModalVisible"
-  [modal]="true"
-  header="Edit Shift"
-  styleClass="w-[90vw] max-w-[600px]"
+    (onHide)="onEditModalClose()"
+    [(visible)]="editModalVisible"
+    [modal]="true"
+    header="Edit Shift"
+    styleClass="w-[90vw] max-w-[600px]"
 >
-  <app-edit-form (submit)="onEditSubmit($event)" [editShift]="selectedShift" />
+    <app-edit-form
+        (submit)="onEditSubmit($event)"
+        [editShift]="selectedShift"
+    />
 </p-dialog>
 
 <!-- statistics -->
 <p-dialog
-  (onHide)="onStatisticsModalClose()"
-  [(visible)]="statisticsModalVisible"
-  [modal]="true"
-  header="Statistics"
-  styleClass="w-[90vw] max-w-[600px]"
+    (onHide)="onStatisticsModalClose()"
+    [(visible)]="statisticsModalVisible"
+    [modal]="true"
+    header="Statistics"
+    styleClass="w-[90vw] max-w-[600px]"
 >
-  <app-admin-stats />
+    <app-admin-stats />
 </p-dialog>
 
 <!-- overlay panel for showing comments-->
 <p-overlayPanel #op styleClass="max-w-[300px]">
-  {{ currentComments }}
+    {{ currentComments }}
 </p-overlayPanel>
 
 <!-- delete confirm popup -->
