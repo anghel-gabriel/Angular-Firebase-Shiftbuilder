@@ -241,6 +241,7 @@
     <app-edit-form
         (submit)="onEditSubmit($event)"
         [editShift]="selectedShift"
+        (errorEvent)="showError($event)"
     />
 </p-dialog>
 

@@ -47,6 +47,14 @@ export class AllShiftsPageComponent {
     });
   }
 
+  showError(message: string) {
+    this.messageService.add({
+      severity: "error",
+      detail: message,
+      summary: "Error",
+    });
+  }
+
   ngOnInit() {
     // TODO: fix loading spinner when fetching data
     this.db.updateShifts().subscribe((shifts) => {

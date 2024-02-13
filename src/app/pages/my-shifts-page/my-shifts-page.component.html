@@ -234,7 +234,10 @@
     styleClass="w-[90vw] max-w-[600px]"
     (onHide)="onAddModalClose()"
 >
-    <app-add-form (submit)="onAddSubmit($event)" />
+    <app-add-form
+        (submit)="onAddSubmit($event)"
+        (errorEvent)="showError($event)"
+    />
 </p-dialog>
 
 <!-- edit shift modal -->
@@ -248,6 +251,7 @@
     <app-edit-form
         (submit)="onEditSubmit($event)"
         [editShift]="selectedShift"
+        (errorEvent)="showError($event)"
     />
 </p-dialog>
 
@@ -273,3 +277,5 @@
 @if (loading || isLoading) {
 <app-spinner />
 }
+
+<p-toast />

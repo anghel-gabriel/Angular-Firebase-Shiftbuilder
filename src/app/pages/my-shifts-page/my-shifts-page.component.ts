@@ -69,7 +69,7 @@ export class MyShiftsPageComponent implements OnInit {
     });
   }
 
-  showError(message: string) {
+  showError(message: any) {
     this.toast.add({
       severity: "error",
       summary: "Error",
@@ -114,6 +114,11 @@ export class MyShiftsPageComponent implements OnInit {
       console.error(error);
     } finally {
       this.loading = false;
+      this.toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: "Shift added successfully.",
+      });
     }
   }
   onAddModalClose() {

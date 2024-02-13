@@ -1,61 +1,61 @@
-<div class="flex flex-col gap-8 mt-6">
-  <span class="p-float-label">
-    <p-calendar
-      [(ngModel)]="workTime"
-      [readonlyInput]="true"
-      [showTime]="true"
-      id="birth-date"
-      selectionMode="range"
-      styleClass="w-full"
-    ></p-calendar>
-    <label for="birth-date">Work time*</label>
-  </span>
+<div class="mt-6 flex flex-col gap-8">
+    <span class="p-float-label">
+        <p-calendar
+            [(ngModel)]="workTime"
+            [readonlyInput]="true"
+            [showTime]="true"
+            id="birth-date"
+            selectionMode="range"
+            styleClass="w-full"
+        ></p-calendar>
+        <label for="birth-date">Work time*</label>
+    </span>
 
-  <div class="w-full">
-    <p-inputGroup>
-      <span class="p-float-label">
-        <input [(ngModel)]="hourlyWage" id="hourlyWage" pInputText />
-        <label>Hourly wage*</label>
-      </span>
-      <p-inputGroupAddon>$</p-inputGroupAddon>
-    </p-inputGroup>
-  </div>
+    <div class="w-full">
+        <p-inputGroup>
+            <span class="p-float-label">
+                <input [(ngModel)]="hourlyWage" id="hourlyWage" pInputText />
+                <label>Hourly wage*</label>
+            </span>
+            <p-inputGroupAddon>$</p-inputGroupAddon>
+        </p-inputGroup>
+    </div>
 
-  <span class="p-float-label">
-    <p-dropdown
-      [(ngModel)]="workplace"
-      [options]="workplaces"
-      id="workplace"
-      optionLabel="label"
-      optionValue="value"
-      styleClass="w-full"
-    ></p-dropdown>
-    <label for="workplace">Workplace*</label>
-  </span>
+    <span class="p-float-label">
+        <p-dropdown
+            [(ngModel)]="workplace"
+            [options]="workplaces"
+            id="workplace"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+        ></p-dropdown>
+        <label for="workplace">Workplace*</label>
+    </span>
 
-  <span class="p-float-label">
-    <textarea
-      [(ngModel)]="comments"
-      class="w-full resize-y"
-      id="comments"
-      pInputTextarea
-      rows="8"
-    ></textarea>
-    <label for="comments">Comments</label>
-  </span>
-  <p-button
-    (onClick)="onSubmit()"
-    icon="pi pi-check"
-    iconPos="right"
-    label="Save changes"
-    styleClass="w-full"
-  ></p-button>
+    <span class="p-float-label">
+        <textarea
+            [(ngModel)]="comments"
+            class="w-full resize-y"
+            id="comments"
+            pInputTextarea
+            rows="8"
+        ></textarea>
+        <label for="comments">Comments</label>
+    </span>
+    <p-button
+        (onClick)="onSubmit()"
+        icon="pi pi-check"
+        iconPos="right"
+        label="Save changes"
+        styleClass="w-full"
+    ></p-button>
 </div>
 @if (messages.length > 0) {
 <p-messages
-  [(value)]="messages"
-  [closable]="false"
-  [enableService]="true"
+    [(value)]="messages"
+    [closable]="false"
+    [enableService]="true"
 ></p-messages>
 }
 
