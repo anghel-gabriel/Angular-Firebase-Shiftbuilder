@@ -28,10 +28,7 @@ export class AdminStatsComponent {
     private auth: AuthenticationService
   ) {
     this.db.updateShifts().subscribe((shifts) => {
-      const currentId = this.auth?.getAuthUser()?.uid;
-      this.allShifts = shifts.filter(
-        (shift: any) => shift.author === currentId
-      );
+      this.allShifts = shifts;
     });
   }
 

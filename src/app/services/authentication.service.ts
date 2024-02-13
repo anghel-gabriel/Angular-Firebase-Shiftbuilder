@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   updateEmail,
   updatePassword,
-} from '@angular/fire/auth';
+} from "@angular/fire/auth";
 import {
   Firestore,
   doc,
@@ -16,15 +16,13 @@ import {
   collection,
   where,
   getDocs,
-  deleteDoc,
-} from '@angular/fire/firestore';
-import { RegisterInterface, UserInterface } from '../utils/interfaces';
-import { BehaviorSubject } from 'rxjs';
-import { defaultPhotoURL } from '../utils/defaultProfileImage';
-import { AdminService } from './admin.service';
+} from "@angular/fire/firestore";
+import { RegisterInterface, UserInterface } from "../utils/interfaces";
+import { BehaviorSubject } from "rxjs";
+import { defaultPhotoURL } from "../utils/defaultProfileImage";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthenticationService {
   private loggedUser = new BehaviorSubject<any>(null);
@@ -33,7 +31,6 @@ export class AuthenticationService {
   constructor(
     public auth: Auth,
     public firestore: Firestore,
-    private admin: AdminService
   ) {
     this.initializeLoggedUser();
     this.auth.onAuthStateChanged(this.handleAuthStateChange.bind(this));
@@ -85,30 +82,30 @@ export class AuthenticationService {
   }
 
   async isUsernameAvailable(username: string): Promise<boolean> {
-    const usersRef = collection(this.firestore, 'users');
-    const q = query(usersRef, where('username', '==', username));
+    const usersRef = collection(this.firestore, "users");
+    const q = query(usersRef, where("username", "==", username));
     const snapshot = await getDocs(q);
     return snapshot.empty;
   }
 
   async isEmailAvailable(username: string): Promise<boolean> {
-    const usersRef = collection(this.firestore, 'users');
-    const q = query(usersRef, where('email', '==', username));
+    const usersRef = collection(this.firestore, "users");
+    const q = query(usersRef, where("email", "==", username));
     const snapshot = await getDocs(q);
     return snapshot.empty;
   }
 
   // function used for logging with username
   async getEmailFromUsername(username: any) {
-    const usersRef = collection(this.firestore, 'users');
-    const q = query(usersRef, where('username', '==', username));
+    const usersRef = collection(this.firestore, "users");
+    const q = query(usersRef, where("username", "==", username));
     const snapshot = await getDocs(q);
     if (snapshot.empty) {
       return null;
     } else {
       const userDoc = snapshot.docs[0];
       const userData = userDoc.data();
-      return userData['email'];
+      return userData["email"];
     }
   }
 
@@ -118,7 +115,7 @@ export class AuthenticationService {
       const registerResponse = await createUserWithEmailAndPassword(
         this.auth,
         registerData.email,
-        registerData.password
+        registerData.password,
       );
       const newUserData: UserInterface = {
         uid: registerResponse.user.uid,
@@ -128,7 +125,7 @@ export class AuthenticationService {
         lastName: registerData.lastName,
         birthDate: registerData.birthDate,
         gender: registerData.gender,
-        role: 'user',
+        role: "user",
         photoURL: defaultPhotoURL,
       };
       // create username in firestore
@@ -145,7 +142,7 @@ export class AuthenticationService {
       const signInResponse = await signInWithEmailAndPassword(
         this.auth,
         email,
-        password
+        password,
       );
       const loggedUserUid = signInResponse.user.uid;
       const loggedUserRef = doc(this.firestore, `users/${loggedUserUid}`);
@@ -171,27 +168,23 @@ export class AuthenticationService {
     try {
       await setDoc(userRef, { photoURL: photoURL }, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
-        if (userId === this.getAuthUser()?.uid)
-          this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
+      if (userId === this.getAuthUser()?.uid)
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
     } catch (error: any) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
   async removeUserPhoto(userId: string) {
     if (!userId) {
-      throw new Error('User ID is required to remove photo.');
+      throw new Error("User ID is required to remove photo.");
     }
     const userRef = doc(this.firestore, `users/${userId}`);
     try {
       await setDoc(userRef, { photoURL: defaultPhotoURL }, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
-        if (userId === this.getAuthUser()?.uid)
-          this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
+      if (userId === this.getAuthUser()?.uid)
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
     } catch (error: any) {
       throw new Error(`Error removing user photo: ${error.message}`);
     }
@@ -203,54 +196,25 @@ export class AuthenticationService {
       const userRef = doc(this.firestore, `users/${userId}`);
       await setDoc(userRef, newData, { merge: true });
       const updatedUserDoc = await getDoc(userRef);
-      if (updatedUserDoc.exists()) {
-        if (userId === this.getAuthUser()?.uid)
-          this.loggedUser.next(updatedUserDoc.data() as UserInterface);
-      }
+      if (userId === this.getAuthUser()?.uid)
+        this.loggedUser.next(updatedUserDoc.data() as UserInterface);
     } catch (error: any) {
       throw new Error(error.message);
     }
   }
 
-  async deleteEmployee(userId: string) {
-    try {
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await this.admin.adminDeleteUser(userId);
-      await deleteDoc(userRef);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async disableEmployee(userId: any) {
-    try {
-      await this.admin.adminDisableUser(userId);
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await setDoc(userRef, { disabled: true }, { merge: true });
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
-  async enableEmployee(userId: any) {
-    try {
-      await this.admin.adminEnableUser(userId);
-      const userRef = doc(this.firestore, `users/${userId}`);
-      await setDoc(userRef, { disabled: false }, { merge: true });
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  }
-
   async changeEmail(newEmail: string) {
     try {
-      if (this.auth.currentUser)
-        await updateEmail(this.auth.currentUser, newEmail);
+      const user = this.auth.currentUser;
+      if (user) {
+        await updateEmail(user, newEmail);
+        const userRef = doc(this.firestore, `users/${user.uid}`);
+        await setDoc(userRef, { email: newEmail }, { merge: true });
+      }
     } catch (error: any) {
       throw new Error(error);
     }
   }
-
   async changePassword(newPassword: string) {
     try {
       if (this.auth.currentUser)
@@ -285,22 +249,16 @@ export class AuthenticationService {
   }
 
   async getEmployeeData(userId: string) {
-    const userRef = doc(this.firestore, 'users', userId);
+    const userRef = doc(this.firestore, "users", userId);
     try {
       const docSnap = await getDoc(userRef);
       if (docSnap.exists()) {
-        console.log('User data:', docSnap.data());
         return docSnap.data();
       } else {
-        // ! #TODO: show diffrent page when no user
-        console.log('No such user!');
         return null;
       }
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      throw error;
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 }
-
-// ! #TODO: check data changing when modifying self profile ori any employee profile

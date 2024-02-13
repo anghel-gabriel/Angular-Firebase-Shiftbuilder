@@ -13,23 +13,22 @@ export function isUsernameValid(username: string) {
   return username.match(regex);
 }
 
-// ! #TODO: age must be between 6 and 130
-export function isUserAgeBetweenEighteenAndNinety(date: any) {
+export function isUserAgeBetween6And130(date: any) {
   const givenDate = new Date(date);
   const currentDate = new Date();
 
-  const eighteenYearsAgo = new Date(
+  const sixYearsAgo = new Date(
     currentDate.getFullYear() - 6,
     currentDate.getMonth(),
     currentDate.getDate()
   );
 
-  const ninetyYearsAgo = new Date(
-    currentDate.getFullYear() - 90,
+  const oneHundredThirtyYearsAgo = new Date(
+    currentDate.getFullYear() - 130,
     currentDate.getMonth(),
     currentDate.getDate()
   );
-  return givenDate <= eighteenYearsAgo && givenDate >= ninetyYearsAgo;
+  return givenDate <= sixYearsAgo && givenDate >= oneHundredThirtyYearsAgo;
 }
 
 export function isDateBefore(firstDate: Date, secondDate: Date) {

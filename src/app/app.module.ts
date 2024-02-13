@@ -60,9 +60,7 @@ import { EmployeesPageComponent } from './pages/employees-page/employees-page.co
 import { EmployeePageComponent } from './pages/employee-page/employee-page.component';
 import { ChartModule } from 'primeng/chart';
 import { AdminStatsComponent } from './components/admin-stats/admin-stats.component';
-import { getFunctions, provideFunctions } from '@angular/fire/functions';
-import { getStorage, provideStorage } from '@angular/fire/storage';
-import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
+import { firebaseConfig } from './utils/firebaseConfig';
 
 @NgModule({
   declarations: [
@@ -119,49 +117,10 @@ import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
     ConfirmPopupModule,
     MessagesModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp({
-      projectId: 'shiftease-2155e',
-      appId: '1:779039596001:web:0f41e3f29b4b2bac7486a0',
-      storageBucket: 'shiftease-2155e.appspot.com',
-      apiKey: 'AIzaSyDHm2tBvg7SNWQdLOHWlp_rBfs_wcJBEYM',
-      authDomain: 'shiftease-2155e.firebaseapp.com',
-      messagingSenderId: '779039596001',
-    }),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'shiftease-2155e',
-        appId: '1:779039596001:web:0f41e3f29b4b2bac7486a0',
-        storageBucket: 'shiftease-2155e.appspot.com',
-        apiKey: 'AIzaSyDHm2tBvg7SNWQdLOHWlp_rBfs_wcJBEYM',
-        authDomain: 'shiftease-2155e.firebaseapp.com',
-        messagingSenderId: '779039596001',
-      })
-    ),
+    AngularFireModule.initializeApp(firebaseConfig),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'shiftease-2155e',
-        appId: '1:779039596001:web:0f41e3f29b4b2bac7486a0',
-        storageBucket: 'shiftease-2155e.appspot.com',
-        // locationId: 'europe-west',
-        apiKey: 'AIzaSyDHm2tBvg7SNWQdLOHWlp_rBfs_wcJBEYM',
-        authDomain: 'shiftease-2155e.firebaseapp.com',
-        messagingSenderId: '779039596001',
-      })
-    ),
-    provideFunctions(() => getFunctions()),
-    provideStorage(() => getStorage()),
-    AngularFireModule.initializeApp({
-      projectId: 'shiftease-2155e',
-      appId: '1:779039596001:web:0f41e3f29b4b2bac7486a0',
-      storageBucket: 'shiftease-2155e.appspot.com',
-      // locationId: 'europe-west',
-      apiKey: 'AIzaSyDHm2tBvg7SNWQdLOHWlp_rBfs_wcJBEYM',
-      authDomain: 'shiftease-2155e.firebaseapp.com',
-      messagingSenderId: '779039596001',
-    }),
-    AngularFireFunctionsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

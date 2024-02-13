@@ -1,48 +1,48 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import * as FileSaver from 'file-saver';
-import { OverlayPanel } from 'primeng/overlaypanel';
-import { Table } from 'primeng/table';
-import { ConfirmationService } from 'primeng/api';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { defaultPhotoURL } from 'src/app/utils/defaultProfileImage';
-import { getImageUrl } from 'src/app/utils/workplaces';
-import { DatabaseService } from 'src/app/services/database.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import * as FileSaver from "file-saver";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Table } from "primeng/table";
+import { ConfirmationService, MessageService } from "primeng/api";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { defaultPhotoURL } from "src/app/utils/defaultProfileImage";
+import { getImageUrl } from "src/app/utils/workplaces";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
-  selector: 'app-my-shifts-page',
-  templateUrl: './my-shifts-page.component.html',
-  styleUrls: ['./my-shifts-page.component.scss'],
-  providers: [ConfirmationService],
+  selector: "app-my-shifts-page",
+  templateUrl: "./my-shifts-page.component.html",
+  styleUrls: ["./my-shifts-page.component.scss"],
+  providers: [ConfirmationService, MessageService],
 })
 export class MyShiftsPageComponent implements OnInit {
-  @ViewChild('dt') dt: Table | undefined;
-  @ViewChild('op') overlayPanel!: OverlayPanel;
+  @ViewChild("dt") dt: Table | undefined;
+  @ViewChild("op") overlayPanel!: OverlayPanel;
   // loading states
   loading: boolean = false;
   isLoading: boolean = false;
   // user data
   userPhotoURL: any;
-  userCompleteName: string = '';
+  userFirstName: string = "";
   // modals
   addModalVisible = false;
   editModalVisible = false;
   bestMonthModalVisible = false;
   statisticsModalVisible = false;
   // comment
-  currentComments: string = '';
+  currentComments: string = "";
   // shifts
   shifts: any = [];
   selectedShift: any = null;
-  getWorplaceImage = getImageUrl;
+  getWorkplaceImage = getImageUrl;
 
   // chart options
   data = {
-    labels: ['A', 'B', 'C'],
+    labels: ["A", "B", "C"],
     datasets: [
       {
         data: [540, 325, 702],
-        backgroundColor: 'red',
-        hoverBackgroundColor: 'blue',
+        backgroundColor: "red",
+        hoverBackgroundColor: "blue",
       },
     ],
   };
@@ -51,7 +51,7 @@ export class MyShiftsPageComponent implements OnInit {
       legend: {
         labels: {
           usePointStyle: true,
-          color: 'green',
+          color: "green",
         },
       },
     },
@@ -60,17 +60,24 @@ export class MyShiftsPageComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private db: DatabaseService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private toast: MessageService,
   ) {
     this.auth.getLoggedUser().subscribe((data) => {
       this.userPhotoURL = data?.photoURL || defaultPhotoURL;
-      this.userCompleteName = data?.firstName + ' ' + data?.lastName;
+      this.userFirstName = data?.firstName;
+    });
+  }
+
+  showError(message: any) {
+    this.toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: message,
     });
   }
 
   ngOnInit() {
-    // TODO: fix loading spinner when fetching data
-    // ! #TODO: filter
     this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts]
         .filter((shift: any) => shift.author === this.auth?.getAuthUser()?.uid)
@@ -103,9 +110,16 @@ export class MyShiftsPageComponent implements OnInit {
     try {
       await this.db.addShift(addedShift);
     } catch (error: any) {
-      console.error(error);
+      this.showError(
+        "An error has occured while adding shift. Please try again.",
+      );
     } finally {
       this.loading = false;
+      this.toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: "Shift added successfully.",
+      });
     }
   }
   onAddModalClose() {
@@ -118,12 +132,14 @@ export class MyShiftsPageComponent implements OnInit {
     this.editModalVisible = true;
   }
   async onEditSubmit(editedShift: any) {
-    this.loading = true;
-    this.editModalVisible = false;
     try {
+      this.loading = true;
+      this.editModalVisible = false;
       await this.db.editShift(this.selectedShift.id, editedShift);
     } catch (error: any) {
-      console.log(error);
+      this.showError(
+        "An error has occured while updating shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }
@@ -137,9 +153,9 @@ export class MyShiftsPageComponent implements OnInit {
   onDeleteClick(event: Event, shift: any) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Are you sure?',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-sm',
+      message: "Are you sure?",
+      icon: "pi pi-info-circle",
+      acceptButtonStyleClass: "p-button-danger p-button-sm",
       accept: () => {
         this.onDeleteConfirm(shift.id);
       },
@@ -151,7 +167,9 @@ export class MyShiftsPageComponent implements OnInit {
     try {
       await this.db.deleteShift(shiftId);
     } catch (error: any) {
-      console.error('Error deleting shift', error);
+      this.showError(
+        "An error has occured while deleting shift. Please try again.",
+      );
     } finally {
       this.loading = false;
     }
@@ -174,36 +192,35 @@ export class MyShiftsPageComponent implements OnInit {
   async exportExcel() {
     this.isLoading = true;
     try {
-      const xlsx = await import('xlsx');
+      const xlsx = await import("xlsx");
       const worksheet = xlsx.utils.json_to_sheet(
         this.shifts.map((shift: any) => ({
           Workplace: shift.workplace,
-          'Start Time': shift.startTime.toLocaleString(),
-          'End Time': shift.endTime.toLocaleString(),
-          'Hourly Wage ($)': shift.hourlyWage,
-          'Profit ($)': shift.profit,
+          "Start Time": shift.startTime.toLocaleString(),
+          "End Time": shift.endTime.toLocaleString(),
+          "Hourly Wage ($)": shift.hourlyWage,
+          "Profit ($)": shift.profit,
           Comments: shift.comments,
-        }))
+        })),
       );
 
       const workbook = {
         Sheets: { Shifts: worksheet },
-        SheetNames: ['Shifts'],
+        SheetNames: ["Shifts"],
       };
 
       const excelBuffer = xlsx.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array',
+        bookType: "xlsx",
+        type: "array",
       });
 
       const data = new Blob([excelBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
     } catch (error) {
-      // ! #TODO: this.showError
-      console.error('Failed to export Excel:', error);
+      this.showError("Failde to export Excel. Please try again.");
     } finally {
       this.isLoading = false;
     }

@@ -5,20 +5,21 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-} from '@angular/core';
-import { Message } from 'primeng/api';
-import { isDateBefore } from '../../utils/validation';
-import { calculateProfit } from '../../utils/computation';
-import { workplaces } from 'src/app/utils/workplaces';
+} from "@angular/core";
+import { Message } from "primeng/api";
+import { isDateBefore } from "../../utils/validation";
+import { calculateProfit } from "../../utils/computation";
+import { workplaces } from "src/app/utils/workplaces";
 
 @Component({
-  selector: 'app-edit-form',
-  templateUrl: './edit-form.component.html',
-  styleUrl: './edit-form.component.scss',
+  selector: "app-edit-form",
+  templateUrl: "./edit-form.component.html",
+  styleUrl: "./edit-form.component.scss",
 })
 export class EditFormComponent implements OnChanges {
   @Input() editShift: any;
   @Output() submit = new EventEmitter<any>();
+  @Output() errorEvent = new EventEmitter<string>();
   workTime: any;
   hourlyWage: any;
   workplace: any;
@@ -27,7 +28,7 @@ export class EditFormComponent implements OnChanges {
   workplaces = workplaces;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['editShift'] && this.editShift) {
+    if (changes["editShift"] && this.editShift) {
       this.workTime = [
         new Date(this.editShift.startTime),
         new Date(this.editShift.endTime),
@@ -38,16 +39,6 @@ export class EditFormComponent implements OnChanges {
     }
   }
 
-  showError(message: string) {
-    this.messages = [
-      ...this.messages,
-      {
-        severity: 'error',
-        detail: message,
-      },
-    ];
-  }
-
   async onSubmit() {
     this.messages = [];
     if (
@@ -55,24 +46,24 @@ export class EditFormComponent implements OnChanges {
       !Array.isArray(this.workTime) ||
       this.workTime.length < 2
     ) {
-      this.showError('Start time and end time are mandatory.');
+      this.errorEvent.emit("Start time and end time are mandatory.");
       return;
     }
 
     const [startTime, endTime] = this.workTime;
 
     if (!startTime || !endTime || !isDateBefore(startTime, endTime)) {
-      this.showError('The start time must be before the end time.');
+      this.errorEvent.emit("The start time must be before the end time.");
       return;
     }
 
     if (!this.hourlyWage || this.hourlyWage <= 0) {
-      this.showError('Hourly wage must be over 0.');
+      this.errorEvent.emit("Hourly wage must be over 0.");
       return;
     }
 
     if (!this.workplace) {
-      this.showError('You must select a workplace.');
+      this.errorEvent.emit("You must select a workplace.");
       return;
     }
 
