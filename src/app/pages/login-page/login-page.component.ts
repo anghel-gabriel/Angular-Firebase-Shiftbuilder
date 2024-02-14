@@ -78,7 +78,7 @@ export class LoginPageComponent {
         );
 
         if (userEmail) {
-          await this.auth.signIn(userEmail, this.password); // Here you should use userEmail, not this.loginEmailOrUsername
+          await this.auth.signIn(userEmail, this.password);
           this.router.navigate(["/"]);
         } else {
           this.showError(

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { AuthenticationService } from "../../services/authentication.service";
 import { Router } from "@angular/router";
@@ -86,8 +86,8 @@ export class NavbarComponent implements OnInit {
   }
 
   async onSignOut() {
-    this.isLoading = true;
     try {
+      this.isLoading = true;
       await this.auth.logOut();
       await this.router.navigate(["/sign-in"]);
     } catch (error: any) {
