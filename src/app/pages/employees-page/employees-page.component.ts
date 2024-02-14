@@ -45,7 +45,7 @@ export class EmployeesPageComponent {
       this.myId = data.uid;
       this.myRole = data.role;
     });
-    this.db.getAreMyShiftsLoading().subscribe((val) => (this.isLoading = val));
+    this.db.getAreAllUsersLoading().subscribe((val) => (this.isLoading = val));
   }
 
   showError(message: string) {
@@ -82,17 +82,21 @@ export class EmployeesPageComponent {
   }
 
   // shifts to excel
-  exportExcel() {
-    import("xlsx").then((xlsx) => {
+  async exportExcel() {
+    this.isLoading = true;
+    try {
+      const xlsx = await import("xlsx");
       const worksheet = xlsx.utils.json_to_sheet(
-        this.users.map((shift: any) => ({
-          // ! #TODO: modify this and all excels
-          Workplace: shift.workplace,
-          "Start Time": shift.startTime.toLocaleString(),
-          "End Time": shift.endTime.toLocaleString(),
-          "Hourly Wage ($)": shift.hourlyWage,
-          "Profit ($)": shift.profit,
-          Comments: shift.comments,
+        this.users.map((user: any) => ({
+          "First name": user.firstName,
+          "Last name": user.lastName,
+          "Email address": user.email,
+          Username: user.username,
+          Birthdate: new Date(user.birthDate).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
         })),
       );
 
@@ -105,11 +109,23 @@ export class EmployeesPageComponent {
         bookType: "xlsx",
         type: "array",
       });
+
       const data = new Blob([excelBuffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
-    });
+    } catch (error) {
+      this.showError(
+        "An error has occurred while exporting Excel. Please try again.",
+      );
+    } finally {
+      this.isLoading = false;
+      this.messageService.add({
+        severity: "success",
+        detail: "Data exported successfully.",
+        summary: "Success",
+      });
+    }
   }
 }

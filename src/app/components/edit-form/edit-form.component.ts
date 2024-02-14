@@ -19,6 +19,7 @@ export class EditFormComponent implements OnChanges {
   @Input() editShift: any;
   @Output() submit = new EventEmitter<any>();
   @Output() errorEvent = new EventEmitter<string>();
+  @Output() successEvent = new EventEmitter<string>();
   workTime: any;
   hourlyWage: any;
   workplace: any;
@@ -74,5 +75,6 @@ export class EditFormComponent implements OnChanges {
     };
 
     this.submit.emit(shift);
+    this.successEvent.emit("Shift updated successfully.");
   }
 }

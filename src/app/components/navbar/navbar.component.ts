@@ -30,7 +30,7 @@ export class NavbarComponent implements OnInit {
       {
         label: "My shifts",
         icon: "pi pi-fw pi-stopwatch",
-        url: "my-shifts",
+        url: "",
         visible: isUserLogged,
       },
       {

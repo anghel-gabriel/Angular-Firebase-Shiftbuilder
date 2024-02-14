@@ -1,327 +1,332 @@
 <p-steps
-  (activeIndexChange)="onActiveIndexChange($event)"
-  [activeIndex]="activeIndex"
-  [model]="items"
-  [readonly]="false"
-  [readonly]="true"
-  styleClass="max-w-[920px] mx-auto"
-></p-steps>
+    (activeIndexChange)="onActiveIndexChange($event)"
+    [activeIndex]="activeIndex"
+    [model]="items"
+    [readonly]="false"
+    [readonly]="true"
+    styleClass="max-w-[920px] mx-auto"
+/>
 
 <!-- 1. credentials -->
 @if (activeIndex ===0){<p-card styleClass="max-w-[920px] mt-[60px] mx-auto">
-  <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
-    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
-      <!-- email -->
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="email"
-            class="w-full"
-            id="email"
-            name="email"
-            pInputText
-            type="email"
-          />
-          <label for="email">Email address*</label>
-        </span>
-        <small class="mt-1">Use a valid email address</small>
-      </div>
-      <!-- username -->
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="username"
-            class="w-full"
-            id="username"
-            name="username"
-            pInputText
-          />
-          <label for="username">Username*</label>
-        </span>
-        <small class="mt-1"
-          >Username must be alphanumeric and at least 6 characters long</small
-        >
-      </div>
-    </div>
-    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
-      <!-- password -->
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label w-full">
-          <span class="p-float-label">
-            <input
-              [(ngModel)]="password"
-              class="w-full"
-              id="password"
-              name="password"
-              pInputText
-              type="password"
-            />
-            <label for="password">Password*</label>
-          </span>
-        </span>
-        <small class="mt-1" id="age-help"
-          >Password requires 6+ characters, including uppercase, lowercase, a
-          number, and a symbol</small
-        >
-      </div>
-      <!-- confirm password -->
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label w-full">
-          <span class="p-float-label">
-            <input
-              [(ngModel)]="confirmPassword"
-              class="w-full"
-              id="confirmPassword"
-              name="confirmPassword"
-              pInputText
-              type="password"
-            />
-            <label for="confirmPassword">Confirm password*</label>
-          </span>
-        </span>
-        <small class="mt-1" id="age-help">Passwords must match</small>
-      </div>
-    </div>
-    <div class="flex items-center justify-between">
-      <p-button
-        (click)="handlePrevious()"
-        [disabled]="activeIndex === 0"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        icon="pi pi-arrow-left"
-        label="Back"
-      ></p-button>
-      <p-button
-        (click)="handleNext()"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        icon="pi pi-arrow-right"
-        label="Next"
-        styleClass="hidden"
-      ></p-button>
-    </div>
-  </div> </p-card
+    <div class="flex flex-col gap-8 px-[3%] sm:gap-[60px]">
+        <div class="flex w-full flex-col justify-between gap-8 sm:flex-row">
+            <!-- email -->
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="email"
+                        class="w-full"
+                        id="email"
+                        name="email"
+                        pInputText
+                        type="email"
+                    />
+                    <label for="email">Email address*</label>
+                </span>
+                <small class="mt-1">Use a valid email address</small>
+            </div>
+            <!-- username -->
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="username"
+                        class="w-full"
+                        id="username"
+                        name="username"
+                        pInputText
+                    />
+                    <label for="username">Username*</label>
+                </span>
+                <small class="mt-1"
+                    >Username must be alphanumeric and at least 6 characters
+                    long</small
+                >
+            </div>
+        </div>
+        <div class="flex w-full flex-col justify-between gap-8 sm:flex-row">
+            <!-- password -->
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label w-full">
+                    <span class="p-float-label">
+                        <input
+                            [(ngModel)]="password"
+                            class="w-full"
+                            id="password"
+                            name="password"
+                            pInputText
+                            type="password"
+                        />
+                        <label for="password">Password*</label>
+                    </span>
+                </span>
+                <small class="mt-1" id="age-help"
+                    >Password requires 6+ characters, including uppercase,
+                    lowercase, a number, and a symbol</small
+                >
+            </div>
+            <!-- confirm password -->
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label w-full">
+                    <span class="p-float-label">
+                        <input
+                            [(ngModel)]="confirmPassword"
+                            class="w-full"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            pInputText
+                            type="password"
+                        />
+                        <label for="confirmPassword">Confirm password*</label>
+                    </span>
+                </span>
+                <small class="mt-1" id="age-help">Passwords must match</small>
+            </div>
+        </div>
+        <div class="flex items-center justify-between">
+            <p-button
+                (click)="handlePrevious()"
+                [disabled]="activeIndex === 0"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                icon="pi pi-arrow-left"
+                label="Back"
+            ></p-button>
+            <p-button
+                (click)="handleNext()"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                icon="pi pi-arrow-right"
+                label="Next"
+                styleClass="hidden"
+            ></p-button>
+        </div>
+    </div> </p-card
 >}
 
 <!-- 2. personal info -->
 @if(activeIndex===1) {<p-card
-  *ngIf="activeIndex === 1"
-  styleClass="max-w-[920px] my-[60px] mx-auto"
+    *ngIf="activeIndex === 1"
+    styleClass="max-w-[920px] my-[60px] mx-auto"
 >
-  <div class="flex flex-col gap-8 sm:gap-[60px] px-[3%]">
-    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="firstName"
-            class="w-full"
-            id="firstName"
-            pInputText
-          />
-          <label for="firstName">First name*</label>
-        </span>
-        <small class="mt-1"
-          >First name should be at least 2 characters long</small
-        >
-      </div>
+    <div class="flex flex-col gap-8 px-[3%] sm:gap-[60px]">
+        <div class="flex w-full flex-col justify-between gap-8 sm:flex-row">
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="firstName"
+                        class="w-full"
+                        id="firstName"
+                        pInputText
+                    />
+                    <label for="firstName">First name*</label>
+                </span>
+                <small class="mt-1"
+                    >First name should be at least 2 characters long</small
+                >
+            </div>
 
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <input
-            [(ngModel)]="lastName"
-            class="w-full"
-            id="lastName"
-            pInputText
-          />
-          <label for="lastName">Last name*</label>
-        </span>
-        <small class="mt-1"
-          >Last name should be at least 2 characters long</small
-        >
-      </div>
-    </div>
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <input
+                        [(ngModel)]="lastName"
+                        class="w-full"
+                        id="lastName"
+                        pInputText
+                    />
+                    <label for="lastName">Last name*</label>
+                </span>
+                <small class="mt-1"
+                    >Last name should be at least 2 characters long</small
+                >
+            </div>
+        </div>
 
-    <!-- age -->
-    <div class="flex flex-col gap-8 sm:flex-row w-full justify-between">
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <span class="p-float-label">
-            <p-calendar
-              [(ngModel)]="birthDate"
-              inputId="birth_date"
-              styleClass="w-full"
-            ></p-calendar>
-            <label for="birth_date">Birth Date*</label>
-          </span>
-        </span>
-        <small class="mt-1" id="age-help"
-          >You must be between 6 and 130 years old</small
-        >
-      </div>
+        <!-- age -->
+        <div class="flex w-full flex-col justify-between gap-8 sm:flex-row">
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <span class="p-float-label">
+                        <p-calendar
+                            [(ngModel)]="birthDate"
+                            inputId="birth_date"
+                            styleClass="w-full"
+                        ></p-calendar>
+                        <label for="birth_date">Birth Date*</label>
+                    </span>
+                </span>
+                <small class="mt-1" id="age-help"
+                    >You must be between 6 and 130 years old</small
+                >
+            </div>
 
-      <!-- gender -->
-      <div class="flex flex-col flex-1 w-full sm:max-w-[330px]">
-        <span class="p-float-label">
-          <p-dropdown
-            [(ngModel)]="gender"
-            [options]="genderOptions"
-            inputId="float-label"
-            optionLabel="name"
-            styleClass="w-full"
-          ></p-dropdown>
-          <label for="float-label">Gender</label>
-        </span>
-        <small class="mt-1">This is optional</small>
-      </div>
-    </div>
-    <div class="flex items-center justify-between">
-      <p-button
-        (click)="handlePrevious()"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        icon="pi pi-arrow-left"
-        label="Back"
-      ></p-button>
-      <p-button
-        (click)="handleNext()"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        icon="pi pi-arrow-right"
-        label="Next"
-      ></p-button>
-    </div>
-  </div> </p-card
+            <!-- gender -->
+            <div class="flex w-full flex-1 flex-col sm:max-w-[330px]">
+                <span class="p-float-label">
+                    <p-dropdown
+                        [(ngModel)]="gender"
+                        [options]="genderOptions"
+                        inputId="float-label"
+                        optionLabel="name"
+                        styleClass="w-full"
+                    ></p-dropdown>
+                    <label for="float-label">Gender</label>
+                </span>
+                <small class="mt-1">This is optional</small>
+            </div>
+        </div>
+        <div class="flex items-center justify-between">
+            <p-button
+                (click)="handlePrevious()"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                icon="pi pi-arrow-left"
+                label="Back"
+            ></p-button>
+            <p-button
+                (click)="handleNext()"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                icon="pi pi-arrow-right"
+                label="Next"
+            ></p-button>
+        </div>
+    </div> </p-card
 >}
 
 <!-- 3. confirm sign-up data -->
 @if(activeIndex ===2 ){<p-card
-  *ngIf="activeIndex === 2"
-  styleClass="max-w-[920px] my-[60px] mx-auto"
+    *ngIf="activeIndex === 2"
+    styleClass="max-w-[920px] my-[60px] mx-auto"
 >
-  <div class="flex flex-col gap-5 px-[3%] pb-[10px]">
-    <!-- user agreement -->
-    <h1 class="mt-0 text-xl font-bold">ShiftEase Platform User Agreement</h1>
+    <div class="flex flex-col gap-5 px-[3%] pb-[10px]">
+        <!-- user agreement -->
+        <h1 class="mt-0 text-xl font-bold">
+            ShiftEase Platform User Agreement
+        </h1>
 
-    <div>
-      <p class="m-0">
-        This User Agreement ("Agreement") is a binding legal contract between
-        {{ firstName }} {{ lastName }} ("User" or "I") and ShiftEase Platform
-        ("ShiftEase").
-      </p>
-    </div>
+        <div>
+            <p class="m-0">
+                This User Agreement ("Agreement") is a binding legal contract
+                between {{ firstName }} {{ lastName }} ("User" or "I") and
+                ShiftEase Platform ("ShiftEase").
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Parties:</h3>
-      <p class="m-0"><b>User Information:</b></p>
-      <ul>
-        <li><b>Name:</b> {{ firstName }} {{ lastName }}</li>
-        <li><b>Date of Birth:</b> {{ birthDate | date }}</li>
-        <li><b>Gender:</b> {{ gender.name }}</li>
-      </ul>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Parties:</h3>
+            <p class="m-0"><b>User Information:</b></p>
+            <ul>
+                <li><b>Name:</b> {{ firstName }} {{ lastName }}</li>
+                <li><b>Date of Birth:</b> {{ birthDate | date }}</li>
+                <li><b>Gender:</b> {{ gender.name }}</li>
+            </ul>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Purpose and Use:</h3>
-      <p class="m-0">
-        I hereby acknowledge that I will use ShiftEase solely for its intended
-        purpose as set forth by the platform. I agree to comply with all terms
-        and conditions of ShiftEase, including any updates or modifications to
-        the platform or this Agreement.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Purpose and Use:</h3>
+            <p class="m-0">
+                I hereby acknowledge that I will use ShiftEase solely for its
+                intended purpose as set forth by the platform. I agree to comply
+                with all terms and conditions of ShiftEase, including any
+                updates or modifications to the platform or this Agreement.
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Prohibited Actions:</h3>
-      <p class="m-0">
-        I commit to refrain from any actions that may harm, disrupt, or alter
-        the normal functioning of ShiftEase. This includes, but is not limited
-        to, engaging in illegal activities, spreading malware, unauthorized
-        access to other user accounts, or any form of network attack.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Prohibited Actions:</h3>
+            <p class="m-0">
+                I commit to refrain from any actions that may harm, disrupt, or
+                alter the normal functioning of ShiftEase. This includes, but is
+                not limited to, engaging in illegal activities, spreading
+                malware, unauthorized access to other user accounts, or any form
+                of network attack.
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Liability and Damages:</h3>
-      <p class="m-0">
-        I understand that any breach of this Agreement may result in immediate
-        termination of my access to ShiftEase. In the event of a breach, I agree
-        to be liable for any damages caused to ShiftEase or its users, including
-        but not limited to compensatory damages, legal fees, and any other
-        associated costs.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Liability and Damages:</h3>
+            <p class="m-0">
+                I understand that any breach of this Agreement may result in
+                immediate termination of my access to ShiftEase. In the event of
+                a breach, I agree to be liable for any damages caused to
+                ShiftEase or its users, including but not limited to
+                compensatory damages, legal fees, and any other associated
+                costs.
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Data Privacy and Security:</h3>
-      <p class="m-0">
-        I agree to adhere to ShiftEase's data privacy and protection policies. I
-        will not disclose, share, or misuse any personal information obtained
-        through ShiftEase.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Data Privacy and Security:</h3>
+            <p class="m-0">
+                I agree to adhere to ShiftEase's data privacy and protection
+                policies. I will not disclose, share, or misuse any personal
+                information obtained through ShiftEase.
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Amendments and Termination:</h3>
-      <p class="m-0">
-        ShiftEase reserves the right to modify this Agreement at any time. I
-        will be notified of any changes and continued use of the platform will
-        constitute acceptance of the new terms.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Amendments and Termination:</h3>
+            <p class="m-0">
+                ShiftEase reserves the right to modify this Agreement at any
+                time. I will be notified of any changes and continued use of the
+                platform will constitute acceptance of the new terms.
+            </p>
+        </div>
 
-    <div>
-      <h3 class="mb-[10px] font-bold">Governing Law:</h3>
-      <p class="m-0">
-        This Agreement shall be governed by the laws of the jurisdiction in
-        which ShiftEase operates.
-      </p>
-    </div>
+        <div>
+            <h3 class="mb-[10px] font-bold">Governing Law:</h3>
+            <p class="m-0">
+                This Agreement shall be governed by the laws of the jurisdiction
+                in which ShiftEase operates.
+            </p>
+        </div>
 
-    <div class="flex items-center gap-2 mt-10 text-[--blue-700]">
-      <p-checkbox
-        [(ngModel)]="checked"
-        [binary]="true"
-        [disabled]="isLoading"
-        inputId="agreementCheckbox"
-        name="agreementCheckbox"
-        styleClass="block"
-      ></p-checkbox>
-      <label class="cursor-pointer" for="agreementCheckbox"
-        >By registering, I confirm that I have read, understood, and agree to
-        the User Agreement.</label
-      >
+        <div class="mt-10 flex items-center gap-2 text-[--blue-700]">
+            <p-checkbox
+                [(ngModel)]="checked"
+                [binary]="true"
+                [disabled]="isLoading"
+                inputId="agreementCheckbox"
+                name="agreementCheckbox"
+                styleClass="block"
+            ></p-checkbox>
+            <label class="cursor-pointer" for="agreementCheckbox"
+                >By registering, I confirm that I have read, understood, and
+                agree to the User Agreement.</label
+            >
+        </div>
+        <div class="mt-[10px] flex items-center justify-center"></div>
+        <div class="flex items-center justify-between">
+            <p-button
+                (click)="handlePrevious()"
+                [disabled]="isLoading"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                icon="pi pi-arrow-left"
+                label="Back"
+            ></p-button>
+            <p-button
+                (onClick)="onSubmit()"
+                [disabled]="!checked"
+                [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
+                [text]="true"
+                class="sm:mr-5"
+                icon="pi pi-check"
+                label="Sign up"
+            ></p-button>
+        </div>
     </div>
-    <div class="mt-[10px] flex items-center justify-center"></div>
-    <div class="flex items-center justify-between">
-      <p-button
-        (click)="handlePrevious()"
-        [disabled]="isLoading"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        icon="pi pi-arrow-left"
-        label="Back"
-      ></p-button>
-      <p-button
-        (onClick)="onSubmit()"
-        [disabled]="!checked"
-        [size]="isViewPortAtLeastMedium ? 'large' : 'small'"
-        [text]="true"
-        class="sm:mr-5"
-        icon="pi pi-check"
-        label="Sign up"
-      ></p-button>
-    </div>
-  </div>
 </p-card>
 }
 
 <!-- already have an account -->
 @if (activeIndex === 0) {
-<p class="text-indigo-700 text-center p-4 mb-[60px]">
-  <a class="hover:text-black" routerLink="/sign-in">
-    Already have an account? Log in by clicking
-    <span class="font-bold">here</span></a
-  >.
+<p class="mb-[60px] p-4 text-center text-indigo-700">
+    <a class="hover:text-black" routerLink="/sign-in">
+        Already have an account? Log in by clicking
+        <span class="font-bold">here</span></a
+    >.
 </p>
 }
 

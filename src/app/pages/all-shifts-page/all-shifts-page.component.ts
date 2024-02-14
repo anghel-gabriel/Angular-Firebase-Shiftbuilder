@@ -127,10 +127,13 @@ export class AllShiftsPageComponent {
   }
 
   // shifts to excel
-  exportExcel() {
-    import("xlsx").then((xlsx) => {
+  async exportExcel() {
+    this.isLoading = true;
+    try {
+      const xlsx = await import("xlsx");
       const worksheet = xlsx.utils.json_to_sheet(
         this.shifts.map((shift: any) => ({
+          Employee: shift.authorFullName,
           Workplace: shift.workplace,
           "Start Time": shift.startTime.toLocaleString(),
           "End Time": shift.endTime.toLocaleString(),
@@ -149,11 +152,23 @@ export class AllShiftsPageComponent {
         bookType: "xlsx",
         type: "array",
       });
+
       const data = new Blob([excelBuffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
-    });
+    } catch (error) {
+      this.showError(
+        "An error has occurred while exporting Excel. Please try again.",
+      );
+    } finally {
+      this.isLoading = false;
+      this.messageService.add({
+        severity: "success",
+        detail: "Data exported successfully.",
+        summary: "Success",
+      });
+    }
   }
 }

@@ -177,7 +177,7 @@ export class RegisterPageComponent {
       });
       // adding a delay before redirecting user to have enough time to read the notifications
       await new Promise((resolve) => setTimeout(resolve, 4000));
-      this.router.navigate(["/my-shifts"]);
+      this.router.navigate(["/"]);
     } catch (error: any) {
       this.showError("Registration failed. Please contact an admin.");
     } finally {

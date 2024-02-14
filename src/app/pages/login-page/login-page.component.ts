@@ -71,7 +71,7 @@ export class LoginPageComponent {
       this.isLoading = true;
       if (this.loginWay === "email") {
         await this.auth.signIn(this.loginEmailOrUsername, this.password);
-        this.router.navigate(["/my-shifts"]);
+        this.router.navigate(["/"]);
       } else if (this.loginWay === "username") {
         const userEmail = await this.auth.getEmailFromUsername(
           this.loginEmailOrUsername,
@@ -79,7 +79,7 @@ export class LoginPageComponent {
 
         if (userEmail) {
           await this.auth.signIn(userEmail, this.password); // Here you should use userEmail, not this.loginEmailOrUsername
-          this.router.navigate(["/my-shifts"]);
+          this.router.navigate(["/"]);
         } else {
           this.showError(
             "The username entered does not exist. Please try again.",

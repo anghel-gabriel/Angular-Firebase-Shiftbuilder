@@ -77,6 +77,14 @@ export class MyShiftsPageComponent implements OnInit {
     });
   }
 
+  showSuccess(message: any) {
+    this.toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: message,
+    });
+  }
+
   ngOnInit() {
     this.db.updateShifts().subscribe((shifts) => {
       this.shifts = [...shifts]
@@ -220,9 +228,12 @@ export class MyShiftsPageComponent implements OnInit {
 
       FileSaver.saveAs(data, `ShiftEase_${new Date().getTime()}.xlsx`);
     } catch (error) {
-      this.showError("Failde to export Excel. Please try again.");
+      this.showError(
+        "An error has occurred while exporting Excel. Please try again.",
+      );
     } finally {
       this.isLoading = false;
+      this.showSuccess("Data exported successfully.");
     }
   }
 }
