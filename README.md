@@ -1,3 +1,5 @@
+🌠 Click here to use the app: https://angular-shiftbuilder.netlify.app
+
 # Developer's Contribution
 
 ## External Libraries Used
@@ -51,15 +53,6 @@
 - HTML
 - CSS
 - JavaScript
-
-## Roles
-
-Each developer will work on another mode of the client side. When you submit the project please specify the role you chose:
-
-- A. The administrator mode
-- B. The regular worker mode
-
-In the final phase, you will connect with each other to gain a full working web application.
 
 ## Architectural and Technological Requirements
 
