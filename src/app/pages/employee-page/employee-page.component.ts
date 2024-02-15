@@ -192,7 +192,6 @@ export class EmployeePageComponent {
       }
       await this.auth.editProfile(this.employeeId, newData as any);
       if (isFullNameChanged) {
-        const userId = this.auth.getAuthUser()?.uid;
         if (this.employeeId) {
           await this.database.updateShiftAuthorFullName(
             this.employeeId,
