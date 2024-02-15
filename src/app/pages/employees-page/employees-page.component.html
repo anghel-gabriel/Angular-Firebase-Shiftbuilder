@@ -1,189 +1,181 @@
 <!-- shifts table -->
 <div class="card mx-auto max-w-[1720px]">
-    <p-table
-        #dt
-        styleClass="p-datatable-gridlines"
-        [filterDelay]="0"
-        [globalFilterFields]="['firstName']"
-        [paginator]="true"
-        [rowHover]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        [rows]="10"
-        [showCurrentPageReport]="true"
-        [value]="users"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total employees"
-        dataKey="id"
-    >
-        <ng-template pTemplate="caption">
-            <div class="flex items-center justify-between">
-                <div class="table-header flex flex-wrap gap-2">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input
-                            (input)="applyFilterGlobal($event, 'contains')"
-                            pInputText
-                            placeholder="Search by first name"
-                            type="text"
-                        />
-                    </span>
-                    <p-button
-                        (click)="exportExcel()"
-                        [outlined]="true"
-                        icon="pi pi-file-excel"
-                        pRipple
-                        pTooltip="Export to Excel"
-                        [disabled]="users.length < 1"
-                        severity="success"
-                        tooltipPosition="bottom"
-                    ></p-button>
-                </div>
+  <p-table
+    #dt
+    styleClass="p-datatable-gridlines"
+    [filterDelay]="0"
+    [globalFilterFields]="['firstName']"
+    [paginator]="true"
+    [rowHover]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [value]="users"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} total employees"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex items-center justify-between">
+        <div class="table-header flex flex-wrap gap-2">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              (input)="applyFilterGlobal($event, 'contains')"
+              pInputText
+              placeholder="Search by first name"
+              type="text"
+            />
+          </span>
+          <p-button
+            (click)="exportExcel()"
+            [outlined]="true"
+            icon="pi pi-file-excel"
+            pRipple
+            pTooltip="Export to Excel"
+            [disabled]="users.length < 1"
+            severity="success"
+            tooltipPosition="bottom"
+          ></p-button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="firstName">
+          <div class="justify-content-between align-items-center flex">
+            <div class="mt-1 flex">
+              First Name
+              <p-sortIcon field="firstName"></p-sortIcon>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="firstName">
-                    <div
-                        class="justify-content-between align-items-center flex"
-                    >
-                        <div class="mt-1 flex">
-                            First Name
-                            <p-sortIcon field="firstName"></p-sortIcon>
-                        </div>
-                        <p-columnFilter
-                            type="text"
-                            field="firstName"
-                            display="menu"
-                            class="ml-auto"
-                        ></p-columnFilter>
-                    </div>
-                </th>
-                <th pSortableColumn="lastName">
-                    <div
-                        class="justify-content-between align-items-center flex"
-                    >
-                        <div class="mt-1 flex">
-                            Last name
-                            <p-sortIcon field="lastName"></p-sortIcon>
-                        </div>
-                        <p-columnFilter
-                            class="ml-auto"
-                            display="menu"
-                            field="lastName"
-                            ngClass="ml-2 mt-0.5"
-                            type="date"
-                        ></p-columnFilter>
-                    </div>
-                </th>
-                <th pSortableColumn="email">
-                    <div
-                        class="justify-content-between align-items-center flex"
-                    >
-                        <div class="mt-1 flex">
-                            Email address
-                            <p-sortIcon field="email"></p-sortIcon>
-                        </div>
-                        <p-columnFilter
-                            class="ml-auto"
-                            display="menu"
-                            field="email"
-                            ngClass="ml-2 mt-0.5"
-                            type="date"
-                        >
-                        </p-columnFilter>
-                    </div>
-                </th>
-                <th pSortableColumn="username">
-                    <div
-                        class="justify-content-between align-items-center flex"
-                    >
-                        <div class="mt-1 flex">
-                            Username
-                            <p-sortIcon field="username"></p-sortIcon>
-                        </div>
-                        <p-columnFilter
-                            class="ml-auto"
-                            currency="USD"
-                            display="menu"
-                            field="username"
-                            ngClass="ml-2 mt-0.5"
-                            type="numeric"
-                        ></p-columnFilter>
-                    </div>
-                </th>
-                <th pSortableColumn="birthDate">
-                    <div
-                        class="justify-content-between align-items-center flex"
-                    >
-                        <div class="mt-1 flex">
-                            Birth date
-                            <p-sortIcon field="birthDate"></p-sortIcon>
-                        </div>
-                        <p-columnFilter
-                            class="ml-auto"
-                            currency="USD"
-                            display="menu"
-                            field="birthDate"
-                            ngClass="ml-2 mt-0.5"
-                            type="numeric"
-                        ></p-columnFilter>
-                    </div>
-                </th>
-                <th style="width: 160px">Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template let-employee pTemplate="body">
-            <tr class="p-selectable-row">
-                <td>
-                    <span class="p-column-title">First name</span>
-                    {{ employee.firstName }}
-                </td>
-                <td>
-                    <span class="p-column-title">Last name</span>
-                    {{ employee.lastName }}
-                </td>
-                <td>
-                    <span class="p-column-title">Email address</span>
-                    {{ employee.email }}
-                </td>
-                <td>
-                    <span class="p-column-title">Username</span>
-                    {{ employee.username }}
-                </td>
-                <td>
-                    <span class="p-column-title">Birthdate</span>
-                    {{ employee.birthDate | date : "MMM, d, y" }}
-                </td>
-                <td>
-                    <div class="flex gap-2">
-                        <p-button
-                            (onClick)="onEditClick(employee)"
-                            [rounded]="true"
-                            icon="pi pi-pencil"
-                            onClick
-                            pTooltip="Edit"
-                            severity="help"
-                            tooltipPosition="top"
-                        ></p-button>
-                        <p-button
-                            (onClick)="onDeleteEmployeeShifts(employee.uid)"
-                            [rounded]="true"
-                            icon="pi pi-delete-left"
-                            pTooltip="Delete all shifts"
-                            severity="warning"
-                            tooltipPosition="top"
-                        ></p-button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="8">No employees found.</td>
-            </tr>
-        </ng-template>
-    </p-table>
+            <p-columnFilter
+              type="text"
+              field="firstName"
+              display="menu"
+              class="ml-auto"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="lastName">
+          <div class="justify-content-between align-items-center flex">
+            <div class="mt-1 flex">
+              Last name
+              <p-sortIcon field="lastName"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              class="ml-auto"
+              display="menu"
+              field="lastName"
+              ngClass="ml-2 mt-0.5"
+              type="date"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="email">
+          <div class="justify-content-between align-items-center flex">
+            <div class="mt-1 flex">
+              Email address
+              <p-sortIcon field="email"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              class="ml-auto"
+              display="menu"
+              field="email"
+              ngClass="ml-2 mt-0.5"
+              type="date"
+            >
+            </p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="username">
+          <div class="justify-content-between align-items-center flex">
+            <div class="mt-1 flex">
+              Username
+              <p-sortIcon field="username"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              class="ml-auto"
+              currency="USD"
+              display="menu"
+              field="username"
+              ngClass="ml-2 mt-0.5"
+              type="numeric"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th pSortableColumn="birthDate">
+          <div class="justify-content-between align-items-center flex">
+            <div class="mt-1 flex">
+              Birth date
+              <p-sortIcon field="birthDate"></p-sortIcon>
+            </div>
+            <p-columnFilter
+              class="ml-auto"
+              currency="USD"
+              display="menu"
+              field="birthDate"
+              ngClass="ml-2 mt-0.5"
+              type="numeric"
+            ></p-columnFilter>
+          </div>
+        </th>
+        <th style="width: 160px">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template let-employee pTemplate="body">
+      <tr class="p-selectable-row">
+        <td>
+          <span class="p-column-title">First name</span>
+          {{ employee.firstName }}
+        </td>
+        <td>
+          <span class="p-column-title">Last name</span>
+          {{ employee.lastName }}
+        </td>
+        <td>
+          <span class="p-column-title">Email address</span>
+          {{ employee.email }}
+        </td>
+        <td>
+          <span class="p-column-title">Username</span>
+          {{ employee.username }}
+        </td>
+        <td>
+          <span class="p-column-title">Birthdate</span>
+          {{ employee.birthDate | date : "MMM, d, y" }}
+        </td>
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              (onClick)="onEditClick(employee)"
+              [rounded]="true"
+              icon="pi pi-pencil"
+              onClick
+              pTooltip="Edit"
+              severity="help"
+              tooltipPosition="top"
+            ></p-button>
+            <p-button
+              (onClick)="onDeleteEmployeeShifts(employee.uid)"
+              [rounded]="true"
+              icon="pi pi-delete-left"
+              pTooltip="Delete all shifts"
+              severity="warning"
+              tooltipPosition="top"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="8">No employees found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
 @if (loading || isLoading) {
 <app-spinner />
 }
+
+<p-toast />
