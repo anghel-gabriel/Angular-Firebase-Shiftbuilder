@@ -1,5 +1,10 @@
 🌠 Click here to use the app: https://angular-shiftbuilder.netlify.app
 
+🖥️ Desktop Screenshots: [Login](https://github.com/anghel-gabriel/Angular-Firebase-Shiftbuilder/assets/129520009/f77fefce-d66a-43b8-ab6c-d6d52bce6bb7) | [Register](https://github.com/anghel-gabriel/Angular-Firebase-Shiftbuilder/assets/129520009/78089882-3a1f-4963-95d2-49a13d2d4c61) | [Register2](https://github.com/anghel-gabriel/Angular-Firebase-Shiftbuilder/assets/129520009/aece6249-d070-45d3-a161-4b893cf43255)
+
+
+
+
 # Developer's Contribution
 
 ## External Libraries Used
