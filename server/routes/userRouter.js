@@ -1,7 +1,8 @@
-const express = require("express");
+import express from 'express';
+import { postAddShift } from '../controllers/shiftsController.js';
+
 const userRouter = express.Router();
-const { addShift } = require("../controllers/shifts.js");
 
-userRouter.get("/", addShift);
+userRouter.post('/add-product', postAddShift);
 
-module.exports = userRouter;
+export default userRouter;
